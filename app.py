@@ -302,39 +302,45 @@ def admin_reports():
         if action == 'create':
             title = request.form.get('title', '').strip()
             description = request.form.get('description', '').strip()
-            department_id = int(request.form.get('department_id'))
+            department_id = request.form.get('department_id', type=int)
             embed_url = request.form.get('embed_url', '').strip()
             icon = request.form.get('icon', 'bi-bar-chart-line').strip()
             is_public = 1 if request.form.get('is_public') == '1' else 0
-            display_order = int(request.form.get('display_order', 0))
-            active = 1 if request.form.get('active') == '1' else 0
+            display_order = request.form.get('display_order', 0, type=int)
+            active = 1 if request.form.get('active', '1') == '1' else 0
 
             if not title or not embed_url or not department_id:
                 flash('Título, Departamento e URL do Power BI são obrigatórios.', 'danger')
             else:
-                rep_id = create_report(title, description, department_id, embed_url, icon, is_public, display_order, active)
+                create_report(title, description, department_id, embed_url, icon, is_public, display_order, active)
                 flash(f'Relatório "{title}" cadastrado com sucesso!', 'success')
             return redirect(url_for('admin_reports'))
 
         elif action == 'edit':
-            report_id = int(request.form.get('report_id'))
+            report_id = request.form.get('report_id', type=int)
             title = request.form.get('title', '').strip()
             description = request.form.get('description', '').strip()
-            department_id = int(request.form.get('department_id'))
+            department_id = request.form.get('department_id', type=int)
             embed_url = request.form.get('embed_url', '').strip()
             icon = request.form.get('icon', 'bi-bar-chart-line').strip()
             is_public = 1 if request.form.get('is_public') == '1' else 0
-            display_order = int(request.form.get('display_order', 0))
+            display_order = request.form.get('display_order', 0, type=int)
             active = 1 if request.form.get('active') == '1' else 0
 
-            update_report(report_id, title, description, department_id, embed_url, icon, is_public, display_order, active)
-            flash(f'Relatório "{title}" atualizado com sucesso!', 'success')
+            if not report_id or not title or not embed_url or not department_id:
+                flash('Relatório, título, departamento e URL do Power BI são obrigatórios.', 'danger')
+            else:
+                update_report(report_id, title, description, department_id, embed_url, icon, is_public, display_order, active)
+                flash(f'Relatório "{title}" atualizado com sucesso!', 'success')
             return redirect(url_for('admin_reports'))
 
         elif action == 'delete':
-            report_id = int(request.form.get('report_id'))
-            delete_report(report_id)
-            flash('Relatório removido com sucesso.', 'info')
+            report_id = request.form.get('report_id', type=int)
+            if report_id:
+                delete_report(report_id)
+                flash('Relatório removido com sucesso.', 'info')
+            else:
+                flash('Relatório inválido.', 'danger')
             return redirect(url_for('admin_reports'))
 
     reports = list_all_reports()

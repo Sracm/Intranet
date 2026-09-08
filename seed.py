@@ -112,7 +112,7 @@ def run_seed():
     print("\nCriando Relatórios Power BI de demonstração...")
     # Power BI embed seguro ou link de publicação
     # Colocamos links de demonstração interativos do Power BI da Microsoft que abrem com perfeição
-    sample_pbi_1 = "https://app.powerbi.com/view?r=eyJrIjoiMDExNTM1YTQtNDFmMS00MDQxLWI5MWItYmI5N2RjMTk0Mzk3IiwidCI6IjViMGFjOGQ1LTg0MjYtNDVlMC1iYmQzLTc0MmZmMDRkZTZlZCJ9"
+    sample_pbi_1 = "https://app.powerbi.com/reportEmbed?reportId=5a2a1ded-b800-406f-83ab-23a791544279&autoAuth=true&ctid=703fb3fc-27e0-412a-af01-fd5c3cd99e53"
     sample_pbi_2 = "https://app.powerbi.com/view?r=eyJrIjoiZTNkMjkxMzQtYWEyNC00ZjhkLWJmOTItMWI0OGJlOWYxNDgxIiwidCI6IjU3ZWRjNTZkLTgwNzUtNDQzMS04MWNkLWQxNDQ0YWY2Y2U0NiIsImMiOjF9"
     sample_pbi_3 = "https://app.powerbi.com/view?r=eyJrIjoiMTc2MWYxOTgtNTY3Ni00MzBhLTk2YzMtMTFmMzhmNmQyNWQ4IiwidCI6IjVlMDQxODhmLWEyY2MtNDlmNi1iMTYxLTIzYzg0Yzg4YTVhMiIsImMiOjl9"
     sample_pbi_4 = "https://app.powerbi.com/view?r=eyJrIjoiOGZjMDNmY2MtNzA4Ny00MDdmLTgzYzAtY2JlM2I0MjM1NzI4IiwidCI6IjE1ODMwOGZmLWI4NGEtNDcxMC1iZTIzLTY0NGM0NDcxNWU2YiIsImMiOjh9"

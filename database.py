@@ -195,7 +195,7 @@ def list_all_users():
         ORDER BY u.role DESC, u.name ASC
     ''').fetchall()
     conn.close()
-    return users
+    return [dict(user) for user in users]
 
 def get_user_department_ids(user_id):
     conn = get_db()
@@ -215,7 +215,7 @@ def list_all_departments():
         ORDER BY d.name ASC
     ''').fetchall()
     conn.close()
-    return departments
+    return [dict(department) for department in departments]
 
 def get_department_by_id(dept_id):
     conn = get_db()
@@ -265,7 +265,7 @@ def list_all_reports():
         ORDER BY r.display_order ASC, r.title ASC
     ''').fetchall()
     conn.close()
-    return reports
+    return [dict(report) for report in reports]
 
 def get_report_by_id(report_id):
     conn = get_db()
