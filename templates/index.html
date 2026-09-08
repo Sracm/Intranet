@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Portal de Dashboards Corporativos{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/portal.css') }}">
+<style>
+    .portal-hero {
+        background: linear-gradient(90deg, rgba(18, 18, 18, 0.95) 0%, rgba(18, 18, 18, 0.78) 50%, rgba(18, 18, 18, 0.88) 100%),
+                    url("{{ url_for('static', filename='img/world_logistics_map.jpg') }}") center right / cover no-repeat;
+        border: 1px solid rgba(203, 151, 39, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Banner com Mapa Global de Logística -->
+<section class="portal-hero">
+    <div style="max-width: 680px; z-index: 2;">
+        <h1 class="portal-hero-title">Portal de <span>Dashboards Corporativos</span></h1>
+        <p class="portal-hero-desc">
+            Bem-vindo(a), <strong>{{ current_user.name }}</strong>. Abaixo estão listados os dashboards analíticos, operacionais e de inteligência logística aos quais você possui privilégio de acesso.
+        </p>
+    </div>
+    <div class="portal-hero-stats" style="z-index: 2;">
+        <div class="hero-stat-card">
+            <div class="hero-stat-val" id="visibleReportsCounter">{{ total_reports }}</div>
+            <div class="hero-stat-lbl">Dashboards Disponíveis</div>
+        </div>
+    </div>
+</section>
+
+<!-- Barra de Filtros e Busca -->
+<section class="portal-filter-bar">
+    <div class="search-box-wrapper">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" id="reportSearchInput" class="search-input" placeholder="Pesquise por nome do dashboard, departamento ou palavra-chave..." autocomplete="off">
+    </div>
+
+    <!-- Pílulas de Navegação por Departamento -->
+    <div class="dept-pills-container">
+        <a href="{{ url_for('portal', dept='todos') }}" class="dept-pill {% if selected_dept == 'todos' %}active{% endif %}">
+            <i class="bi bi-collection-fill"></i> Todos os Dashboards
+        </a>
+
+        {% for dept in departments %}
+        <a href="{{ url_for('portal', dept=dept.code) }}" class="dept-pill {% if selected_dept == dept.code %}active{% endif %}">
+            <i class="bi {{ dept.icon }}"></i> {{ dept.name }}
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Grade de Relatórios -->
+<section class="reports-grid" id="reportsGrid">
+    {% for report in reports %}
+    <article class="report-card" 
+             data-title="{{ report.title | lower }}" 
+             data-desc="{{ report.description | lower }}" 
+             data-dept="{{ report.department_name | lower }}">
+        
+        <div>
+            <div class="report-card-top">
+                <div class="report-icon-box">
+                    <i class="bi {{ report.icon }}"></i>
+                </div>
+                <div>
+                    {% if report.is_public %}
+                    <span class="mq-badge mq-badge-public">
+                        <i class="bi bi-globe"></i> Institucional
+                    </span>
+                    {% else %}
+                    <span class="mq-badge" style="background: rgba(203, 151, 39, 0.12); color: {{ report.department_color }}; border: 1px solid {{ report.department_color }}44;">
+                        {{ report.department_name }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <h2 class="report-title">{{ report.title }}</h2>
+            <p class="report-desc">{{ report.description or 'Relatório analítico e operacional de inteligência de negócios MQ Professional.' }}</p>
+        </div>
+
+        <div class="report-card-footer">
+            <a href="{{ url_for('view_report', report_id=report.id) }}" class="btn-mq-gold" style="padding: 0.55rem 1.1rem; font-size: 0.82rem;">
+                <i class="bi bi-eye-fill"></i> Abrir Dashboard
+            </a>
+
+            <a href="{{ report.embed_url }}" target="_blank" rel="noopener noreferrer" class="report-external-link" title="Abrir diretamente no Power BI em nova guia">
+                <i class="bi bi-box-arrow-up-right"></i>
+            </a>
+        </div>
+    </article>
+    {% endfor %}
+
+    <!-- Estado Vazio (quando não houver dashboards na busca) -->
+    <div class="reports-empty" id="reportsEmptyState" style="{% if reports %}display: none;{% endif %}">
+        <i class="bi bi-folder-x"></i>
+        <h3>Nenhum dashboard encontrado</h3>
+        <p>Não encontramos dashboards com este filtro ou privilégio para o seu usuário.</p>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/portal.js') }}"></script>
+{% endblock %}

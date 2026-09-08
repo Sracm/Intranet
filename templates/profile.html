@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Meu Perfil & Segurança — Intranet MQ{% endblock %}
+
+{% block content %}
+<div style="max-width: 680px; margin: 2rem auto;">
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--mq-white);">Meu Perfil & Segurança</h1>
+        <p style="color: var(--mq-gray-muted); font-size: 0.88rem;">Gerencie suas credenciais e visualize seus dados corporativos cadastrados.</p>
+    </div>
+
+    <!-- Dados do Usuário -->
+    <div class="admin-card" style="margin-bottom: 1.8rem;">
+        <div class="admin-card-header">
+            <h2 class="admin-card-title">
+                <i class="bi bi-person-badge" style="color: var(--mq-gold);"></i> Informações da Conta
+            </h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; font-size: 0.88rem;">
+            <div>
+                <span style="color: var(--mq-gray-muted); font-size: 0.75rem; text-transform: uppercase;">Nome Completo</span>
+                <p style="font-weight: 700; color: var(--mq-white); margin-top: 0.2rem;">{{ user.name }}</p>
+            </div>
+            <div>
+                <span style="color: var(--mq-gray-muted); font-size: 0.75rem; text-transform: uppercase;">Usuário de Acesso</span>
+                <p style="font-weight: 700; color: var(--mq-white); margin-top: 0.2rem;">{{ user.username }}</p>
+            </div>
+            <div>
+                <span style="color: var(--mq-gray-muted); font-size: 0.75rem; text-transform: uppercase;">E-mail</span>
+                <p style="font-weight: 600; color: var(--mq-creme-2); margin-top: 0.2rem;">{{ user.email or 'Não informado' }}</p>
+            </div>
+            <div>
+                <span style="color: var(--mq-gray-muted); font-size: 0.75rem; text-transform: uppercase;">Departamento Principal</span>
+                <p style="font-weight: 600; color: var(--mq-gold-light); margin-top: 0.2rem;">{{ user.department_name or 'Geral' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alteração de Senha -->
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h2 class="admin-card-title">
+                <i class="bi bi-shield-lock" style="color: var(--mq-gold);"></i> Alterar Senha de Acesso
+            </h2>
+        </div>
+
+        <form method="POST" action="{{ url_for('profile') }}">
+            <div class="form-group">
+                <label for="current_password" class="form-label">Senha Atual</label>
+                <input type="password" id="current_password" name="current_password" class="form-control" required placeholder="Digite sua senha atual">
+            </div>
+
+            <div class="form-group">
+                <label for="new_password" class="form-label">Nova Senha</label>
+                <input type="password" id="new_password" name="new_password" class="form-control" required placeholder="Mínimo 3 caracteres">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.8rem;">
+                <label for="confirm_password" class="form-label">Confirmar Nova Senha</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required placeholder="Repita a nova senha">
+            </div>
+
+            <button type="submit" class="btn-mq-gold">
+                <i class="bi bi-check2-circle"></i> Salvar Nova Senha
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

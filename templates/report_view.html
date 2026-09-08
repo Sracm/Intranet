@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}{{ report.title }} — Power BI MQ{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Visualizador Imersivo de Power BI */
+    .viewer-container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 140px);
+        margin: -1rem -2rem;
+        background: #0d0d0d;
+    }
+
+    .viewer-toolbar {
+        background: #161616;
+        border-bottom: 1px solid var(--mq-border);
+        padding: 0.75rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        z-index: 10;
+    }
+
+    .viewer-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .viewer-title-box {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .viewer-report-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--mq-white);
+        line-height: 1.2;
+    }
+
+    .viewer-report-sub {
+        font-size: 0.75rem;
+        color: var(--mq-gold);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .viewer-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .iframe-wrapper {
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        background: #0b0b0b;
+    }
+
+    .pbi-iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: block;
+    }
+
+    .iframe-loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #111;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        color: var(--mq-creme-2);
+        z-index: 5;
+        transition: opacity 0.3s ease;
+    }
+
+    .spinner-mq {
+        width: 42px;
+        height: 42px;
+        border: 3px solid rgba(203, 151, 39, 0.2);
+        border-top-color: var(--mq-gold);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="viewer-container" id="viewerWrapper">
+    <!-- Barra Superior de Controles -->
+    <div class="viewer-toolbar">
+        <div class="viewer-left">
+            <a href="{{ url_for('portal') }}" class="btn-mq-outline" style="padding: 0.45rem 0.9rem; font-size: 0.82rem;">
+                <i class="bi bi-arrow-left"></i> Voltar aos Relatórios
+            </a>
+
+            <div class="viewer-title-box">
+                <span class="viewer-report-title">{{ report.title }}</span>
+                <span class="viewer-report-sub">
+                    <span class="mq-badge mq-badge-gold" style="padding: 0.15rem 0.5rem; font-size: 0.68rem;">
+                        {{ report.department_name }}
+                    </span>
+                    <span>• Power BI MQ Professional</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="viewer-actions">
+            <button type="button" class="btn-mq-outline" onclick="reloadIframe()" style="padding: 0.45rem 0.85rem; font-size: 0.82rem;" title="Recarregar Dados">
+                <i class="bi bi-arrow-clockwise"></i> Recarregar
+            </button>
+
+            <button type="button" class="btn-mq-outline" onclick="toggleFullScreen()" style="padding: 0.45rem 0.85rem; font-size: 0.82rem;" title="Modo Apresentação / Tela Cheia">
+                <i class="bi bi-fullscreen" id="fullscreenIcon"></i> Tela Cheia
+            </button>
+
+            <a href="{{ embed_url }}" target="_blank" rel="noopener noreferrer" class="btn-mq-gold" style="padding: 0.45rem 0.9rem; font-size: 0.82rem;" title="Abrir link original do Power BI">
+                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+            </a>
+        </div>
+    </div>
+
+    <!-- Container do Iframe Power BI -->
+    <div class="iframe-wrapper">
+        <div class="iframe-loading" id="iframeLoader">
+            <div class="spinner-mq"></div>
+            <span style="font-size: 0.88rem; font-weight: 600; letter-spacing: 0.5px;">Carregando Relatório Power BI...</span>
+        </div>
+
+        <iframe id="pbiFrame" 
+                class="pbi-iframe" 
+                src="{{ embed_url }}" 
+                frameborder="0" 
+                allowFullScreen="true" 
+                onload="document.getElementById('iframeLoader').style.display='none';">
+        </iframe>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function reloadIframe() {
+        const frame = document.getElementById('pbiFrame');
+        const loader = document.getElementById('iframeLoader');
+        loader.style.display = 'flex';
+        frame.src = frame.src;
+    }
+
+    function toggleFullScreen() {
+        const elem = document.getElementById('viewerWrapper');
+        const icon = document.getElementById('fullscreenIcon');
+
+        if (!document.fullscreenElement) {
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+            icon.classList.remove('bi-fullscreen');
+            icon.classList.add('bi-fullscreen-exit');
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+            icon.classList.remove('bi-fullscreen-exit');
+            icon.classList.add('bi-fullscreen');
+        }
+    }
+</script>
+{% endblock %}

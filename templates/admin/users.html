@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}Gestão de Usuários & Permissões — Intranet MQ{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <div class="admin-title-group">
+        <h1>Gestão de Usuários & Permissões</h1>
+        <p>Cadastre colaboradores e defina quais departamentos e relatórios cada perfil pode visualizar.</p>
+    </div>
+
+    <button type="button" class="btn-mq-gold" onclick="openModal('createUserModal')">
+        <i class="bi bi-person-plus-fill"></i> Novo Usuário
+    </button>
+</div>
+
+<!-- Abas de Navegação Admin -->
+<nav class="admin-nav-tabs">
+    <a href="{{ url_for('admin_dashboard') }}" class="admin-tab-link">
+        <i class="bi bi-speedometer2"></i> Visão Geral
+    </a>
+    <a href="{{ url_for('admin_users') }}" class="admin-tab-link active">
+        <i class="bi bi-people-fill"></i> Usuários & Permissões
+    </a>
+    <a href="{{ url_for('admin_departments') }}" class="admin-tab-link">
+        <i class="bi bi-diagram-3-fill"></i> Departamentos
+    </a>
+    <a href="{{ url_for('admin_reports') }}" class="admin-tab-link">
+        <i class="bi bi-bar-chart-fill"></i> Relatórios Power BI
+    </a>
+</nav>
+
+<!-- Tabela de Usuários -->
+<div class="admin-card">
+    <div class="mq-table-responsive">
+        <table class="mq-table">
+            <thead>
+                <tr>
+                    <th>Colaborador</th>
+                    <th>Usuário</th>
+                    <th>Perfil</th>
+                    <th>Departamentos com Acesso</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div class="mq-avatar" style="width: 28px; height: 28px; font-size: 0.75rem;">
+                                {{ u.name[:1] | upper }}
+                            </div>
+                            <div>
+                                <span style="font-weight: 700; color: var(--mq-white); display: block;">{{ u.name }}</span>
+                                <span style="font-size: 0.75rem; color: var(--mq-gray-muted);">{{ u.email or 'Sem e-mail' }}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="font-family: monospace; color: var(--mq-gold-light);">{{ u.username }}</td>
+                    <td>
+                        {% if u.role == 'admin' %}
+                            <span class="mq-badge mq-badge-admin"><i class="bi bi-shield-lock-fill"></i> Admin</span>
+                        {% else %}
+                            <span class="mq-badge" style="background: rgba(255, 255, 255, 0.08); color: var(--mq-creme-2);"><i class="bi bi-person"></i> Padrão</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if u.role == 'admin' %}
+                            <span class="mq-badge mq-badge-gold">Todos os Departamentos</span>
+                        {% else %}
+                            <span style="font-size: 0.82rem; color: var(--mq-creme-2);">
+                                {{ u.all_departments or u.department_name or 'Nenhum atribuído' }}
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if u.active %}
+                            <span style="color: var(--mq-success); font-weight: 600; font-size: 0.78rem;"><i class="bi bi-check-circle-fill"></i> Ativo</span>
+                        {% else %}
+                            <span style="color: var(--mq-danger); font-weight: 600; font-size: 0.78rem;"><i class="bi bi-x-circle-fill"></i> Inativo</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="table-action-btns" style="justify-content: flex-end;">
+                            <button type="button" class="btn-icon-action" title="Editar Usuário"
+                                    onclick='editUser({{ u | tojson }}, {{ user_depts_map.get(u.id, []) | tojson }})'>
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+
+                            {% if u.id != current_user.id %}
+                            <form method="POST" action="{{ url_for('admin_users') }}" onsubmit="return confirm('Deseja realmente remover este usuário permanentemente?');" style="display: inline;">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="user_id" value="{{ u.id }}">
+                                <button type="submit" class="btn-icon-action delete" title="Excluir Usuário">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal: Criar Usuário -->
+<div class="mq-modal-backdrop" id="createUserModal">
+    <div class="mq-modal">
+        <div class="mq-modal-header">
+            <h3 class="mq-modal-title"><i class="bi bi-person-plus-fill" style="color: var(--mq-gold);"></i> Cadastrar Novo Usuário</h3>
+            <button type="button" class="mq-modal-close" onclick="closeModal('createUserModal')">&times;</button>
+        </div>
+        <form method="POST" action="{{ url_for('admin_users') }}">
+            <input type="hidden" name="action" value="create">
+            <div class="mq-modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nome Completo *</label>
+                    <input type="text" name="name" class="form-control" required placeholder="Ex: Roberto Carlos">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Usuário (Login) *</label>
+                        <input type="text" name="username" class="form-control" required placeholder="ex: roberto.carlos">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Senha Inicial *</label>
+                        <input type="password" name="password" class="form-control" required placeholder="Mínimo 3 caracteres">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">E-mail Corporativo</label>
+                        <input type="email" name="email" class="form-control" placeholder="ex: roberto@mqhair.com.br">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nível de Acesso *</label>
+                        <select name="role" class="form-control">
+                            <option value="user">Usuário Padrão (Por Departamento)</option>
+                            <option value="admin">Administrador Geral (Acesso Total)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Departamento Principal</label>
+                    <select name="department_id" class="form-control">
+                        <option value="">Selecione o setor principal...</option>
+                        {% for d in departments %}
+                        <option value="{{ d.id }}">{{ d.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Departamentos Adicionais com Acesso Permitido</label>
+                    <div class="dept-checkbox-grid">
+                        {% for d in departments %}
+                        <label class="dept-checkbox-item">
+                            <input type="checkbox" name="extra_departments" value="{{ d.id }}">
+                            <span>{{ d.name }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    <small style="color: var(--mq-gray-muted); font-size: 0.72rem; margin-top: 0.3rem;">O usuário poderá visualizar todos os relatórios vinculados a estes setores.</small>
+                </div>
+            </div>
+            <div class="mq-modal-footer">
+                <button type="button" class="btn-mq-outline" onclick="closeModal('createUserModal')">Cancelar</button>
+                <button type="submit" class="btn-mq-gold"><i class="bi bi-check2"></i> Salvar Colaborador</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Editar Usuário -->
+<div class="mq-modal-backdrop" id="editUserModal">
+    <div class="mq-modal">
+        <div class="mq-modal-header">
+            <h3 class="mq-modal-title"><i class="bi bi-pencil-square" style="color: var(--mq-gold);"></i> Editar Colaborador</h3>
+            <button type="button" class="mq-modal-close" onclick="closeModal('editUserModal')">&times;</button>
+        </div>
+        <form method="POST" action="{{ url_for('admin_users') }}">
+            <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="user_id" id="edit_user_id">
+            <div class="mq-modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nome Completo</label>
+                    <input type="text" name="name" id="edit_name" class="form-control" required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Usuário (Somente Leitura)</label>
+                        <input type="text" id="edit_username" class="form-control" readonly style="opacity: 0.7;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Redefinir Senha (Opcional)</label>
+                        <input type="password" name="new_password" id="edit_new_password" class="form-control" placeholder="Deixe em branco p/ manter">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">E-mail Corporativo</label>
+                        <input type="email" name="email" id="edit_email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nível de Acesso</label>
+                        <select name="role" id="edit_role" class="form-control">
+                            <option value="user">Usuário Padrão</option>
+                            <option value="admin">Administrador Geral</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Departamento Principal</label>
+                        <select name="department_id" id="edit_department_id" class="form-control">
+                            <option value="">Nenhum...</option>
+                            {% for d in departments %}
+                            <option value="{{ d.id }}">{{ d.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status da Conta</label>
+                        <select name="active" id="edit_active" class="form-control">
+                            <option value="1">Ativo (Pode acessar)</option>
+                            <option value="0">Inativo (Bloqueado)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Departamentos Permitidos</label>
+                    <div class="dept-checkbox-grid">
+                        {% for d in departments %}
+                        <label class="dept-checkbox-item">
+                            <input type="checkbox" name="extra_departments" value="{{ d.id }}" class="dept-extra-checkbox">
+                            <span>{{ d.name }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="mq-modal-footer">
+                <button type="button" class="btn-mq-outline" onclick="closeModal('editUserModal')">Cancelar</button>
+                <button type="submit" class="btn-mq-gold"><i class="bi bi-check2"></i> Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

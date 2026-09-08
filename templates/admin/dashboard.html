@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Painel Administrativo — Intranet MQ{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <div class="admin-title-group">
+        <h1>Painel Geral de Administração</h1>
+        <p>Visão consolidada de acessos, relatórios e governança do portal corporativo.</p>
+    </div>
+</div>
+
+<!-- Abas de Navegação Admin -->
+<nav class="admin-nav-tabs">
+    <a href="{{ url_for('admin_dashboard') }}" class="admin-tab-link active">
+        <i class="bi bi-speedometer2"></i> Visão Geral
+    </a>
+    <a href="{{ url_for('admin_users') }}" class="admin-tab-link">
+        <i class="bi bi-people-fill"></i> Usuários & Permissões
+    </a>
+    <a href="{{ url_for('admin_departments') }}" class="admin-tab-link">
+        <i class="bi bi-diagram-3-fill"></i> Departamentos
+    </a>
+    <a href="{{ url_for('admin_reports') }}" class="admin-tab-link">
+        <i class="bi bi-bar-chart-fill"></i> Relatórios Power BI
+    </a>
+</nav>
+
+<!-- Cards de Métricas -->
+<div class="admin-metrics-grid">
+    <div class="metric-card">
+        <div class="metric-info">
+            <h4>Usuários Ativos</h4>
+            <div class="metric-num">{{ stats.total_users }}</div>
+        </div>
+        <div class="metric-icon">
+            <i class="bi bi-people"></i>
+        </div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-info">
+            <h4>Departamentos</h4>
+            <div class="metric-num">{{ stats.total_departments }}</div>
+        </div>
+        <div class="metric-icon">
+            <i class="bi bi-diagram-3"></i>
+        </div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-info">
+            <h4>Relatórios Power BI</h4>
+            <div class="metric-num">{{ stats.total_reports }}</div>
+        </div>
+        <div class="metric-icon">
+            <i class="bi bi-bar-chart-steps"></i>
+        </div>
+    </div>
+
+    <div class="metric-card">
+        <div class="metric-info">
+            <h4>Visualizações Totais</h4>
+            <div class="metric-num">{{ stats.total_views }}</div>
+        </div>
+        <div class="metric-icon">
+            <i class="bi bi-eye"></i>
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem;">
+    <!-- Relatórios Mais Acessados -->
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h3 class="admin-card-title">
+                <i class="bi bi-trophy-fill" style="color: var(--mq-gold);"></i> Relatórios Mais Acessados
+            </h3>
+        </div>
+
+        <div class="mq-table-responsive">
+            <table class="mq-table">
+                <thead>
+                    <tr>
+                        <th>Relatório</th>
+                        <th>Departamento</th>
+                        <th style="text-align: right;">Visualizações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in stats.most_viewed %}
+                    <tr>
+                        <td style="font-weight: 600; color: var(--mq-white);">{{ item.title }}</td>
+                        <td>
+                            <span class="mq-badge mq-badge-gold">{{ item.department_name }}</span>
+                        </td>
+                        <td style="text-align: right; font-weight: 700; color: var(--mq-gold);">
+                            {{ item.views }}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: var(--mq-gray-muted);">Nenhum acesso registrado ainda.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Últimos Acessos -->
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h3 class="admin-card-title">
+                <i class="bi bi-clock-history" style="color: var(--mq-gold);"></i> Auditoria de Últimos Acessos
+            </h3>
+        </div>
+
+        <div class="mq-table-responsive">
+            <table class="mq-table">
+                <thead>
+                    <tr>
+                        <th>Usuário</th>
+                        <th>Ação / Relatório</th>
+                        <th>Data & Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in stats.recent_logs %}
+                    <tr>
+                        <td style="font-weight: 600; color: var(--mq-white);">{{ log.user_name or log.username or 'Anônimo' }}</td>
+                        <td>
+                            {% if log.action == 'view_report' %}
+                                <span style="color: var(--mq-gold-light);">Visualizou: {{ log.report_title or 'Relatório' }}</span>
+                            {% elif log.action == 'login' %}
+                                <span style="color: var(--mq-success);">Login no portal</span>
+                            {% elif log.action == 'logout' %}
+                                <span style="color: var(--mq-gray-muted);">Logout</span>
+                            {% else %}
+                                <span>{{ log.action }}</span>
+                            {% endif %}
+                        </td>
+                        <td style="color: var(--mq-gray-muted); font-size: 0.78rem;">{{ log.created_at }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: var(--mq-gray-muted);">Nenhum log registrado.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

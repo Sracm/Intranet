@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Gestão de Departamentos — Intranet MQ{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <div class="admin-title-group">
+        <h1>Gestão de Departamentos & Áreas</h1>
+        <p>Organize os setores da empresa para controlar a visibilidade dos relatórios analíticos.</p>
+    </div>
+
+    <button type="button" class="btn-mq-gold" onclick="openModal('createDeptModal')">
+        <i class="bi bi-folder-plus"></i> Novo Departamento
+    </button>
+</div>
+
+<!-- Abas de Navegação Admin -->
+<nav class="admin-nav-tabs">
+    <a href="{{ url_for('admin_dashboard') }}" class="admin-tab-link">
+        <i class="bi bi-speedometer2"></i> Visão Geral
+    </a>
+    <a href="{{ url_for('admin_users') }}" class="admin-tab-link">
+        <i class="bi bi-people-fill"></i> Usuários & Permissões
+    </a>
+    <a href="{{ url_for('admin_departments') }}" class="admin-tab-link active">
+        <i class="bi bi-diagram-3-fill"></i> Departamentos
+    </a>
+    <a href="{{ url_for('admin_reports') }}" class="admin-tab-link">
+        <i class="bi bi-bar-chart-fill"></i> Relatórios Power BI
+    </a>
+</nav>
+
+<!-- Tabela de Departamentos -->
+<div class="admin-card">
+    <div class="mq-table-responsive">
+        <table class="mq-table">
+            <thead>
+                <tr>
+                    <th>Departamento</th>
+                    <th>Código (Slug)</th>
+                    <th>Descrição</th>
+                    <th style="text-align: center;">Relatórios</th>
+                    <th style="text-align: center;">Usuários</th>
+                    <th style="text-align: right;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in departments %}
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 32px; height: 32px; border-radius: 8px; background: {{ d.color }}22; border: 1px solid {{ d.color }}55; display: flex; align-items: center; justify-content: center; color: {{ d.color }};">
+                                <i class="bi {{ d.icon }}"></i>
+                            </div>
+                            <span style="font-weight: 700; color: var(--mq-white);">{{ d.name }}</span>
+                        </div>
+                    </td>
+                    <td style="font-family: monospace; color: var(--mq-gold-light);">{{ d.code }}</td>
+                    <td style="color: var(--mq-gray-muted); font-size: 0.82rem; max-width: 350px;">{{ d.description or 'Sem descrição' }}</td>
+                    <td style="text-align: center;">
+                        <span class="mq-badge mq-badge-gold">{{ d.report_count }}</span>
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="mq-badge" style="background: rgba(255, 255, 255, 0.08); color: var(--mq-white);">{{ d.user_count }}</span>
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="table-action-btns" style="justify-content: flex-end;">
+                            <button type="button" class="btn-icon-action" title="Editar Departamento"
+                                    onclick='editDepartment({{ d | tojson }})'>
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+
+                            <form method="POST" action="{{ url_for('admin_departments') }}" onsubmit="return confirm('Deseja excluir este departamento? Todos os relatórios e acessos vinculados podem ser afetados.');" style="display: inline;">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="dept_id" value="{{ d.id }}">
+                                <button type="submit" class="btn-icon-action delete" title="Excluir Departamento">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal: Criar Departamento -->
+<div class="mq-modal-backdrop" id="createDeptModal">
+    <div class="mq-modal">
+        <div class="mq-modal-header">
+            <h3 class="mq-modal-title"><i class="bi bi-folder-plus" style="color: var(--mq-gold);"></i> Cadastrar Novo Departamento</h3>
+            <button type="button" class="mq-modal-close" onclick="closeModal('createDeptModal')">&times;</button>
+        </div>
+        <form method="POST" action="{{ url_for('admin_departments') }}">
+            <input type="hidden" name="action" value="create">
+            <div class="mq-modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nome do Departamento *</label>
+                    <input type="text" name="name" class="form-control" required placeholder="Ex: Logística ou Controladoria">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Código de Identificação (Slug) *</label>
+                        <input type="text" name="code" class="form-control" required placeholder="ex: logistica ou controladoria">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ícone (Bootstrap Icon)</label>
+                        <input type="text" name="icon" class="form-control" value="bi-folder" placeholder="ex: bi-truck, bi-graph-up">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Cor de Destaque</label>
+                        <input type="color" name="color" class="form-control" value="#CB9727" style="height: 44px; padding: 0.2rem;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descrição da Área</label>
+                    <textarea name="description" class="form-control" rows="3" placeholder="Finalidade e escopo deste departamento..."></textarea>
+                </div>
+            </div>
+            <div class="mq-modal-footer">
+                <button type="button" class="btn-mq-outline" onclick="closeModal('createDeptModal')">Cancelar</button>
+                <button type="submit" class="btn-mq-gold"><i class="bi bi-check2"></i> Salvar Departamento</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Editar Departamento -->
+<div class="mq-modal-backdrop" id="editDeptModal">
+    <div class="mq-modal">
+        <div class="mq-modal-header">
+            <h3 class="mq-modal-title"><i class="bi bi-pencil-square" style="color: var(--mq-gold);"></i> Editar Departamento</h3>
+            <button type="button" class="mq-modal-close" onclick="closeModal('editDeptModal')">&times;</button>
+        </div>
+        <form method="POST" action="{{ url_for('admin_departments') }}">
+            <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="dept_id" id="edit_dept_id">
+            <div class="mq-modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nome do Departamento</label>
+                    <input type="text" name="name" id="edit_dept_name" class="form-control" required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Código (Slug)</label>
+                        <input type="text" name="code" id="edit_dept_code" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ícone</label>
+                        <input type="text" name="icon" id="edit_dept_icon" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Cor de Destaque</label>
+                    <input type="color" name="color" id="edit_dept_color" class="form-control" style="height: 44px; padding: 0.2rem;">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descrição</label>
+                    <textarea name="description" id="edit_dept_description" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="mq-modal-footer">
+                <button type="button" class="btn-mq-outline" onclick="closeModal('editDeptModal')">Cancelar</button>
+                <button type="submit" class="btn-mq-gold"><i class="bi bi-check2"></i> Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

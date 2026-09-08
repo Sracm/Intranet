@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}Gestão de Relatórios Power BI — Intranet MQ{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <div class="admin-title-group">
+        <h1>Gestão de Relatórios Power BI</h1>
+        <p>Cadastre links de painéis e dashboards do Power BI, definindo setores responsáveis e permissões.</p>
+    </div>
+
+    <button type="button" class="btn-mq-gold" onclick="openModal('createReportModal')">
+        <i class="bi bi-file-earmark-plus"></i> Novo Relatório Power BI
+    </button>
+</div>
+
+<!-- Abas de Navegação Admin -->
+<nav class="admin-nav-tabs">
+    <a href="{{ url_for('admin_dashboard') }}" class="admin-tab-link">
+        <i class="bi bi-speedometer2"></i> Visão Geral
+    </a>
+    <a href="{{ url_for('admin_users') }}" class="admin-tab-link">
+        <i class="bi bi-people-fill"></i> Usuários & Permissões
+    </a>
+    <a href="{{ url_for('admin_departments') }}" class="admin-tab-link">
+        <i class="bi bi-diagram-3-fill"></i> Departamentos
+    </a>
+    <a href="{{ url_for('admin_reports') }}" class="admin-tab-link active">
+        <i class="bi bi-bar-chart-fill"></i> Relatórios Power BI
+    </a>
+</nav>
+
+<!-- Tabela de Relatórios -->
+<div class="admin-card">
+    <div class="mq-table-responsive">
+        <table class="mq-table">
+            <thead>
+                <tr>
+                    <th>Relatório</th>
+                    <th>Departamento</th>
+                    <th>Visibilidade</th>
+                    <th>Ordem</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in reports %}
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div class="report-icon-box" style="width: 36px; height: 36px; font-size: 1.1rem; border-radius: 6px;">
+                                <i class="bi {{ r.icon }}"></i>
+                            </div>
+                            <div>
+                                <a href="{{ url_for('view_report', report_id=r.id) }}" style="font-weight: 700; color: var(--mq-white); text-decoration: none;" target="_blank">
+                                    {{ r.title }} <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem; color: var(--mq-gold);"></i>
+                                </a>
+                                <p style="font-size: 0.75rem; color: var(--mq-gray-muted); margin-top: 0.2rem; max-width: 420px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    {{ r.description or 'Sem descrição' }}
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="mq-badge" style="background: rgba(203, 151, 39, 0.12); color: {{ r.department_color }}; border: 1px solid {{ r.department_color }}44;">
+                            {{ r.department_name }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if r.is_public %}
+                            <span class="mq-badge mq-badge-public"><i class="bi bi-globe"></i> Institucional (Todos)</span>
+                        {% else %}
+                            <span class="mq-badge" style="background: rgba(255, 255, 255, 0.08); color: var(--mq-creme-2);"><i class="bi bi-lock"></i> Restrito ao Depto</span>
+                        {% endif %}
+                    </td>
+                    <td style="font-weight: 600; color: var(--mq-gray-light);">
+                        #{{ r.display_order }}
+                    </td>
+                    <td>
+                        {% if r.active %}
+                            <span style="color: var(--mq-success); font-weight: 600; font-size: 0.78rem;"><i class="bi bi-check-circle-fill"></i> Ativo</span>
+                        {% else %}
+                            <span style="color: var(--mq-danger); font-weight: 600; font-size: 0.78rem;"><i class="bi bi-x-circle-fill"></i> Oculto</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="table-action-btns" style="justify-content: flex-end;">
+                            <button type="button" class="btn-icon-action" title="Editar Relatório"
+                                    onclick='editReport({{ r | tojson }})'>
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+
+                            <form method="POST" action="{{ url_for('admin_reports') }}" onsubmit="return confirm('Deseja realmente remover este relatório?');" style="display: inline;">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="report_id" value="{{ r.id }}">
+                                <button type="submit" class="btn-icon-action delete" title="Excluir Relatório">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal: Criar Relatório -->
+<div class="mq-modal-backdrop" id="createReportModal">
+    <div class="mq-modal">
+        <div class="mq-modal-header">
+            <h3 class="mq-modal-title"><i class="bi bi-file-earmark-plus" style="color: var(--mq-gold);"></i> Cadastrar Novo Relatório Power BI</h3>
+            <button type="button" class="mq-modal-close" onclick="closeModal('createReportModal')">&times;</button>
+        </div>
+        <form method="POST" action="{{ url_for('admin_reports') }}">
+            <input type="hidden" name="action" value="create">
+            <div class="mq-modal-body">
+                <div class="form-group">
+                    <label class="form-label">Título do Relatório *</label>
+                    <input type="text" name="title" class="form-control" required placeholder="Ex: Indicadores de Faturamento por Canal">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">URL do Power BI (Embed / Publicar na Web / Service) *</label>
+                    <input type="url" name="embed_url" class="form-control" required placeholder="https://app.powerbi.com/view?r=...">
+                    <small style="color: var(--mq-gray-muted); font-size: 0.72rem; margin-top: 0.3rem;">Cole aqui o link de inserção iframe ou link público do relatório do Power BI.</small>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Departamento Responsável *</label>
+                        <select name="department_id" class="form-control" required>
+                            {% for d in departments %}
+                            <option value="{{ d.id }}">{{ d.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ícone do Cartão</label>
+                        <input type="text" name="icon" class="form-control" value="bi-bar-chart-line" placeholder="ex: bi-truck, bi-wallet2">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Regra de Visibilidade *</label>
+                        <select name="is_public" class="form-control">
+                            <option value="0">Restrito (Apenas colaboradores do departamento)</option>
+                            <option value="1">Institucional (Todos os usuários logados)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ordem de Exibição</label>
+                        <input type="number" name="display_order" class="form-control" value="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descrição Detalhada</label>
+                    <textarea name="description" class="form-control" rows="3" placeholder="Explique o propósito deste painel e principais indicadores..."></textarea>
+                </div>
+            </div>
+            <div class="mq-modal-footer">
+                <button type="button" class="btn-mq-outline" onclick="closeModal('createReportModal')">Cancelar</button>
+                <button type="submit" class="btn-mq-gold"><i class="bi bi-check2"></i> Salvar Relatório</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Editar Relatório -->
+<div class="mq-modal-backdrop" id="editReportModal">
+    <div class="mq-modal">
+        <div class="mq-modal-header">
+            <h3 class="mq-modal-title"><i class="bi bi-pencil-square" style="color: var(--mq-gold);"></i> Editar Relatório Power BI</h3>
+            <button type="button" class="mq-modal-close" onclick="closeModal('editReportModal')">&times;</button>
+        </div>
+        <form method="POST" action="{{ url_for('admin_reports') }}">
+            <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="report_id" id="edit_report_id">
+            <div class="mq-modal-body">
+                <div class="form-group">
+                    <label class="form-label">Título do Relatório</label>
+                    <input type="text" name="title" id="edit_report_title" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">URL do Power BI</label>
+                    <input type="url" name="embed_url" id="edit_report_embed_url" class="form-control" required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Departamento</label>
+                        <select name="department_id" id="edit_report_department_id" class="form-control" required>
+                            {% for d in departments %}
+                            <option value="{{ d.id }}">{{ d.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ícone</label>
+                        <input type="text" name="icon" id="edit_report_icon" class="form-control">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Visibilidade</label>
+                        <select name="is_public" id="edit_report_is_public" class="form-control">
+                            <option value="0">Restrito ao Depto</option>
+                            <option value="1">Institucional (Todos)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ordem</label>
+                        <input type="number" name="display_order" id="edit_report_display_order" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <select name="active" id="edit_report_active" class="form-control">
+                            <option value="1">Ativo</option>
+                            <option value="0">Oculto</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descrição</label>
+                    <textarea name="description" id="edit_report_description" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="mq-modal-footer">
+                <button type="button" class="btn-mq-outline" onclick="closeModal('editReportModal')">Cancelar</button>
+                <button type="submit" class="btn-mq-gold"><i class="bi bi-check2"></i> Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

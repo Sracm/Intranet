@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Portal de Dashboards Corporativos | MQ Professional</title>
+    
+    <!-- MQ Design System Core -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mq_theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+<body class="auth-body">
+    <div class="auth-card">
+        <div class="auth-header">
+            <span class="auth-logo">MQ</span>
+            <h1 class="auth-title">INTRANET MQ</h1>
+            <p class="auth-subtitle">Portal de Dashboards Corporativos</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="mq-alert mq-alert-{{ category }}" style="padding: 0.75rem 1rem; font-size: 0.82rem; margin-bottom: 1.2rem;">
+                    <span>{{ message }}</span>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+            <div class="form-group">
+                <label for="username" class="form-label">Usuário de Acesso</label>
+                <div class="input-with-icon">
+                    <input type="text" id="username" name="username" class="form-control" placeholder="ex: seu.usuario" required autofocus>
+                    <i class="bi bi-person-fill"></i>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0.8rem;">
+                <label for="password" class="form-label">Senha</label>
+                <div class="input-with-icon">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+                    <i class="bi bi-lock-fill"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-mq-gold auth-submit-btn">
+                <i class="bi bi-box-arrow-in-right"></i> Entrar no Portal
+            </button>
+        </form>
+
+        <div class="demo-accounts">
+            <div class="demo-accounts-title">
+                <i class="bi bi-key-fill" style="color: var(--mq-gold);"></i>
+                <span>Acessos Rápidos Configurados:</span>
+            </div>
+            <ul class="demo-list">
+                <li class="demo-item" onclick="fillCredentials('admin', 'admin')" style="cursor: pointer;" title="Clique para preencher">
+                    <span class="demo-badge">Admin Geral (Todos os Relatórios):</span>
+                    <span class="demo-pwd">admin / admin</span>
+                </li>
+                <li class="demo-item" onclick="fillCredentials('logistica', '123')" style="cursor: pointer;" title="Clique para preencher">
+                    <span class="demo-badge">Setor Logística:</span>
+                    <span class="demo-pwd">logistica / 123</span>
+                </li>
+                <li class="demo-item" onclick="fillCredentials('comercial', '123')" style="cursor: pointer;" title="Clique para preencher">
+                    <span class="demo-badge">Setor Comercial:</span>
+                    <span class="demo-pwd">comercial / 123</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function fillCredentials(user, pwd) {
+            document.getElementById('username').value = user;
+            document.getElementById('password').value = pwd;
+        }
+    </script>
+</body>
+</html>

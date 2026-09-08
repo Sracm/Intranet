@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Portal de Dashboards Corporativos{% endblock %} — MQ Professional</title>
+    
+    <!-- MQ Design System Core & Bootstrap Icons -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mq_theme.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% if current_user %}
+    <!-- Navbar Oficial MQ Professional -->
+    <header class="mq-navbar">
+        <div class="mq-brand">
+            <a href="{{ url_for('portal') }}" style="display: flex; align-items: center; gap: 0.9rem; text-decoration: none;">
+                <span class="mq-logo-badge">MQ</span>
+                <div class="mq-brand-text">
+                    <span class="mq-brand-title">MQ PROFESSIONAL</span>
+                    <span class="mq-brand-sub">Portal de Dashboards Corporativos</span>
+                </div>
+            </a>
+        </div>
+
+        <nav class="mq-nav-menu">
+            <a href="{{ url_for('portal') }}" class="mq-nav-link {% if request.endpoint == 'portal' %}active{% endif %}">
+                <i class="bi bi-grid-fill"></i> Dashboards
+            </a>
+
+            {% if current_user.is_admin %}
+            <a href="{{ url_for('admin_dashboard') }}" class="mq-nav-link admin-tag {% if 'admin' in request.endpoint %}active{% endif %}">
+                <i class="bi bi-shield-lock-fill"></i> Administração
+            </a>
+            {% endif %}
+
+            <!-- Perfil / Dropdown -->
+            <a href="{{ url_for('profile') }}" class="mq-user-pill" title="Meu Perfil e Senha">
+                <div class="mq-avatar">
+                    {{ current_user.name[:1] | upper }}
+                </div>
+                <div class="mq-user-info">
+                    <span class="mq-user-name">{{ current_user.name }}</span>
+                    <span class="mq-user-role">
+                        {% if current_user.is_admin %}ADMINISTRADOR{% else %}COLABORADOR{% endif %}
+                    </span>
+                </div>
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="btn-mq-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" title="Encerrar Sessão">
+                <i class="bi bi-box-arrow-right"></i> Sair
+            </a>
+        </nav>
+    </header>
+    {% endif %}
+
+    <!-- Alertas Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="mq-flash-container">
+            {% for category, message in messages %}
+            <div class="mq-alert mq-alert-{{ category }}">
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    {% if category == 'success' %}
+                        <i class="bi bi-check-circle-fill"></i>
+                    {% elif category == 'danger' %}
+                        <i class="bi bi-exclamation-octagon-fill"></i>
+                    {% elif category == 'warning' %}
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    {% else %}
+                        <i class="bi bi-info-circle-fill"></i>
+                    {% endif %}
+                    <span>{{ message }}</span>
+                </div>
+                <button type="button" onclick="this.parentElement.remove()" style="background: none; border: none; color: inherit; cursor: pointer; font-size: 1.1rem;">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Conteúdo Principal -->
+    <main class="mq-main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer Oficial -->
+    <footer class="mq-footer">
+        <div class="mq-footer-copy">
+            <span class="mq-footer-gold">MQ PROFESSIONAL</span> &copy; 2026 • Portal de Dashboards Corporativos
+        </div>
+        <div>
+            <span>Ambiente Corporativo Seguro • Acesso Controlado</span>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

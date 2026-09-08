@@ -1,0 +1,330 @@
+/* =========================================================
+   MQ INTRANET — PORTAL & REPORTS CATALOG
+   Arquivo: static/css/portal.css
+   ========================================================= */
+
+/* Hero Banner */
+.portal-hero {
+  background: radial-gradient(circle at top right, rgba(203, 151, 39, 0.15) 0%, transparent 60%),
+              linear-gradient(180deg, #181818 0%, #121212 100%);
+  border: 1px solid var(--mq-border);
+  border-radius: 16px;
+  padding: 2.2rem 2.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.portal-hero::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: var(--mq-gold-glow);
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.portal-hero-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--mq-white);
+  letter-spacing: -0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.portal-hero-title span {
+  background: var(--mq-grad-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.portal-hero-desc {
+  color: var(--mq-gray-light);
+  font-size: 0.95rem;
+  max-width: 650px;
+  line-height: 1.6;
+}
+
+.portal-hero-stats {
+  display: flex;
+  gap: 2rem;
+}
+
+.hero-stat-card {
+  text-align: right;
+  border-left: 1px solid var(--mq-border);
+  padding-left: 1.5rem;
+}
+
+.hero-stat-val {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--mq-gold);
+  line-height: 1;
+}
+
+.hero-stat-lbl {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--mq-gray-muted);
+  font-weight: 600;
+  margin-top: 0.35rem;
+}
+
+/* Barra de Filtros e Busca */
+.portal-filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 2.2rem;
+}
+
+.search-box-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--mq-gold);
+  font-size: 1.2rem;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3.2rem;
+  background: #181818;
+  border: 1px solid var(--mq-border);
+  border-radius: 12px;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  color: var(--mq-white);
+  transition: var(--transition-smooth);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--mq-gold);
+  background: #1d1d1d;
+  box-shadow: 0 0 0 3px var(--mq-gold-glow);
+}
+
+/* Department Navigation Pills */
+.dept-pills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.dept-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.15rem;
+  border-radius: 30px;
+  background: #1a1a1a;
+  border: 1px solid var(--mq-border);
+  color: var(--mq-gray-light);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+}
+
+.dept-pill i {
+  font-size: 1rem;
+}
+
+.dept-pill:hover {
+  border-color: var(--mq-gold);
+  color: var(--mq-gold-light);
+  background: #222222;
+  transform: translateY(-1px);
+}
+
+.dept-pill.active {
+  background: var(--mq-grad-gold);
+  color: var(--mq-black);
+  border-color: var(--mq-gold);
+  font-weight: 700;
+  box-shadow: var(--shadow-gold);
+}
+
+.dept-pill.active i {
+  color: var(--mq-black);
+}
+
+/* Grade de Relatórios */
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.6rem;
+}
+
+/* Card do Relatório */
+.report-card {
+  background: var(--mq-grad-card);
+  border: 1px solid var(--mq-border);
+  border-radius: 14px;
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: var(--transition-smooth);
+  position: relative;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.report-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: transparent;
+  transition: var(--transition-smooth);
+}
+
+.report-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(203, 151, 39, 0.45);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55), 0 0 20px rgba(203, 151, 39, 0.12);
+}
+
+.report-card:hover::after {
+  background: var(--mq-grad-gold);
+}
+
+.report-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+}
+
+.report-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: rgba(203, 151, 39, 0.12);
+  border: 1px solid rgba(203, 151, 39, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mq-gold);
+  font-size: 1.4rem;
+  transition: var(--transition-smooth);
+}
+
+.report-card:hover .report-icon-box {
+  background: var(--mq-gold);
+  color: var(--mq-black);
+  transform: scale(1.05);
+}
+
+.report-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--mq-white);
+  line-height: 1.35;
+  margin-bottom: 0.6rem;
+}
+
+.report-desc {
+  font-size: 0.85rem;
+  color: var(--mq-gray-light);
+  line-height: 1.55;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.report-card-footer {
+  border-top: 1px solid var(--mq-border);
+  padding-top: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.report-external-link {
+  color: var(--mq-gray-muted);
+  font-size: 1.1rem;
+  padding: 0.4rem;
+  border-radius: 6px;
+  transition: var(--transition-smooth);
+}
+
+.report-external-link:hover {
+  color: var(--mq-gold);
+  background: rgba(203, 151, 39, 0.1);
+}
+
+/* Empty State */
+.reports-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #161616;
+  border: 1px dashed var(--mq-border);
+  border-radius: 16px;
+}
+
+.reports-empty i {
+  font-size: 3.5rem;
+  color: var(--mq-gray-muted);
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.reports-empty h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--mq-white);
+  margin-bottom: 0.5rem;
+}
+
+.reports-empty p {
+  color: var(--mq-gray-muted);
+  font-size: 0.9rem;
+}
+
+/* Responsividade Portal */
+@media (max-width: 900px) {
+  .portal-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.6rem;
+  }
+  .portal-hero-stats {
+    width: 100%;
+    justify-content: flex-start;
+    border-top: 1px solid var(--mq-border);
+    padding-top: 1rem;
+  }
+  .hero-stat-card {
+    text-align: left;
+    border-left: none;
+    padding-left: 0;
+  }
+}
