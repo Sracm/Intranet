@@ -63,6 +63,20 @@ def run_seed():
             'description': 'Cockpit executivo, KPIs estratégicos consolidados e margem líquida.',
             'icon': 'bi-briefcase',
             'color': '#FD7E14'
+        },
+        {
+            'name': 'Regional FSP',
+            'code': 'regional_fsp',
+            'description': 'Gestão financeira, DRE e indicadores operacionais da Regional FSP.',
+            'icon': 'bi-geo-alt-fill',
+            'color': '#CB9727'
+        },
+        {
+            'name': 'RH',
+            'code': 'rh',
+            'description': 'Gestão de Recursos Humanos e Indicadores de Pessoas.',
+            'icon': 'bi-people-fill',
+            'color': '#17A2B8'
         }
     ]
 
@@ -108,6 +122,30 @@ def run_seed():
         extra_dept_ids=[dept_ids['comercial']]
     )
     print(f" -> Usuário Comercial criado (comercial / 123) - ID {com_user_id}")
+
+    # 4. Gestor Regional FSP (Ricardo Pavão)
+    fsp_user_id = create_user(
+        username='ricardo.pavao',
+        name='Ricardo Pavão',
+        email='ricardo.pavao@mqhair.com.br',
+        password='123',
+        role='user',
+        department_id=dept_ids['regional_fsp'],
+        extra_dept_ids=[dept_ids['regional_fsp'], dept_ids['comercial']]
+    )
+    print(f" -> Usuário Ricardo Pavão criado (ricardo.pavao / 123) - ID {fsp_user_id}")
+
+    # 5. Gestora RH (Maria Macedo)
+    maria_user_id = create_user(
+        username='maria.macedo',
+        name='Maria Macedo',
+        email='maria.macedo@mqhair.com.br',
+        password='123',
+        role='user',
+        department_id=dept_ids['rh'],
+        extra_dept_ids=[dept_ids['rh']]
+    )
+    print(f" -> Usuária Maria Macedo criada (maria.macedo / 123) - ID {maria_user_id}")
 
     print("\nCriando Relatórios Power BI de demonstração...")
     # Power BI embed seguro ou link de publicação
@@ -189,6 +227,33 @@ def run_seed():
             'icon': 'bi-file-earmark-check',
             'is_public': 0,
             'order': 5
+        },
+        {
+            'title': 'DRE Regional FSP — Gestão de Resultados',
+            'description': 'Demonstrativo de Resultados da Regional FSP (Distribuição 1020000, Varejo RJ 1010200, Varejo ND 1010300 e Varejo SUL 1010400). Acompanhamento de faturamento líquido, margens e custos operacionais.',
+            'dept': 'regional_fsp',
+            'url': 'http://localhost:5100/regional.fsp',
+            'icon': 'bi-file-earmark-bar-graph-fill',
+            'is_public': 0,
+            'order': 1
+        },
+        {
+            'title': 'DRE RH — Recursos Humanos',
+            'description': 'Demonstrativo de Resultados do Exercício — Centro de Custo RH (9010000). Acompanhamento de despesas e custos operacionais de Recursos Humanos.',
+            'dept': 'rh',
+            'url': 'http://localhost:5100/rh',
+            'icon': 'bi-people-fill',
+            'is_public': 0,
+            'order': 1
+        },
+        {
+            'title': 'Dashboard Nubmetrics',
+            'description': 'Inteligência de mercado, análise de vendas e indicadores competitivos Nubmetrics da Regional FSP.',
+            'dept': 'regional_fsp',
+            'url': 'https://app.powerbi.com/view?r=eyJrIjoiNWYzZmE0NTgtZTRmZS00OWVmLWE2M2YtYWRiMzJhMGRkNzE5IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9',
+            'icon': 'bi-graph-up-arrow',
+            'is_public': 0,
+            'order': 2
         }
     ]
 

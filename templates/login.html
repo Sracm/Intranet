@@ -49,33 +49,6 @@
             </button>
         </form>
 
-        <div class="demo-accounts">
-            <div class="demo-accounts-title">
-                <i class="bi bi-key-fill" style="color: var(--mq-gold);"></i>
-                <span>Acessos Rápidos Configurados:</span>
-            </div>
-            <ul class="demo-list">
-                <li class="demo-item" onclick="fillCredentials('admin', 'admin')" style="cursor: pointer;" title="Clique para preencher">
-                    <span class="demo-badge">Admin Geral (Todos os Relatórios):</span>
-                    <span class="demo-pwd">admin / admin</span>
-                </li>
-                <li class="demo-item" onclick="fillCredentials('logistica', '123')" style="cursor: pointer;" title="Clique para preencher">
-                    <span class="demo-badge">Setor Logística:</span>
-                    <span class="demo-pwd">logistica / 123</span>
-                </li>
-                <li class="demo-item" onclick="fillCredentials('comercial', '123')" style="cursor: pointer;" title="Clique para preencher">
-                    <span class="demo-badge">Setor Comercial:</span>
-                    <span class="demo-pwd">comercial / 123</span>
-                </li>
-            </ul>
-        </div>
     </div>
-
-    <script>
-        function fillCredentials(user, pwd) {
-            document.getElementById('username').value = user;
-            document.getElementById('password').value = pwd;
-        }
-    </script>
 </body>
 </html>

@@ -45,6 +45,17 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def resolve_embed_url(url):
+    if not url:
+        return ''
+    try:
+        host = request.host.split(':')[0]
+        if host not in ('localhost', '127.0.0.1'):
+            return url.replace('localhost:', f'{host}:').replace('127.0.0.1:', f'{host}:')
+    except Exception:
+        pass
+    return url
+
 @app.context_processor
 def inject_globals():
     return {
@@ -54,7 +65,8 @@ def inject_globals():
             'name': session.get('name'),
             'role': session.get('role'),
             'is_admin': session.get('role') == 'admin'
-        } if 'user_id' in session else None
+        } if 'user_id' in session else None,
+        'resolve_url': resolve_embed_url
     }
 
 # ----------------- ROTAS DE AUTENTICAÇÃO ----------------- #
@@ -146,12 +158,22 @@ def portal():
     # Busca departamentos acessíveis pelo usuário
     accessible_departments = get_user_accessible_departments(user_id, is_admin)
 
-    # Busca relatórios acessíveis filtrados
-    reports = get_reports_for_user(user_id, is_admin, selected_dept)
+    # Identificar relatório em destaque (Cockpit Geral de Indicadores Estratégicos MQ)
+    all_user_reports = get_reports_for_user(user_id, is_admin, 'todos')
+    featured_report = None
+    for r in all_user_reports:
+        if r['id'] == 5 or 'Cockpit Geral' in r['title']:
+            featured_report = r
+            break
+
+    # Busca relatórios acessíveis filtrados para a grade (exclui o que já está no banner de destaque)
+    raw_reports = get_reports_for_user(user_id, is_admin, selected_dept)
+    reports = [r for r in raw_reports if not (featured_report and r['id'] == featured_report['id'])]
 
     return render_template(
         'index.html',
         reports=reports,
+        featured_report=featured_report,
         departments=accessible_departments,
         selected_dept=selected_dept,
         total_reports=len(reports)
@@ -175,8 +197,8 @@ def view_report(report_id):
     # Registra log de visualização
     log_access(user_id, report_id, 'view_report', request.remote_addr)
 
-    # Sanitiza URL de embed do Power BI se necessário
-    embed_url = report['embed_url'].strip()
+    # Sanitiza URL de embed (adaptando localhost para o IP da rede se acessado remotamente)
+    embed_url = resolve_embed_url(report['embed_url'].strip())
 
     return render_template('report_view.html', report=report, embed_url=embed_url)
 

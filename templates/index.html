@@ -30,6 +30,83 @@
     </div>
 </section>
 
+{% if featured_report %}
+<!-- Destaque Estratégico Corporativo: Cockpit Geral -->
+<section class="portal-spotlight-section">
+    <div class="spotlight-card">
+        <div class="spotlight-header">
+            <div class="spotlight-badges">
+                <span class="mq-badge mq-badge-gold">
+                    <i class="bi bi-star-fill"></i> DESTAQUE ESTRATÉGICO
+                </span>
+                <span class="mq-badge mq-badge-public">
+                    <i class="bi bi-globe"></i> INSTITUCIONAL
+                </span>
+                <span class="mq-badge" style="background: rgba(255,255,255,0.08); color: var(--mq-creme-1);">
+                    <i class="bi bi-shield-check"></i> DIRETORIA & GESTÃO
+                </span>
+            </div>
+            <span style="font-size: 0.78rem; color: var(--mq-gray-muted); font-family: monospace;">
+                ID #{{ featured_report.id }} • POWER BI MQ
+            </span>
+        </div>
+
+        <div class="spotlight-body">
+            <div class="spotlight-icon-box">
+                <i class="bi {{ featured_report.icon or 'bi-speedometer2' }}"></i>
+            </div>
+            <div class="spotlight-info-col">
+                <h2 class="spotlight-title">{{ featured_report.title }}</h2>
+                <p class="spotlight-desc">
+                    {{ featured_report.description or 'Visão macro corporativa com faturamento acumulado, pedidos totais e metas globais da empresa.' }}
+                </p>
+                
+                <div class="spotlight-tags">
+                    <div class="spotlight-tag-item">
+                        <i class="bi bi-graph-up-arrow"></i> Metas & Faturamento Global
+                    </div>
+                    <div class="spotlight-tag-item">
+                        <i class="bi bi-pie-chart-fill"></i> Performance Consolidada
+                    </div>
+                    <div class="spotlight-tag-item">
+                        <i class="bi bi-lightning-charge-fill"></i> Cockpit Executivo MQ
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spotlight-actions">
+            <a href="{{ url_for('view_report', report_id=featured_report.id) }}" class="btn-mq-gold spotlight-btn-primary">
+                <i class="bi bi-speedometer2"></i> Abrir Cockpit Geral
+            </a>
+            <a href="{{ featured_report.embed_url }}" target="_blank" rel="noopener noreferrer" class="btn-mq-outline spotlight-btn-secondary" title="Abrir em nova aba do navegador">
+                <i class="bi bi-box-arrow-up-right"></i> Abrir em Nova Guia
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Título e Controles dos Dashboards de Gestão -->
+<div class="portal-section-title-wrap">
+    <div>
+        <h2 class="portal-section-heading">
+            <i class="bi bi-grid-fill" style="color: var(--mq-gold);"></i> 
+            {% if selected_dept != 'todos' %}
+                Dashboards — {{ selected_dept | upper }}
+            {% else %}
+                Painéis & Dashboards da sua Gestão
+            {% endif %}
+        </h2>
+        <p class="portal-section-sub">
+            Todos os relatórios e demonstrativos aos quais seu perfil possui privilégio de consulta.
+        </p>
+    </div>
+    <div class="portal-section-counter">
+        <span class="badge-count">{{ total_reports }}</span> dashboards atribuídos
+    </div>
+</div>
+
 <!-- Barra de Filtros e Busca -->
 <section class="portal-filter-bar">
     <div class="search-box-wrapper">
@@ -54,7 +131,7 @@
 <!-- Grade de Relatórios -->
 <section class="reports-grid" id="reportsGrid">
     {% for report in reports %}
-    <article class="report-card" 
+    <article class="report-card {% if featured_report and report.id == featured_report.id %}report-card-featured{% endif %}" 
              data-title="{{ report.title | lower }}" 
              data-desc="{{ report.description | lower }}" 
              data-dept="{{ report.department_name | lower }}">
@@ -82,13 +159,19 @@
         </div>
 
         <div class="report-card-footer">
+            {% if 'reportembed' in report.embed_url.lower() and not report.embed_url.startswith('http://localhost') and not report.embed_url.startswith('http://10.') %}
+            <a href="{{ resolve_url(report.embed_url) }}" target="_blank" rel="noopener noreferrer" class="btn-mq-gold" style="padding: 0.55rem 1.1rem; font-size: 0.82rem; width: 100%; justify-content: center; gap: 0.6rem;">
+                <i class="bi bi-box-arrow-up-right"></i> Entrar no Dashboard
+            </a>
+            {% else %}
             <a href="{{ url_for('view_report', report_id=report.id) }}" class="btn-mq-gold" style="padding: 0.55rem 1.1rem; font-size: 0.82rem;">
                 <i class="bi bi-eye-fill"></i> Abrir Dashboard
             </a>
 
-            <a href="{{ report.embed_url }}" target="_blank" rel="noopener noreferrer" class="report-external-link" title="Abrir diretamente no Power BI em nova guia">
+            <a href="{{ resolve_url(report.embed_url) }}" target="_blank" rel="noopener noreferrer" class="report-external-link" title="Abrir diretamente em nova guia">
                 <i class="bi bi-box-arrow-up-right"></i>
             </a>
+            {% endif %}
         </div>
     </article>
     {% endfor %}

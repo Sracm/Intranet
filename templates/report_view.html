@@ -4,25 +4,39 @@
 
 {% block extra_css %}
 <style>
-    /* Visualizador Imersivo de Power BI */
+    /* Visualizador Imersivo de Relatórios e DRE - 100% Largura e Altura */
+    .mq-main-content {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .mq-footer {
+        display: none !important;
+    }
+
     .viewer-container {
         display: flex;
         flex-direction: column;
-        height: calc(100vh - 140px);
-        margin: -1rem -2rem;
+        height: calc(100vh - 62px);
+        margin: 0;
+        width: 100%;
         background: #0d0d0d;
+        overflow: hidden;
     }
 
     .viewer-toolbar {
         background: #161616;
         border-bottom: 1px solid var(--mq-border);
-        padding: 0.75rem 1.5rem;
+        padding: 0.5rem 1.5rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 1rem;
         z-index: 10;
+        min-height: 48px;
     }
 
     .viewer-left {
@@ -133,8 +147,8 @@
                 <i class="bi bi-fullscreen" id="fullscreenIcon"></i> Tela Cheia
             </button>
 
-            <a href="{{ embed_url }}" target="_blank" rel="noopener noreferrer" class="btn-mq-gold" style="padding: 0.45rem 0.9rem; font-size: 0.82rem;" title="Abrir link original do Power BI">
-                <i class="bi bi-box-arrow-up-right"></i> Nova Guia
+            <a href="{{ embed_url }}" target="_blank" rel="noopener noreferrer" class="btn-mq-gold" style="padding: 0.45rem 1rem; font-size: 0.84rem; font-weight: 700;" title="Abrir diretamente no Power BI">
+                <i class="bi bi-box-arrow-up-right"></i> Direcionar para o Power BI
             </a>
         </div>
     </div>
@@ -143,7 +157,7 @@
     <div class="iframe-wrapper">
         <div class="iframe-loading" id="iframeLoader">
             <div class="spinner-mq"></div>
-            <span style="font-size: 0.88rem; font-weight: 600; letter-spacing: 0.5px;">Carregando Relatório Power BI...</span>
+            <span style="font-size: 0.88rem; font-weight: 600; letter-spacing: 0.5px;">Carregando Relatório...</span>
         </div>
 
         <iframe id="pbiFrame" 
@@ -151,6 +165,7 @@
                 src="{{ embed_url }}" 
                 frameborder="0" 
                 allowFullScreen="true" 
+                allow="fullscreen; clipboard-read; clipboard-write; camera; microphone; geolocation; storage-access *"
                 onload="document.getElementById('iframeLoader').style.display='none';">
         </iframe>
     </div>
