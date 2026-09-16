@@ -4,6 +4,7 @@ from flask import (
     Flask, render_template, request, redirect, url_for,
     flash, session, jsonify, abort
 )
+from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import check_password_hash
 from config import Config
 from database import (
@@ -17,6 +18,10 @@ from database import (
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+if Config.IS_PRODUCTION:
+    # Na Vercel o app fica atrás de proxy: IP real e HTTPS vêm nos cabeçalhos X-Forwarded-*
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 # Inicializa banco de dados caso não exista
 with app.app_context():
@@ -104,7 +109,8 @@ def login():
 
         flash(f'Bem-vindo(a) de volta, {user["name"]}!', 'success')
         next_page = request.args.get('next')
-        if next_page and next_page.startswith('/'):
+        # '//host' e '/\host' são tratados pelo navegador como URL externa (open redirect)
+        if next_page and next_page.startswith('/') and not next_page.startswith(('//', '/\\')):
             return redirect(next_page)
         return redirect(url_for('portal'))
 

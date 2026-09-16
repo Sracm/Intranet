@@ -1,15 +1,132 @@
 import sqlite3
-import os
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 from config import Config
 
+if Config.USE_POSTGRES:
+    import psycopg2
+    from psycopg2.extras import RealDictCursor
+    IntegrityError = psycopg2.IntegrityError
+else:
+    IntegrityError = sqlite3.IntegrityError
+
+# ----------------- CONEXÃO (SQLite em dev / PostgreSQL em produção) ----------------- #
+
+class _PgCursor:
+    """Cursor psycopg2 com a mesma interface usada com sqlite3 (placeholders '?')."""
+
+    def __init__(self, raw_cursor):
+        self._cur = raw_cursor
+
+    def execute(self, sql, params=()):
+        # '%' literal precisa ser escapado antes de converter os placeholders
+        self._cur.execute(sql.replace('%', '%%').replace('?', '%s'), tuple(params))
+        return self
+
+    def fetchone(self):
+        return self._cur.fetchone()
+
+    def fetchall(self):
+        return self._cur.fetchall()
+
+
+class _PgConnection:
+    def __init__(self, raw_conn):
+        self._conn = raw_conn
+
+    def cursor(self):
+        return _PgCursor(self._conn.cursor(cursor_factory=RealDictCursor))
+
+    def execute(self, sql, params=()):
+        return self.cursor().execute(sql, params)
+
+    def commit(self):
+        self._conn.commit()
+
+    def close(self):
+        self._conn.close()
+
+
 def get_db():
+    if Config.USE_POSTGRES:
+        return _PgConnection(psycopg2.connect(Config.DATABASE_URL))
     conn = sqlite3.connect(Config.DATABASE)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON;")
     return conn
 
+def _insert_returning_id(cursor, sql, params):
+    if Config.USE_POSTGRES:
+        return cursor.execute(sql + ' RETURNING id', params).fetchone()['id']
+    cursor.execute(sql, params)
+    return cursor.lastrowid
+
+_SCHEMA_POSTGRES = '''
+    CREATE TABLE IF NOT EXISTS departments (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        code TEXT UNIQUE NOT NULL,
+        description TEXT,
+        icon TEXT DEFAULT 'bi-folder',
+        color TEXT DEFAULT '#CB9727',
+        created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        username TEXT UNIQUE NOT NULL,
+        name TEXT NOT NULL,
+        email TEXT,
+        password_hash TEXT NOT NULL,
+        role TEXT DEFAULT 'user',
+        department_id INTEGER REFERENCES departments (id) ON DELETE SET NULL,
+        active INTEGER DEFAULT 1,
+        created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS user_departments (
+        user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+        department_id INTEGER NOT NULL REFERENCES departments (id) ON DELETE CASCADE,
+        PRIMARY KEY (user_id, department_id)
+    );
+
+    CREATE TABLE IF NOT EXISTS reports (
+        id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        description TEXT,
+        department_id INTEGER NOT NULL REFERENCES departments (id) ON DELETE CASCADE,
+        embed_url TEXT NOT NULL,
+        icon TEXT DEFAULT 'bi-bar-chart-line',
+        is_public INTEGER DEFAULT 0,
+        display_order INTEGER DEFAULT 0,
+        active INTEGER DEFAULT 1,
+        created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS user_reports (
+        user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+        report_id INTEGER NOT NULL REFERENCES reports (id) ON DELETE CASCADE,
+        PRIMARY KEY (user_id, report_id)
+    );
+
+    CREATE TABLE IF NOT EXISTS access_logs (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users (id) ON DELETE SET NULL,
+        report_id INTEGER REFERENCES reports (id) ON DELETE SET NULL,
+        action TEXT NOT NULL,
+        ip_address TEXT,
+        created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP
+    );
+'''
+
 def init_db():
+    if Config.USE_POSTGRES:
+        conn = psycopg2.connect(Config.DATABASE_URL)
+        with conn.cursor() as cursor:
+            cursor.execute(_SCHEMA_POSTGRES)
+        conn.commit()
+        conn.close()
+        return
+
     conn = get_db()
     cursor = conn.cursor()
 
@@ -111,11 +228,10 @@ def create_user(username, name, email, password, role='user', department_id=None
     cursor = conn.cursor()
     pwd_hash = generate_password_hash(password)
     try:
-        cursor.execute('''
+        user_id = _insert_returning_id(cursor, '''
             INSERT INTO users (username, name, email, password_hash, role, department_id, active)
             VALUES (?, ?, ?, ?, ?, ?, 1)
         ''', (username.strip().lower(), name.strip(), email.strip() if email else '', pwd_hash, role, department_id))
-        user_id = cursor.lastrowid
 
         # Atribuir departamento principal também em user_departments
         dept_ids_to_add = set()
@@ -126,11 +242,11 @@ def create_user(username, name, email, password, role='user', department_id=None
                 dept_ids_to_add.add(int(d))
 
         for d_id in dept_ids_to_add:
-            cursor.execute('INSERT OR IGNORE INTO user_departments (user_id, department_id) VALUES (?, ?)', (user_id, d_id))
+            cursor.execute('INSERT INTO user_departments (user_id, department_id) VALUES (?, ?) ON CONFLICT DO NOTHING', (user_id, d_id))
 
         conn.commit()
         return user_id
-    except sqlite3.IntegrityError:
+    except IntegrityError:
         return None
     finally:
         conn.close()
@@ -164,7 +280,7 @@ def update_user(user_id, name, email, role, department_id, active, extra_dept_id
                 dept_ids_to_add.add(int(d))
 
     for d_id in dept_ids_to_add:
-        cursor.execute('INSERT OR IGNORE INTO user_departments (user_id, department_id) VALUES (?, ?)', (user_id, d_id))
+        cursor.execute('INSERT INTO user_departments (user_id, department_id) VALUES (?, ?) ON CONFLICT DO NOTHING', (user_id, d_id))
 
     conn.commit()
     conn.close()
@@ -184,9 +300,10 @@ def delete_user(user_id):
 
 def list_all_users():
     conn = get_db()
-    users = conn.execute('''
+    concat_fn = 'STRING_AGG' if Config.USE_POSTGRES else 'GROUP_CONCAT'
+    users = conn.execute(f'''
         SELECT u.*, d.name as department_name,
-               (SELECT GROUP_CONCAT(d2.name, ', ') 
+               (SELECT {concat_fn}(d2.name, ', ')
                 FROM user_departments ud 
                 JOIN departments d2 ON ud.department_id = d2.id 
                 WHERE ud.user_id = u.id) as all_departments
@@ -227,13 +344,13 @@ def create_department(name, code, description='', icon='bi-folder', color='#CB97
     conn = get_db()
     cursor = conn.cursor()
     try:
-        cursor.execute('''
+        dept_id = _insert_returning_id(cursor, '''
             INSERT INTO departments (name, code, description, icon, color)
             VALUES (?, ?, ?, ?, ?)
         ''', (name.strip(), code.strip().lower(), description.strip(), icon, color))
         conn.commit()
-        return cursor.lastrowid
-    except sqlite3.IntegrityError:
+        return dept_id
+    except IntegrityError:
         return None
     finally:
         conn.close()
@@ -358,11 +475,10 @@ def user_can_access_report(user_id, report_id, is_admin=False):
 def create_report(title, description, department_id, embed_url, icon='bi-bar-chart-line', is_public=0, display_order=0, active=1):
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute('''
+    report_id = _insert_returning_id(cursor, '''
         INSERT INTO reports (title, description, department_id, embed_url, icon, is_public, display_order, active)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ''', (title.strip(), description.strip(), int(department_id), embed_url.strip(), icon, int(is_public), int(display_order), int(active)))
-    report_id = cursor.lastrowid
     conn.commit()
     conn.close()
     return report_id
@@ -415,7 +531,7 @@ def get_stats():
         FROM reports r
         JOIN departments d ON r.department_id = d.id
         LEFT JOIN access_logs al ON r.id = al.report_id AND al.action = 'view_report'
-        GROUP BY r.id
+        GROUP BY r.id, d.name
         ORDER BY views DESC
         LIMIT 5
     ''').fetchall()

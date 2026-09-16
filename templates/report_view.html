@@ -139,17 +139,21 @@
         </div>
 
         <div class="viewer-actions">
+            {% if 'dre' not in report.title|lower %}
             <button type="button" class="btn-mq-outline" onclick="reloadIframe()" style="padding: 0.45rem 0.85rem; font-size: 0.82rem;" title="Recarregar Dados">
                 <i class="bi bi-arrow-clockwise"></i> Recarregar
             </button>
+            {% endif %}
 
             <button type="button" class="btn-mq-outline" onclick="toggleFullScreen()" style="padding: 0.45rem 0.85rem; font-size: 0.82rem;" title="Modo Apresentação / Tela Cheia">
                 <i class="bi bi-fullscreen" id="fullscreenIcon"></i> Tela Cheia
             </button>
 
+            {% if 'dre' not in report.title|lower %}
             <a href="{{ embed_url }}" target="_blank" rel="noopener noreferrer" class="btn-mq-gold" style="padding: 0.45rem 1rem; font-size: 0.84rem; font-weight: 700;" title="Abrir diretamente no Power BI">
                 <i class="bi bi-box-arrow-up-right"></i> Direcionar para o Power BI
             </a>
+            {% endif %}
         </div>
     </div>
 
