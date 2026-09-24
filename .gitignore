@@ -1,16 +1,22 @@
-# Python
+﻿# Python
 __pycache__/
 *.pyc
 *.pyo
 .venv/
+venv/
+env/
 
 # Banco local (NUNCA subir para o GitHub)
 *.db
-intranet.db
+*.sqlite3
 
 # Variáveis de ambiente (segredos)
 .env
 .env.local
 
-# Vercel
+# Vercel e Logs
 .vercel/
+*.log
+
+
+*.bak

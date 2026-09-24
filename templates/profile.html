@@ -1,70 +1,233 @@
 {% extends "base.html" %}
 
-{% block title %}Meu Perfil & Segurança — Intranet MQ{% endblock %}
+{% block title %}Meu Perfil — MQ Professional{% endblock %}
 
 {% block content %}
-<div style="max-width: 680px; margin: 2rem auto;">
-    <div style="margin-bottom: 2rem;">
-        <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--mq-white);">Meu Perfil & Segurança</h1>
-        <p style="color: var(--mq-gray-muted); font-size: 0.88rem;">Gerencie suas credenciais e visualize seus dados corporativos cadastrados.</p>
+<section id="view-perfil" class="spa-view-section" style="display: block;">
+  <div class="page-top-bar">
+    <div class="breadcrumbs-trail">
+      <a href="{{ url_for('portal') }}" style="color: #64748b; text-decoration: none;">Home</a>
+      <span style="color: #64748b; margin: 0 6px;">›</span>
+      <span class="crumb-active">Meu Perfil</span>
+    </div>
+    <h1 class="page-main-title">Meu Perfil</h1>
+  </div>
+
+  <div class="perfil-page-layout">
+    <!-- Coluna Esquerda: ID Card -->
+    <div class="perfil-id-card">
+      <div class="perfil-avatar-circle" id="perfil-avatar-container">
+        <img id="perfil-avatar-img" src="{{ url_for('static', filename='assets/ad0230e51cf72c468f60f22a06ee0b26b40e974f.png') }}" alt="{{ user.name }}">
+      </div>
+      <span class="btn-change-photo" onclick="showToast('Para trocar a foto, consulte o RH ou TI.')">Mudar foto</span>
+
+      <h2 id="perfil-name" class="perfil-name-title">{{ user.name }}</h2>
+      <span id="perfil-dept-badge" class="perfil-dept-gold">{{ user.department or 'Corporativo' }}</span>
+      <span id="perfil-job-title" class="perfil-role-title">{{ user.job_title or ('Administrador Geral' if user.role == 'admin' else 'Colaborador MQ') }}</span>
+      <div id="perfil-role-badge" class="badge-role {% if user.role == 'admin' %}superadmin{% else %}user{% endif %}" style="margin-top: 6px;">
+        {% if user.role == 'admin' %}SuperAdmin{% else %}Colaborador{% endif %}
+      </div>
+
+      <div class="perfil-company-meta">
+        MCR COMERCIO DE ARTIGOS DE TOUCADOR LTDA
+      </div>
+
+      <!-- Simulador de Usuário (RBAC) -->
+      {% if user.role == 'admin' %}
+      <div style="margin-top: 14px; width: 100%; text-align: left;">
+        <label style="font-size: 10px; font-weight: 700; color: var(--brand-secondary-dourado, #CB9727); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px;">
+          SIMULADOR DE USUÁRIO (TESTAR RBAC)
+        </label>
+        <select id="select-simulate-user" class="admin-filter-select" style="width: 100%; font-size: 11px; background: #12141a; border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 6px 8px; border-radius: 6px;" onchange="showToast('Simulação de perfil: ' + this.options[this.selectedIndex].text)">
+          <option value="{{ user.id }}" selected>{{ user.name }} (Você)</option>
+          <option value="2">Equipe de Logística (Logística)</option>
+          <option value="3">Equipe Comercial (Comercial)</option>
+          <option value="6">Ricardo Pavão (Regional FSP)</option>
+          <option value="7">Maria Macedo (RH)</option>
+        </select>
+        <span style="font-size: 10px; color: #64748b; margin-top: 4px; display: block;">
+          Alterne para testar a experiência sob o perfil de outro colaborador.
+        </span>
+      </div>
+      {% endif %}
+
+      <!-- Seção de Acessos & Permissões -->
+      <div style="margin-top: 16px; width: 100%; text-align: left; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 11px; font-weight: 700; color: #f1f5f9; text-transform: uppercase; letter-spacing: 0.04em;">Acessos & Permissões</span>
+          <span id="perfil-caps-count" style="font-size: 11px; color: var(--brand-secondary-dourado, #CB9727); font-weight: 700;">
+            {% if user.role == 'admin' %}22 ativas{% else %}4 ativas{% endif %}
+          </span>
+        </div>
+        <div id="perfil-capabilities-list" style="display: flex; flex-wrap: wrap; gap: 6px; max-height: 160px; overflow-y: auto; padding-right: 4px;">
+          <span class="badge-role" style="background: rgba(203,151,39,0.15); border: 1px solid rgba(203,151,39,0.35); color: #CB9727; font-size: 10px; padding: 2px 8px; border-radius: 4px;">DRE Consolidado (EBITDA)</span>
+          <span class="badge-role" style="background: rgba(203,151,39,0.15); border: 1px solid rgba(203,151,39,0.35); color: #CB9727; font-size: 10px; padding: 2px 8px; border-radius: 4px;">DRE Setorial do Departamento</span>
+          <span class="badge-role" style="background: rgba(203,151,39,0.15); border: 1px solid rgba(203,151,39,0.35); color: #CB9727; font-size: 10px; padding: 2px 8px; border-radius: 4px;">Exportação Excel / CSV</span>
+          {% if user.role == 'admin' %}
+          <span class="badge-role" style="background: rgba(203,151,39,0.15); border: 1px solid rgba(203,151,39,0.35); color: #CB9727; font-size: 10px; padding: 2px 8px; border-radius: 4px;">DRE de Outros Setores</span>
+          <span class="badge-role" style="background: rgba(203,151,39,0.15); border: 1px solid rgba(203,151,39,0.35); color: #CB9727; font-size: 10px; padding: 2px 8px; border-radius: 4px;">Dados Financeiros Sensíveis</span>
+          <span class="badge-role" style="background: rgba(203,151,39,0.15); border: 1px solid rgba(203,151,39,0.35); color: #CB9727; font-size: 10px; padding: 2px 8px; border-radius: 4px;">Pedidos Headless VTEX</span>
+          {% endif %}
+        </div>
+        <button type="button" class="btn-blue-pill" style="margin-top: 12px; width: 100%; font-size: 11px; padding: 7px; justify-content: center;" onclick="showToast('Solicitação de novos acessos enviada para a TI!')">
+          <i class="bi bi-key-fill" style="margin-right: 4px;"></i> Solicitar Acesso Adicional
+        </button>
+      </div>
     </div>
 
-    <!-- Dados do Usuário -->
-    <div class="admin-card" style="margin-bottom: 1.8rem;">
-        <div class="admin-card-header">
-            <h2 class="admin-card-title">
-                <i class="bi bi-person-badge" style="color: var(--mq-gold);"></i> Informações da Conta
-            </h2>
+    <!-- Coluna Direita: Formulários -->
+    <div class="perfil-forms-card">
+      <form method="POST" action="{{ url_for('profile') }}">
+        <!-- Seção 1: Perfil -->
+        <div style="margin-bottom: 24px;">
+          <h3 class="form-section-title">
+            <i class="bi bi-person-fill" style="color: var(--brand-secondary-dourado, #CB9727);"></i>
+            <span>Perfil</span>
+          </h3>
+          <div class="form-two-cols">
+            <div class="form-field-group">
+              <label class="form-label">PRIMEIRO NOME</label>
+              <input type="text" name="first_name" class="form-input" value="{{ user.name.split()[0] if user.name else 'Gabriel' }}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-label">SOBRENOME</label>
+              <input type="text" name="last_name" class="form-input" value="{{ ' '.join(user.name.split()[1:]) if user.name and user.name.split()|length > 1 else 'Saldanha do Nascimento' }}">
+            </div>
+            <div class="form-field-group">
+              <label class="form-label">E-MAIL CORPORATIVO</label>
+              <input id="input-email-corp" type="email" class="form-input" value="{{ user.email or 'admin@mqhair.com.br' }}" disabled>
+            </div>
+            <div class="form-field-group">
+              <label class="form-label">CONTATO (OPCIONAL)</label>
+              <input id="input-phone" type="text" class="form-input" value="(11) 9 4371-6813">
+            </div>
+            <div class="form-field-group">
+              <label class="form-label">LINKEDIN</label>
+              <input id="input-linkedin" type="text" class="form-input" value="https://www.linkedin.com/in/mq-professional">
+            </div>
+            <div class="form-field-group">
+              <label class="form-label">DATA DE NASCIMENTO</label>
+              <input id="input-birthdate" type="text" class="form-input" value="21/05/1996">
+            </div>
+          </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; font-size: 0.88rem;">
-            <div>
-                <span style="color: var(--mq-gray-muted); font-size: 0.75rem; text-transform: uppercase;">Nome Completo</span>
-                <p style="font-weight: 700; color: var(--mq-white); margin-top: 0.2rem;">{{ user.name }}</p>
+        <!-- Seção 2: Educação -->
+        <div style="margin-bottom: 24px;">
+          <h3 class="form-section-title">
+            <i class="bi bi-mortarboard-fill" style="color: var(--brand-secondary-dourado, #CB9727);"></i>
+            <span>Educação</span>
+          </h3>
+          <div style="display: flex; flex-direction: column; gap: 8px;" id="education-rows-container">
+            <div class="education-row">
+              <input type="text" class="form-input edu-input-level" value="Pós-graduação completa" placeholder="Nível / Grau">
+              <input type="text" class="form-input edu-input-inst" value="PUCRS" placeholder="Instituição">
+              <input type="text" class="form-input edu-input-course" value="MBA Branding e Growth Marketing" placeholder="Curso">
+              <div class="edu-btn-placeholder" style="width: 34px; height: 34px; flex-shrink: 0;"></div>
             </div>
-            <div>
-                <span style="color: var(--mq-gray-muted); font-size: 0.75rem; text-transform: uppercase;">Usuário de Acesso</span>
-                <p style="font-weight: 700; color: var(--mq-white); margin-top: 0.2rem;">{{ user.username }}</p>
+            <div class="education-row">
+              <input type="text" class="form-input edu-input-level" value="Pós-graduação cursando" placeholder="Nível / Grau">
+              <input type="text" class="form-input edu-input-inst" value="ESPM" placeholder="Instituição">
+              <input type="text" class="form-input edu-input-course" value="Pós em Design de Negócios e Exp." placeholder="Curso">
+              <button type="button" class="btn-remove-edu" onclick="this.closest('.education-row').remove()" title="Remover formação">
+                <span class="material-symbols-outlined" style="font-size: 16px;">remove</span>
+              </button>
             </div>
-            <div>
-                <span style="color: var(--mq-gray-muted); font-size: 0.75rem; text-transform: uppercase;">E-mail</span>
-                <p style="font-weight: 600; color: var(--mq-creme-2); margin-top: 0.2rem;">{{ user.email or 'Não informado' }}</p>
+            <div class="education-row">
+              <input type="text" class="form-input edu-input-level" value="Graduação Completa" placeholder="Nível / Grau">
+              <input type="text" class="form-input edu-input-inst" value="Moura Lacerda" placeholder="Instituição">
+              <input type="text" class="form-input edu-input-course" value="Comunicação Social Hab. Publicidade" placeholder="Curso">
+              <button type="button" class="btn-remove-edu" onclick="this.closest('.education-row').remove()" title="Remover formação">
+                <span class="material-symbols-outlined" style="font-size: 16px;">remove</span>
+              </button>
             </div>
-            <div>
-                <span style="color: var(--mq-gray-muted); font-size: 0.75rem; text-transform: uppercase;">Departamento Principal</span>
-                <p style="font-weight: 600; color: var(--mq-gold-light); margin-top: 0.2rem;">{{ user.department_name or 'Geral' }}</p>
-            </div>
+          </div>
+          <button type="button" class="btn-pill-primary" style="align-self: flex-start; margin-top: 8px; font-size: 11px; padding: 6px 14px;" onclick="addEducationRow()">
+            + Adicionar Formação
+          </button>
         </div>
+
+        <!-- Seção 3: Endereço -->
+        <div style="margin-bottom: 24px;">
+          <h3 class="form-section-title">
+            <i class="bi bi-geo-alt-fill" style="color: var(--brand-secondary-dourado, #CB9727);"></i>
+            <span>Endereço</span>
+          </h3>
+          <div class="form-two-cols">
+            <div class="form-field-group">
+              <label class="form-label">LOGRADOURO</label>
+              <input id="input-address-street" type="text" class="form-input" value="Rua dos Bobos">
+            </div>
+            <div class="form-field-group">
+              <label class="form-label">NÚMERO</label>
+              <input id="input-address-num" type="text" class="form-input" value="01">
+            </div>
+            <div class="form-field-group">
+              <label class="form-label">BAIRRO</label>
+              <input id="input-address-neigh" type="text" class="form-input" value="Bairro da Música">
+            </div>
+            <div class="form-field-group">
+              <label class="form-label">COMPLEMENTO</label>
+              <input type="text" class="form-input" value="Não tem chão">
+            </div>
+            <div class="form-field-group">
+              <label class="form-label">CEP</label>
+              <input id="input-address-cep" type="text" class="form-input" value="01234-567">
+            </div>
+            <div class="form-field-group">
+              <label class="form-label">CIDADE / UF</label>
+              <input type="text" class="form-input" value="Rio de Janeiro - RJ">
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção 4: Mudar a Senha (com ID #senha) -->
+        <div id="senha" style="margin-bottom: 28px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06);">
+          <h3 class="form-section-title">
+            <i class="bi bi-shield-lock-fill" style="color: var(--brand-secondary-dourado, #CB9727);"></i>
+            <span>Segurança & Mudar a Senha</span>
+          </h3>
+          <div class="form-two-cols">
+            <div class="form-field-group">
+              <label class="form-label">SENHA ATUAL</label>
+              <input type="password" name="current_password" class="form-input" placeholder="Digite sua senha atual">
+            </div>
+            <div class="form-field-group"></div>
+            <div class="form-field-group">
+              <label class="form-label">NOVA SENHA</label>
+              <input type="password" name="new_password" class="form-input" placeholder="Mínimo 3 caracteres">
+            </div>
+            <div class="form-field-group">
+              <label class="form-label">CONFIRMAR NOVA SENHA</label>
+              <input type="password" name="confirm_password" class="form-input" placeholder="Repita a nova senha">
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Actions -->
+        <div class="perfil-actions-bottom" style="display: flex; justify-content: flex-end; align-items: center; gap: 14px;">
+          <a href="{{ url_for('portal') }}" class="btn-cancel-link" style="color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 600;">Cancelar</a>
+          <button type="submit" class="btn-pill-gold" style="padding: 10px 24px; font-size: 12.5px;">Salvar Alterações</button>
+        </div>
+      </form>
     </div>
+  </div>
+</section>
 
-    <!-- Alteração de Senha -->
-    <div class="admin-card">
-        <div class="admin-card-header">
-            <h2 class="admin-card-title">
-                <i class="bi bi-shield-lock" style="color: var(--mq-gold);"></i> Alterar Senha de Acesso
-            </h2>
-        </div>
-
-        <form method="POST" action="{{ url_for('profile') }}">
-            <div class="form-group">
-                <label for="current_password" class="form-label">Senha Atual</label>
-                <input type="password" id="current_password" name="current_password" class="form-control" required placeholder="Digite sua senha atual">
-            </div>
-
-            <div class="form-group">
-                <label for="new_password" class="form-label">Nova Senha</label>
-                <input type="password" id="new_password" name="new_password" class="form-control" required placeholder="Mínimo 3 caracteres">
-            </div>
-
-            <div class="form-group" style="margin-bottom: 1.8rem;">
-                <label for="confirm_password" class="form-label">Confirmar Nova Senha</label>
-                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required placeholder="Repita a nova senha">
-            </div>
-
-            <button type="submit" class="btn-mq-gold">
-                <i class="bi bi-check2-circle"></i> Salvar Nova Senha
-            </button>
-        </form>
-    </div>
-</div>
+<script>
+  function addEducationRow() {
+    const container = document.getElementById("education-rows-container");
+    const row = document.createElement("div");
+    row.className = "education-row";
+    row.innerHTML = `
+      <input type="text" class="form-input edu-input-level" placeholder="Nível / Grau">
+      <input type="text" class="form-input edu-input-inst" placeholder="Instituição">
+      <input type="text" class="form-input edu-input-course" placeholder="Curso">
+      <button type="button" class="btn-remove-edu" onclick="this.closest('.education-row').remove()" title="Remover formação">
+        <span class="material-symbols-outlined" style="font-size: 16px;">remove</span>
+      </button>
+    `;
+    container.appendChild(row);
+  }
+</script>
 {% endblock %}

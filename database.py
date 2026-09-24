@@ -340,6 +340,12 @@ def get_department_by_id(dept_id):
     conn.close()
     return dept
 
+def get_department_by_code(code):
+    conn = get_db()
+    dept = conn.execute('SELECT * FROM departments WHERE code = ?', (code.strip().lower(),)).fetchone()
+    conn.close()
+    return dict(dept) if dept else None
+
 def create_department(name, code, description='', icon='bi-folder', color='#CB9727'):
     conn = get_db()
     cursor = conn.cursor()
@@ -436,14 +442,14 @@ def get_reports_for_user(user_id, is_admin=False, department_code=None):
 def get_user_accessible_departments(user_id, is_admin=False):
     conn = get_db()
     if is_admin:
-        depts = conn.execute('''
+        depts_rows = conn.execute('''
             SELECT DISTINCT d.* 
             FROM departments d
             JOIN reports r ON r.department_id = d.id AND r.active = 1
             ORDER BY d.name ASC
         ''').fetchall()
     else:
-        depts = conn.execute('''
+        depts_rows = conn.execute('''
             SELECT DISTINCT d.* 
             FROM departments d
             JOIN reports r ON r.department_id = d.id AND r.active = 1
@@ -454,6 +460,40 @@ def get_user_accessible_departments(user_id, is_admin=False):
             )
             ORDER BY d.name ASC
         ''', (user_id, user_id)).fetchall()
+
+    depts = []
+    for d in depts_rows:
+        dept_dict = dict(d)
+        if is_admin:
+            rep_rows = conn.execute('''
+                SELECT id, title, embed_url, icon, is_public, display_order
+                FROM reports
+                WHERE department_id = ? AND active = 1
+                ORDER BY 
+                    CASE WHEN title LIKE '%DRE%' THEN 0 ELSE 1 END,
+                    display_order ASC,
+                    id ASC
+            ''', (dept_dict['id'],)).fetchall()
+        else:
+            rep_rows = conn.execute('''
+                SELECT id, title, embed_url, icon, is_public, display_order
+                FROM reports
+                WHERE department_id = ? AND active = 1
+                  AND (
+                      is_public = 1
+                      OR ? IN (SELECT user_id FROM user_departments WHERE department_id = ?)
+                      OR id IN (SELECT report_id FROM user_reports WHERE user_id = ?)
+                  )
+                ORDER BY 
+                    CASE WHEN title LIKE '%DRE%' THEN 0 ELSE 1 END,
+                    display_order ASC,
+                    id ASC
+            ''', (dept_dict['id'], user_id, dept_dict['id'], user_id)).fetchall()
+
+        dept_dict['reports'] = [dict(r) for r in rep_rows]
+        dept_dict['primary_report_id'] = dept_dict['reports'][0]['id'] if dept_dict['reports'] else None
+        depts.append(dept_dict)
+
     conn.close()
     return depts
 
@@ -545,3 +585,56 @@ def get_stats():
         'recent_logs': recent_logs,
         'most_viewed': most_viewed
     }
+
+
+# ----------------- FERRAMENTAS RÁPIDAS & CONFIGURAÇÕES PORTAL ----------------- #
+
+def list_portal_tools(only_active=True):
+    conn = get_db()
+    if only_active:
+        rows = conn.execute("SELECT * FROM portal_tools WHERE is_active = 1 ORDER BY display_order ASC, id ASC").fetchall()
+    else:
+        rows = conn.execute("SELECT * FROM portal_tools ORDER BY display_order ASC, id ASC").fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+def create_portal_tool(title, url, icon='bi-link-45deg', custom_svg='', is_active=1, display_order=0):
+    conn = get_db()
+    c = conn.cursor()
+    _insert_returning_id(c, "INSERT INTO portal_tools (title, url, icon, custom_svg, is_active, display_order) VALUES (?, ?, ?, ?, ?, ?)",
+                         (title, url, icon, custom_svg, is_active, display_order))
+    conn.commit()
+    conn.close()
+
+def update_portal_tool(tool_id, title, url, icon='bi-link-45deg', custom_svg='', is_active=1, display_order=0):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("UPDATE portal_tools SET title = ?, url = ?, icon = ?, custom_svg = ?, is_active = ?, display_order = ? WHERE id = ?",
+              (title, url, icon, custom_svg, is_active, display_order, tool_id))
+    conn.commit()
+    conn.close()
+
+def delete_portal_tool(tool_id):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("DELETE FROM portal_tools WHERE id = ?", (tool_id,))
+    conn.commit()
+    conn.close()
+
+def get_portal_settings():
+    conn = get_db()
+    rows = conn.execute("SELECT key, value FROM portal_settings").fetchall()
+    conn.close()
+    return {r['key']: r['value'] for r in rows}
+
+def set_portal_setting(key, value, description=''):
+    conn = get_db()
+    c = conn.cursor()
+    if Config.USE_POSTGRES:
+        c.execute("INSERT INTO portal_settings (key, value, description, updated_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = CURRENT_TIMESTAMP",
+                  (key, value, description))
+    else:
+        c.execute("INSERT INTO portal_settings (key, value, description, updated_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP) ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = CURRENT_TIMESTAMP",
+                  (key, value, description))
+    conn.commit()
+    conn.close()

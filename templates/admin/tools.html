@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciador de Ferramentas Rápidas — Intranet MQ{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div style="padding: 24px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        <div>
+            <h1 style="font-size: 20px; font-weight: 800; color: #fff; margin: 0;">Gerenciador de Ferramentas Rápidas</h1>
+            <p style="color: #94a3b8; font-size: 12px; margin-top: 4px;">Cadastre, edite links, altere vetores/ícones e ative ou oculte ferramentas na página inicial.</p>
+        </div>
+        <button type="button" class="btn-mq-gold" onclick="openCreateToolModal()" style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">
+            <i class="bi bi-plus-circle-fill"></i> Nova Ferramenta
+        </button>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+        <div class="mq-alert mq-alert-{{ category }}" style="padding: 10px 14px; font-size: 12px; margin-bottom: 16px; border-radius: 8px;">
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="admin-card" style="background: #141722; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden;">
+        <table class="mq-table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); text-align: left; font-size: 11px; color: #94a3b8;">
+                    <th style="padding: 12px 16px;">ÍCONE / VETOR</th>
+                    <th style="padding: 12px 16px;">TÍTULO</th>
+                    <th style="padding: 12px 16px;">LINK DE DESTINO (URL)</th>
+                    <th style="padding: 12px 16px; text-align: center;">ORDEM</th>
+                    <th style="padding: 12px 16px; text-align: center;">STATUS</th>
+                    <th style="padding: 12px 16px; text-align: right;">AÇÕES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in tools %}
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12.5px;">
+                    <td style="padding: 12px 16px;">
+                        <div style="width: 32px; height: 32px; border-radius: 6px; background: rgba(203,151,39,0.12); display: flex; align-items: center; justify-content: center;">
+                            {% if t.custom_svg %}
+                            <img src="{{ url_for('static', filename=t.custom_svg) }}" alt="{{ t.title }}" style="width: 20px; height: 20px; object-fit: contain;">
+                            {% else %}
+                            <i class="bi {{ t.icon or 'bi-link' }}" style="color: var(--mq-gold, #cb9727); font-size: 16px;"></i>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td style="padding: 12px 16px; font-weight: 700; color: #fff;">{{ t.title }}</td>
+                    <td style="padding: 12px 16px;">
+                        <a href="{{ t.url }}" target="_blank" style="color: #60a5fa; text-decoration: none; font-size: 12px;">{{ t.url }} <i class="bi bi-box-arrow-up-right" style="font-size: 10px;"></i></a>
+                    </td>
+                    <td style="padding: 12px 16px; text-align: center; color: #cbd5e1;">{{ t.display_order }}</td>
+                    <td style="padding: 12px 16px; text-align: center;">
+                        {% if t.is_active %}
+                        <span style="background: rgba(34,197,94,0.15); color: #4ade80; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 700;">Visível</span>
+                        {% else %}
+                        <span style="background: rgba(239,68,68,0.15); color: #fca5a5; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 700;">Oculto</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 12px 16px; text-align: right;">
+                        <button type="button" class="btn-icon-action" onclick='editTool({{ t | tojson }})' style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-right: 4px;" title="Editar">
+                            <i class="bi bi-pencil-fill"></i>
+                        </button>
+                        <form method="POST" action="{{ url_for('admin_tools') }}" style="display: inline;" onsubmit="return confirm('Excluir ferramenta permanentemente?');">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="tool_id" value="{{ t.id }}">
+                            <button type="submit" style="background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #f87171; padding: 4px 8px; border-radius: 4px; cursor: pointer;" title="Excluir">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal: Criar / Editar Ferramenta -->
+<div id="toolModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div style="background: #161924; border: 1px solid rgba(203,151,39,0.3); border-radius: 12px; width: 440px; max-width: 90%; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
+        <h3 id="toolModalTitle" style="color: var(--mq-gold, #cb9727); font-size: 16px; font-weight: 800; margin: 0 0 16px 0;">Cadastrar Ferramenta</h3>
+        <form method="POST" action="{{ url_for('admin_tools') }}">
+            <input type="hidden" name="action" id="toolFormAction" value="create">
+            <input type="hidden" name="tool_id" id="toolIdInput" value="">
+
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">TÍTULO DA FERRAMENTA</label>
+                <input type="text" name="title" id="toolTitleInput" required class="form-control" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 13px;">
+            </div>
+
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">URL DO LINK (DESTINO)</label>
+                <input type="url" name="url" id="toolUrlInput" required class="form-control" placeholder="https://..." style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 13px;">
+            </div>
+
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">ÍCONE BOOTSTRAP (ex: bi-google, bi-kanban, bi-building)</label>
+                <input type="text" name="icon" id="toolIconInput" value="bi-link-45deg" class="form-control" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 13px;">
+            </div>
+
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">OU CAMINHO SVG CUSTOMIZADO (OPCIONAL)</label>
+                <input type="text" name="custom_svg" id="toolSvgInput" placeholder="assets/..." class="form-control" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 13px;">
+            </div>
+
+            <div style="display: flex; gap: 14px; margin-bottom: 20px;">
+                <div style="flex: 1;">
+                    <label style="display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 4px;">ORDEM</label>
+                    <input type="number" name="display_order" id="toolOrderInput" value="0" class="form-control" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 13px;">
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #cbd5e1; cursor: pointer;">
+                        <input type="checkbox" name="is_active" id="toolActiveInput" value="1" checked> Ativo / Visível
+                    </label>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" onclick="closeToolModal()" style="padding: 8px 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 6px; cursor: pointer;">Cancelar</button>
+                <button type="submit" class="btn-mq-gold" style="padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer;">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openCreateToolModal() {
+        document.getElementById('toolFormAction').value = 'create';
+        document.getElementById('toolIdInput').value = '';
+        document.getElementById('toolTitleInput').value = '';
+        document.getElementById('toolUrlInput').value = '';
+        document.getElementById('toolIconInput').value = 'bi-link-45deg';
+        document.getElementById('toolSvgInput').value = '';
+        document.getElementById('toolOrderInput').value = '0';
+        document.getElementById('toolActiveInput').checked = true;
+        document.getElementById('toolModalTitle').textContent = 'Cadastrar Nova Ferramenta';
+        document.getElementById('toolModal').style.display = 'flex';
+    }
+
+    function editTool(t) {
+        document.getElementById('toolFormAction').value = 'edit';
+        document.getElementById('toolIdInput').value = t.id;
+        document.getElementById('toolTitleInput').value = t.title || '';
+        document.getElementById('toolUrlInput').value = t.url || '';
+        document.getElementById('toolIconInput').value = t.icon || 'bi-link-45deg';
+        document.getElementById('toolSvgInput').value = t.custom_svg || '';
+        document.getElementById('toolOrderInput').value = t.display_order || '0';
+        document.getElementById('toolActiveInput').checked = (t.is_active == 1);
+        document.getElementById('toolModalTitle').textContent = 'Editar Ferramenta';
+        document.getElementById('toolModal').style.display = 'flex';
+    }
+
+    function closeToolModal() {
+        document.getElementById('toolModal').style.display = 'none';
+    }
+</script>
+{% endblock %}

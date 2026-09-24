@@ -1,190 +1,393 @@
 {% extends "base.html" %}
 
-{% block title %}Portal de Dashboards Corporativos{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/portal.css') }}">
-<style>
-    .portal-hero {
-        background: linear-gradient(90deg, rgba(18, 18, 18, 0.95) 0%, rgba(18, 18, 18, 0.78) 50%, rgba(18, 18, 18, 0.88) 100%),
-                    url("{{ url_for('static', filename='img/world_logistics_map.jpg') }}") center right / cover no-repeat;
-        border: 1px solid rgba(203, 151, 39, 0.3);
-    }
-</style>
+{% block title %}
+  {% if selected_dept and selected_dept != 'todos' %}
+    Hub {{ current_department.name if current_department else selected_dept|upper }}
+  {% else %}
+    Home — Bem-vindo(a)!
+  {% endif %}
 {% endblock %}
 
 {% block content %}
-<!-- Hero Banner com Mapa Global de Logística -->
-<section class="portal-hero">
-    <div style="max-width: 680px; z-index: 2;">
-        <h1 class="portal-hero-title">Portal de <span>Dashboards Corporativos</span></h1>
-        <p class="portal-hero-desc">
-            Bem-vindo(a), <strong>{{ current_user.name }}</strong>. Abaixo estão listados os dashboards analíticos, operacionais e de inteligência logística aos quais você possui privilégio de acesso.
-        </p>
-    </div>
-    <div class="portal-hero-stats" style="z-index: 2;">
-        <div class="hero-stat-card">
-            <div class="hero-stat-val" id="visibleReportsCounter">{{ total_reports }}</div>
-            <div class="hero-stat-lbl">Dashboards Disponíveis</div>
-        </div>
-    </div>
-</section>
+{% if selected_dept and selected_dept != 'todos' %}
+  <!-- ====================================================================
+       HUB SETORIAL DE DASHBOARDS & RELATÓRIOS
+       ==================================================================== -->
+  <section id="view-sector-hub" class="spa-view-section" style="display: block;">
+    <div class="page-top-bar" style="margin-bottom: 20px;">
+      <div class="breadcrumbs-trail" style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">
+        <a href="{{ url_for('portal') }}" style="color: #94a3b8; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+          <i class="bi bi-house-door"></i> Home
+        </a>
+        <span>&gt;</span>
+        <span class="crumb-active" style="color: var(--brand-secondary-dourado, #CB9727); font-weight: 700;">
+          {{ current_department.name if current_department else selected_dept|upper }}
+        </span>
+      </div>
 
-{% if featured_report %}
-<!-- Destaque Estratégico Corporativo: Cockpit Geral -->
-<section class="portal-spotlight-section">
-    <div class="spotlight-card">
-        <div class="spotlight-header">
-            <div class="spotlight-badges">
-                <span class="mq-badge mq-badge-gold">
-                    <i class="bi bi-star-fill"></i> DESTAQUE ESTRATÉGICO
-                </span>
-                <span class="mq-badge mq-badge-public">
-                    <i class="bi bi-globe"></i> INSTITUCIONAL
-                </span>
-                <span class="mq-badge" style="background: rgba(255,255,255,0.08); color: var(--mq-creme-1);">
-                    <i class="bi bi-shield-check"></i> DIRETORIA & GESTÃO
-                </span>
-            </div>
-            <span style="font-size: 0.78rem; color: var(--mq-gray-muted); font-family: monospace;">
-                ID #{{ featured_report.id }} • POWER BI MQ
-            </span>
-        </div>
-
-        <div class="spotlight-body">
-            <div class="spotlight-icon-box">
-                <i class="bi {{ featured_report.icon or 'bi-speedometer2' }}"></i>
-            </div>
-            <div class="spotlight-info-col">
-                <h2 class="spotlight-title">{{ featured_report.title }}</h2>
-                <p class="spotlight-desc">
-                    {{ featured_report.description or 'Visão macro corporativa com faturamento acumulado, pedidos totais e metas globais da empresa.' }}
-                </p>
-                
-                <div class="spotlight-tags">
-                    <div class="spotlight-tag-item">
-                        <i class="bi bi-graph-up-arrow"></i> Metas & Faturamento Global
-                    </div>
-                    <div class="spotlight-tag-item">
-                        <i class="bi bi-pie-chart-fill"></i> Performance Consolidada
-                    </div>
-                    <div class="spotlight-tag-item">
-                        <i class="bi bi-lightning-charge-fill"></i> Cockpit Executivo MQ
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="spotlight-actions">
-            <a href="{{ url_for('view_report', report_id=featured_report.id) }}" class="btn-mq-gold spotlight-btn-primary">
-                <i class="bi bi-speedometer2"></i> Abrir Cockpit Geral
-            </a>
-            <a href="{{ featured_report.embed_url }}" target="_blank" rel="noopener noreferrer" class="btn-mq-outline spotlight-btn-secondary" title="Abrir em nova aba do navegador">
-                <i class="bi bi-box-arrow-up-right"></i> Abrir em Nova Guia
-            </a>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- Título e Controles dos Dashboards de Gestão -->
-<div class="portal-section-title-wrap">
-    <div>
-        <h2 class="portal-section-heading">
-            <i class="bi bi-grid-fill" style="color: var(--mq-gold);"></i> 
-            {% if selected_dept != 'todos' %}
-                Dashboards — {{ selected_dept | upper }}
+      <div class="hub-header-banner" style="background: linear-gradient(135deg, #131620 0%, #1c2233 100%); border: 1px solid rgba(203, 151, 39, 0.28); border-radius: 14px; padding: 24px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; box-shadow: 0 12px 35px rgba(0,0,0,0.45);">
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div class="hub-dept-icon-box" style="width: 58px; height: 58px; border-radius: 14px; background: rgba(203, 151, 39, 0.12); border: 1px solid rgba(203, 151, 39, 0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            {% if selected_dept == 'comercial' %}
+              <img src="{{ url_for('static', filename='assets/icons/vendas_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
+            {% elif selected_dept == 'comex' %}
+              <img src="{{ url_for('static', filename='assets/icons/comex_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
+            {% elif selected_dept == 'ecommerce' %}
+              <img src="{{ url_for('static', filename='assets/icons/e-commerce_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
+            {% elif selected_dept == 'sac' %}
+              <img src="{{ url_for('static', filename='assets/icons/sac_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
+            {% elif selected_dept in ['desenvolvimento', 'produto'] %}
+              <img src="{{ url_for('static', filename='assets/icons/desenvolvimento_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
+            {% elif selected_dept == 'logistica' %}
+              <img src="{{ url_for('static', filename='assets/icons/logistica_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
+            {% elif selected_dept in ['regional_fsp', 'regional_sp'] %}
+              <img src="{{ url_for('static', filename='assets/icons/regionais_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
+            {% elif selected_dept == 'diretoria' %}
+              <img src="{{ url_for('static', filename='assets/icons/diretoria_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
+            {% elif selected_dept == 'financeiro' %}
+              <img src="{{ url_for('static', filename='assets/icons/financeiro_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
+            {% elif selected_dept == 'fiscal' %}
+              <img src="{{ url_for('static', filename='assets/icons/fiscal_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
+            {% elif selected_dept == 'rh' %}
+              <img src="{{ url_for('static', filename='assets/icons/rh_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
+            {% elif 'ti' in selected_dept %}
+              <img src="{{ url_for('static', filename='assets/icons/ti_bi_icon.svg') }}" style="width: 32px; height: 32px;" alt="{{ selected_dept }}">
             {% else %}
-                Painéis & Dashboards da sua Gestão
+              <span class="material-symbols-outlined" style="font-size: 30px; color: var(--brand-secondary-dourado, #CB9727);">folder</span>
             {% endif %}
-        </h2>
-        <p class="portal-section-sub">
-            Todos os relatórios e demonstrativos aos quais seu perfil possui privilégio de consulta.
-        </p>
-    </div>
-    <div class="portal-section-counter">
-        <span class="badge-count">{{ total_reports }}</span> dashboards atribuídos
-    </div>
-</div>
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <h1 class="page-main-title" style="margin: 0; font-size: 24px; font-weight: 800; color: #fff; letter-spacing: -0.01em;">
+                {{ current_department.name if current_department else selected_dept|upper }}
+              </h1>
+              <div class="db-status-pill status-pill-connected" style="margin: 0; font-size: 11px; padding: 4px 10px;">
+                <span class="status-dot-green"></span>
+                <span>Hub Setorial Ativo</span>
+              </div>
+            </div>
+            <p style="margin: 6px 0 0 0; font-size: 13px; color: #94a3b8; line-height: 1.45; max-width: 720px;">
+              {{ current_department.description if current_department and current_department.description else 'Central consolidada de dashboards, painéis executivos e indicadores de performance do setor.' }}
+            </p>
+          </div>
+        </div>
 
-<!-- Barra de Filtros e Busca -->
-<section class="portal-filter-bar">
-    <div class="search-box-wrapper">
-        <i class="bi bi-search search-icon"></i>
-        <input type="text" id="reportSearchInput" class="search-input" placeholder="Pesquise por nome do dashboard, departamento ou palavra-chave..." autocomplete="off">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 18px; text-align: center;">
+            <span style="font-size: 10.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; display: block;">Dashboards Ativos</span>
+            <strong style="font-size: 20px; color: var(--brand-secondary-dourado, #CB9727);">{{ reports|length }}</strong>
+          </div>
+          <a href="{{ url_for('portal') }}" class="btn-pill-primary" style="text-decoration: none; padding: 10px 18px; font-size: 12.5px; display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1;">
+            <i class="bi bi-arrow-left"></i>
+            <span>Voltar ao Portal</span>
+          </a>
+        </div>
+      </div>
     </div>
 
-    <!-- Pílulas de Navegação por Departamento -->
-    <div class="dept-pills-container">
-        <a href="{{ url_for('portal', dept='todos') }}" class="dept-pill {% if selected_dept == 'todos' %}active{% endif %}">
-            <i class="bi bi-collection-fill"></i> Todos os Dashboards
-        </a>
-
-        {% for dept in departments %}
-        <a href="{{ url_for('portal', dept=dept.code) }}" class="dept-pill {% if selected_dept == dept.code %}active{% endif %}">
-            <i class="bi {{ dept.icon }}"></i> {{ dept.name }}
-        </a>
-        {% endfor %}
+    <!-- Barra de Busca Rápida no Hub -->
+    <div class="home-search-bar" style="margin-bottom: 24px;">
+      <span class="search-icon"><i class="bi bi-search"></i></span>
+      <input id="hub-filter-search" type="text" class="home-search-input" placeholder="Pesquisar nos dashboards e métricas de {{ current_department.name if current_department else selected_dept }}..." oninput="filterSectorHubCards(this.value)">
     </div>
-</section>
 
-<!-- Grade de Relatórios -->
-<section class="reports-grid" id="reportsGrid">
-    {% for report in reports %}
-    <article class="report-card {% if featured_report and report.id == featured_report.id %}report-card-featured{% endif %}" 
-             data-title="{{ report.title | lower }}" 
-             data-desc="{{ report.description | lower }}" 
-             data-dept="{{ report.department_name | lower }}">
-        
+    <!-- Grade de Dashboards do Setor -->
+    <div class="hub-reports-grid" id="sector-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+      {% for r in reports %}
+      <div class="report-card hub-report-card" data-title="{{ r.title|lower }}" data-desc="{{ (r.description or '')|lower }}" style="background: #18191E; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 22px; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; justify-content: space-between; position: relative;">
         <div>
-            <div class="report-card-top">
-                <div class="report-icon-box">
-                    <i class="bi {{ report.icon }}"></i>
-                </div>
-                <div>
-                    {% if report.is_public %}
-                    <span class="mq-badge mq-badge-public">
-                        <i class="bi bi-globe"></i> Institucional
-                    </span>
-                    {% else %}
-                    <span class="mq-badge" style="background: rgba(203, 151, 39, 0.12); color: {{ report.department_color }}; border: 1px solid {{ report.department_color }}44;">
-                        {{ report.department_name }}
-                    </span>
-                    {% endif %}
-                </div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(203, 151, 39, 0.12); border: 1px solid rgba(203, 151, 39, 0.35); display: flex; align-items: center; justify-content: center;">
+              {% if 'dre' in r.title|lower %}
+                <span class="material-symbols-outlined" style="color: var(--brand-secondary-dourado, #CB9727); font-size: 24px;">query_stats</span>
+              {% elif 'nubmetric' in r.title|lower %}
+                <span class="material-symbols-outlined" style="color: #38bdf8; font-size: 24px;">table_chart</span>
+              {% elif 'cockpit' in r.title|lower or 'estratég' in r.title|lower %}
+                <span class="material-symbols-outlined" style="color: #22c55e; font-size: 24px;">speed</span>
+              {% elif 'tv' in r.title|lower %}
+                <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 24px;">tv</span>
+              {% else %}
+                <i class="bi {{ r.icon or 'bi-bar-chart-fill' }}" style="color: var(--brand-secondary-dourado, #CB9727); font-size: 20px;"></i>
+              {% endif %}
+            </div>
+            <span style="background: rgba(203,151,39,0.1); border: 1px solid rgba(203,151,39,0.25); color: var(--brand-secondary-dourado, #CB9727); padding: 3px 9px; border-radius: 5px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;">
+              {% if 'dre' in r.title|lower %}
+                DRE OFICIAL
+              {% elif 'nubmetric' in r.title|lower %}
+                NUBMETRICS
+              {% elif 'cockpit' in r.title|lower %}
+                COCKPIT EXECUTIVO
+              {% elif 'tv' in r.title|lower %}
+                PAINEL TV
+              {% else %}
+                DASHBOARD BI
+              {% endif %}
+            </span>
+          </div>
+
+          <h3 style="font-size: 15px; font-weight: 700; color: #fff; margin: 0 0 8px 0; line-height: 1.35;">{{ r.title }}</h3>
+          <p style="font-size: 12px; color: #94a3b8; margin: 0; line-height: 1.5; min-height: 38px;">
+            {{ r.description or 'Acompanhamento executivo, metas, indicadores consolidados e gestão de resultados.' }}
+          </p>
+        </div>
+
+        <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+          <a href="{{ url_for('view_report', report_id=r.id) }}" class="btn-pill-primary" style="text-decoration: none; padding: 8px 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; flex: 1; justify-content: center;">
+            <i class="bi bi-play-circle-fill"></i>
+            <span>Acessar Painel</span>
+          </a>
+          <a href="{{ r.embed_url }}" target="_blank" rel="noopener noreferrer" class="btn-pill-secondary" title="Abrir em Nova Aba" style="padding: 8px 12px; font-size: 12px; color: #94a3b8; text-decoration: none; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s;">
+            <i class="bi bi-box-arrow-up-right"></i>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if not reports %}
+    <div style="background: #18191E; border: 1px dashed rgba(255,255,255,0.12); border-radius: 12px; padding: 48px; text-align: center; margin-top: 20px;">
+      <span class="material-symbols-outlined" style="font-size: 48px; color: #64748b; margin-bottom: 12px;">folder_open</span>
+      <h3 style="color: #fff; font-size: 16px; margin: 0 0 6px 0;">Nenhum painel cadastrado para este setor</h3>
+      <p style="color: #94a3b8; font-size: 12.5px; margin: 0;">Você pode solicitar a inclusão de relatórios ao administrador do sistema.</p>
+    </div>
+    {% endif %}
+  </section>
+
+{% else %}
+
+  <!-- ====================================================================
+       HOME DASHBOARD GERAL
+       ==================================================================== -->
+  <section id="view-home" class="spa-view-section" style="display: block;">
+    <div class="page-top-bar">
+      <div class="breadcrumbs-trail">
+        <span class="crumb-active">Home</span>
+      </div>
+      <h1 class="page-main-title">Bem-vindo(a)!</h1>
+    </div>
+
+    <!-- Barra de Busca Global -->
+    <div class="home-search-bar">
+      <span class="search-icon"><i class="bi bi-search"></i></span>
+      <input id="home-global-search" type="text" class="home-search-input" placeholder="O que você procura? (ex: DRE, Holerite, Férias, Metas, Nubmetrics...)">
+    </div>
+
+    <div class="home-dashboard-layout">
+      <!-- Coluna Esquerda: Avisos, Painel Pessoal, Ferramentas e Relatórios -->
+      <div class="home-left-col">
+        <!-- Avisos Section -->
+        <div style="margin-bottom: 24px;" id="home-avisos-section">
+          <div class="home-section-header">
+            <h2 class="home-section-title">Avisos</h2>
+            <div class="avisos-counter-group" style="display: flex; align-items: center; gap: 12px;">
+              <span class="avisos-badge-count" id="active-avisos-count">2 avisos não lidos</span>
+              <span class="btn-clear-avisos" onclick="markAllAvisosRead()" title="Marcar todos como lidos" style="cursor: pointer; font-size: 11px; color: var(--brand-secondary-dourado, #CB9727); font-weight: 600;">
+                <i class="bi bi-check2-all"></i> Limpar avisos
+              </span>
+              <span class="btn-historico-avisos" id="btn-toggle-historico" onclick="toggleAvisosHistorico()" style="cursor: pointer; font-size: 11px; color: #94a3b8; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                <i class="bi bi-clock-history"></i> Histórico (<span id="historico-avisos-count">0</span>)
+              </span>
+            </div>
+          </div>
+
+          <div class="avisos-scroll-container" id="avisos-active-container">
+            <!-- Aviso 1: Campanha Mês do Cliente -->
+            <div class="aviso-featured-card" id="aviso-campanha-setembro" data-aviso-id="aviso-campanha-setembro" data-title="Assunto: Campanha Mês do Cliente no Ar: O Movimento #ACadeiraÉMinha">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                <h3 class="aviso-headline" style="margin: 0;">Assunto: Campanha Mês do Cliente no Ar: O Movimento #ACadeiraÉMinha</h3>
+                <button class="btn-mark-read" onclick="markAvisoRead('aviso-campanha-setembro')" title="Marcar este aviso como lido" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; transition: background 0.15s;">
+                  <i class="bi bi-check2"></i> Marcar como lido
+                </button>
+              </div>
+              <p class="aviso-desc-text" style="margin-top: 8px;">
+                A campanha de setembro coloca o profissional de beleza no centro, conectando autoridade na bancada, ergonomia ativa e ganho real de tempo: o liso espelhado perfeito com até 70% menos esforço físico.
+              </p>
+              <div class="aviso-details-block">
+                <p><strong>Mecânica Comercial:</strong> Desconto de até 41% OFF, Cupom CLIENTEMQ em até 12x sem juros. Destaques: Linhas PRO 480, Secador Pro Digital e Modeladores de Cachos.</p>
+                <p style="margin-top: 4px;"><strong>Materiais &amp; Criativos:</strong> Banners, vídeos e fotos disponíveis no repositório oficial da campanha.</p>
+              </div>
+              <button class="btn-blue-pill" style="margin-top: 10px;" onclick="showToast('Acessando materiais da campanha no Drive...')">Clique aqui</button>
             </div>
 
-            <h2 class="report-title">{{ report.title }}</h2>
-            <p class="report-desc">{{ report.description or 'Relatório analítico e operacional de inteligência de negócios MQ Professional.' }}</p>
+            <!-- Aviso 2: Organização Copa MQ -->
+            <div class="aviso-featured-card" id="aviso-copa-mq" data-aviso-id="aviso-copa-mq" data-title="Assunto: Organização Copa MQ — Espaços Compartilhados" style="margin-top: 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                <h3 class="aviso-headline" style="margin: 0;">Assunto: Organização Copa MQ — Espaços Compartilhados</h3>
+                <button class="btn-mark-read" onclick="markAvisoRead('aviso-copa-mq')" title="Marcar este aviso como lido" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; transition: background 0.15s;">
+                  <i class="bi bi-check2"></i> Marcar como lido
+                </button>
+              </div>
+              <p class="aviso-desc-text" style="margin-top: 8px;">
+                Time, contamos com a colaboração de todos para mantermos a organização da nossa copa e dos espaços de uso coletivo. Itens pessoais de alimentação devem ser guardados nos armários da área do café, dentro do escritório.
+              </p>
+              <p class="aviso-desc-text" style="margin-top: 6px;">
+                Pedimos atenção ao armazenamento dos alimentos com embalagens adequadas. Agradecemos a colaboração de todos.
+              </p>
+            </div>
+
+            <!-- Card Vazio quando tudo for lido -->
+            <div id="avisos-empty-state" style="display: none; background: rgba(34, 197, 94, 0.06); border: 1px dashed rgba(34, 197, 94, 0.3); border-radius: 10px; padding: 22px; text-align: center;">
+              <i class="bi bi-check-circle-fill" style="color: #22c55e; font-size: 22px;"></i>
+              <h4 style="color: #fff; font-size: 13.5px; margin: 8px 0 4px 0;">Todos os comunicados foram lidos</h4>
+              <p style="color: #94a3b8; font-size: 11.5px; margin: 0;">Nenhum aviso pendente de visualização. <a href="javascript:void(0)" onclick="toggleAvisosHistorico()" style="color: var(--brand-secondary-dourado, #CB9727); text-decoration: underline;">Ver histórico de avisos</a></p>
+            </div>
+          </div>
+
+          <!-- Gaveta / Lista de Histórico de Avisos Lidos -->
+          <div id="avisos-historico-drawer" style="display: none; margin-top: 14px; background: #131620; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+              <span style="font-size: 12px; font-weight: 700; color: #cbd5e1;"><i class="bi bi-clock-history"></i> Histórico de Comunicados Lidos</span>
+              <button onclick="restoreAllAvisos()" style="background: transparent; border: none; font-size: 11px; color: var(--brand-secondary-dourado, #CB9727); cursor: pointer; font-weight: 600;">Restaurar todos</button>
+            </div>
+            <div id="avisos-historico-items-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+          </div>
         </div>
 
-        <div class="report-card-footer">
-            {% if 'reportembed' in report.embed_url.lower() and not report.embed_url.startswith('http://localhost') and not report.embed_url.startswith('http://10.') %}
-            <a href="{{ resolve_url(report.embed_url) }}" target="_blank" rel="noopener noreferrer" class="btn-mq-gold" style="padding: 0.55rem 1.1rem; font-size: 0.82rem; width: 100%; justify-content: center; gap: 0.6rem;">
-                <i class="bi bi-box-arrow-up-right"></i> Entrar no Dashboard
-            </a>
-            {% else %}
-            <a href="{{ url_for('view_report', report_id=report.id) }}" class="btn-mq-gold" style="padding: 0.55rem 1.1rem; font-size: 0.82rem;">
-                <i class="bi bi-eye-fill"></i> Abrir Dashboard
-            </a>
+        <!-- Painel Pessoal Section -->
+        <div style="margin-bottom: 24px;">
+          <div class="home-section-header">
+            <h2 class="home-section-title">Painel Pessoal</h2>
+          </div>
 
-            <a href="{{ resolve_url(report.embed_url) }}" target="_blank" rel="noopener noreferrer" class="report-external-link" title="Abrir diretamente em nova guia">
-                <i class="bi bi-box-arrow-up-right"></i>
+          <div class="painel-pessoal-grid">
+            <!-- Minhas Férias -->
+            <div class="personal-card">
+              <span class="personal-card-title">Minhas Férias</span>
+              <span style="font-size: 11px; color: var(--status-secondary-600, #94a3b8);">PERÍODO AQUISITIVO: 2025/26</span>
+              <div id="home-vacation-days" class="personal-badge-green">DIAS DISPONÍVEIS: 18 DIAS</div>
+              <div id="home-vacation-pause" class="personal-badge-gold">PRÓXIMA PAUSA: 05/12 A 15/12 | STATUS: AGUARDANDO APROVAÇÃO</div>
+              <button class="btn-blue-pill" style="margin-top: 8px;" onclick="showToast('Formulário de solicitação de férias aberto')">Solicitar Férias</button>
+            </div>
+
+            <!-- Banco de Horas -->
+            <div class="personal-card">
+              <span class="personal-card-title">Banco de Horas</span>
+              <div id="home-bank-hours" class="personal-hours-negative">-3h25</div>
+              <span style="font-size: 11px; text-align: center; color: var(--status-secondary-600, #94a3b8); margin-top: 6px;">Saldo até a presente data</span>
+            </div>
+
+            <!-- Holerite -->
+            <div class="personal-card">
+              <span class="personal-card-title">Holerite</span>
+              <div class="personal-card-icon-center" style="display: flex; justify-content: center; align-items: center; height: 60px;">
+                <img src="{{ url_for('static', filename='assets/8885e5555196fa321d8570e15e8d7c4091f14767.svg') }}" alt="Holerite" style="width:48px; height:48px; object-fit:contain;">
+              </div>
+              <button class="btn-blue-pill" style="margin-top: 8px; width: 100%;" onclick="showToast('Consultando contracheque no Sankhya...')">Consultar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ferramentas Rápidas Section -->
+        <div style="margin-bottom: 28px;">
+          <div class="home-section-header">
+            <h2 class="home-section-title">Ferramentas</h2>
+            {% if current_user.is_admin %}
+            <a href="{{ url_for('admin_tools') }}" style="font-size: 11px; color: var(--brand-secondary-dourado, #CB9727); text-decoration: none; font-weight: 600;">
+              <i class="bi bi-gear-fill"></i> Gerenciar Ferramentas
             </a>
             {% endif %}
+          </div>
+
+          <div class="ferramentas-grid">
+            {% for tool in tools %}
+            <div class="ferramenta-card" 
+                 onclick="{% if tool.url.startswith('http') %}window.open('{{ tool.url }}', '_blank'){% else %}window.location.href='{{ tool.url }}'{% endif %}" 
+                 style="cursor: pointer;" 
+                 title="Acessar {{ tool.title }}">
+              <div class="ferramenta-icon-wrapper">
+                {% if 'drive' in tool.title|lower %}
+                  <img src="{{ url_for('static', filename='assets/681243aa06c262e95528c9e2c77be513115ae317.svg') }}" alt="{{ tool.title }}" style="width:48px; height:48px; object-fit:contain;">
+                {% elif 'planner' in tool.title|lower %}
+                  <img src="{{ url_for('static', filename='assets/d2aae141a7b7e633a6cf0f31487146293fd24761.svg') }}" alt="{{ tool.title }}" style="width:48px; height:48px; object-fit:contain;">
+                {% elif 'sankhya' in tool.title|lower %}
+                  <img src="{{ url_for('static', filename='assets/d2d290cd77a766fd3b571eddda19720ea24045aa.svg') }}" alt="{{ tool.title }}" style="width:48px; height:48px; object-fit:contain;">
+                {% elif 'dre' in tool.title|lower %}
+                  <div style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: rgba(203, 151, 39, 0.15); border-radius: 12px; border: 1px solid rgba(203, 151, 39, 0.35);">
+                    <span class="material-symbols-outlined" style="font-size: 28px; color: var(--brand-secondary-dourado, #CB9727);">query_stats</span>
+                  </div>
+                {% elif tool.custom_svg %}
+                  {{ tool.custom_svg | safe }}
+                {% else %}
+                  <i class="bi {{ tool.icon or 'bi-link-45deg' }}" style="font-size: 32px; color: var(--brand-secondary-dourado, #CB9727);"></i>
+                {% endif %}
+              </div>
+              <strong style="color: #fff; font-size: 13.5px;">{{ tool.title }}</strong>
+            </div>
+            {% endfor %}
+          </div>
         </div>
-    </article>
-    {% endfor %}
 
-    <!-- Estado Vazio (quando não houver dashboards na busca) -->
-    <div class="reports-empty" id="reportsEmptyState" style="{% if reports %}display: none;{% endif %}">
-        <i class="bi bi-folder-x"></i>
-        <h3>Nenhum dashboard encontrado</h3>
-        <p>Não encontramos dashboards com este filtro ou privilégio para o seu usuário.</p>
+        <!-- Relatórios & DREs Autorizados Section -->
+        <div>
+          <div class="home-section-header">
+            <h2 class="home-section-title">Relatórios &amp; DREs Disponíveis</h2>
+            <span style="font-size: 11px; color: #64748b;">{{ reports|length }} disponíveis</span>
+          </div>
+
+          <div class="reports-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+            {% for r in reports %}
+            <div class="report-card" style="background: #18191E; border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 18px; transition: transform 0.2s, border-color 0.2s; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                  <div style="width: 38px; height: 38px; border-radius: 8px; background: rgba(203, 151, 39, 0.12); border: 1px solid rgba(203, 151, 39, 0.3); display: flex; align-items: center; justify-content: center;">
+                    <i class="bi {{ r.icon or 'bi-bar-chart-fill' }}" style="color: var(--brand-secondary-dourado, #CB9727); font-size: 17px;"></i>
+                  </div>
+                  <span style="background: rgba(255,255,255,0.06); padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase;">{{ r.dept_name or 'Corporativo' }}</span>
+                </div>
+                <h3 style="font-size: 13.5px; font-weight: 700; color: #fff; margin: 0 0 6px 0; line-height: 1.3;">{{ r.title }}</h3>
+                <p style="font-size: 11px; color: #94a3b8; margin: 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                  {{ r.description or 'Visualização interativa corporativa' }}
+                </p>
+              </div>
+              <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.04); display: flex; justify-content: space-between; align-items: center;">
+                <a href="{{ url_for('view_report', report_id=r.id) }}" style="color: var(--brand-secondary-dourado, #CB9727); font-size: 11.5px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                  <span>Acessar Painel</span>
+                  <i class="bi bi-chevron-right" style="font-size: 10px;"></i>
+                </a>
+                <a href="{{ r.embed_url }}" target="_blank" rel="noopener noreferrer" style="color: #64748b; font-size: 11.5px; text-decoration: none;">
+                  <i class="bi bi-box-arrow-up-right"></i>
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna Direita: Agenda & Calendário Corporativo -->
+      <div class="home-right-col">
+        <div class="agenda-widget-card">
+          <div class="calendar-header-nav">
+            <button id="btn-cal-prev" style="font-size: 16px; cursor: pointer; background: transparent; border: none; color: #fff;">&lt;</button>
+            <span id="calendar-month-title">Outubro 2026</span>
+            <button id="btn-cal-next" style="font-size: 16px; cursor: pointer; background: transparent; border: none; color: #fff;">&gt;</button>
+          </div>
+
+          <div class="mini-calendar-grid" id="calendar-days-grid">
+            <!-- Preenchido via portal.js initMiniCalendar() -->
+          </div>
+
+          <div class="agenda-events-summary">
+            <span class="agenda-event-category">
+              <span class="cal-legend-dot cal-holiday"></span>Feriados:
+            </span>
+            <span>12 — Nossa Senhora de Aparecida</span>
+
+            <span class="agenda-event-category" style="margin-top: 10px;">
+              <span class="cal-legend-dot cal-meeting"></span>Agenda:
+            </span>
+            <span>14 — Reunião de Alinhamento Diretoria</span>
+            <span>16 — Reunião de Alinhamento Comercial</span>
+
+            <span class="agenda-event-category" style="margin-top: 10px;">
+              <span class="cal-legend-dot cal-birthday"></span>Aniversários:
+            </span>
+            <span>8 — Gabriel (Designer UX)</span>
+            <span>25 — Hugo (Financeiro)</span>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/portal.js') }}"></script>
+  </section>
+{% endif %}
 {% endblock %}
