@@ -4,27 +4,59 @@ set -e
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 VENV_DIR="$SCRIPT_DIR/.venv"
 PYTHON="$VENV_DIR/bin/python"
+PIP="$VENV_DIR/bin/pip"
 
 cd "$SCRIPT_DIR"
 
+echo "======================================================="
+echo "         MQ PROFESSIONAL - PORTAL INTRANET"
+echo "======================================================="
+echo
+
+# -------------------------------------------------------
+# Cria o ambiente virtual se não existir
+# -------------------------------------------------------
+
 if [[ ! -x "$PYTHON" ]]; then
-	printf '%s\n' 'Criando ambiente virtual Python...'
-	python3 -m venv "$VENV_DIR"
+    echo "Ambiente virtual não encontrado."
+    echo "Criando .venv..."
+
+    python3 -m venv "$VENV_DIR"
 fi
 
-if ! "$PYTHON" -c 'import flask, werkzeug, psycopg2' 2>/dev/null; then
-	printf '%s\n' 'Instalando dependencias Python...'
-	"$PYTHON" -m pip install -r requirements.txt
+# -------------------------------------------------------
+# Instala / atualiza dependências
+# -------------------------------------------------------
+
+echo "Verificando dependências Python..."
+
+"$PIP" install --upgrade pip
+
+if [[ -f "$SCRIPT_DIR/requirements.txt" ]]; then
+    echo "Instalando dependências do requirements.txt..."
+    "$PIP" install -r "$SCRIPT_DIR/requirements.txt"
+else
+    echo "ERRO: requirements.txt não encontrado."
+    exit 1
 fi
 
-printf '%s\n' '======================================================='
-printf '%s\n' '         MQ PROFESSIONAL - PORTAL INTRANET'
-printf '%s\n' '======================================================='
-printf '\n%s\n' 'Verificando banco de dados e dependencias...'
+# -------------------------------------------------------
+# Banco de dados
+# -------------------------------------------------------
+
+echo
+echo "Verificando banco de dados..."
 "$PYTHON" -c "import database; database.init_db()"
-printf '\n%s\n' 'Iniciando servidor Web na porta 5080...'
-printf '%s\n' 'Acesse: http://localhost:5080'
-printf '%s\n' 'Pressione CTRL+C para encerrar o servidor.'
-printf '%s\n\n' '======================================================='
+
+# -------------------------------------------------------
+# Inicia aplicação
+# -------------------------------------------------------
+
+echo
+echo "Iniciando servidor Web na porta 5080..."
+echo "Acesse: http://localhost:5080"
+echo "Pressione CTRL+C para encerrar o servidor."
+echo
+echo "======================================================="
 
 exec "$PYTHON" app.py
