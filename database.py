@@ -1,8 +1,12 @@
 import sqlite3
+import pymysql
+import pymysql.cursors
 from werkzeug.security import generate_password_hash
 from config import Config
 
-if Config.USE_POSTGRES:
+if getattr(Config, 'USE_MARIADB', False):
+    IntegrityError = pymysql.IntegrityError
+elif Config.USE_POSTGRES:
     import psycopg2
     from psycopg2.extras import RealDictCursor
     IntegrityError = psycopg2.IntegrityError
@@ -46,7 +50,52 @@ class _PgConnection:
         self._conn.close()
 
 
+class _MariaDBCursor:
+    def __init__(self, raw_cursor):
+        self._cur = raw_cursor
+
+    def execute(self, sql, params=()):
+        self._cur.execute(sql.replace('%', '%%').replace('?', '%s'), tuple(params))
+        return self
+
+    def fetchone(self):
+        return self._cur.fetchone()
+
+    def fetchall(self):
+        return self._cur.fetchall()
+        
+    @property
+    def lastrowid(self):
+        return self._cur.lastrowid
+
+class _MariaDBConnection:
+    def __init__(self, raw_conn):
+        self._conn = raw_conn
+
+    def cursor(self):
+        return _MariaDBCursor(self._conn.cursor())
+
+    def execute(self, sql, params=()):
+        return self.cursor().execute(sql, params)
+
+    def commit(self):
+        self._conn.commit()
+
+    def close(self):
+        self._conn.close()
+
+
 def get_db():
+    if getattr(Config, 'USE_MARIADB', False):
+        conn = pymysql.connect(
+            host=Config.MARIADB_HOST,
+            user=Config.MARIADB_USER,
+            password=Config.MARIADB_PASSWORD,
+            database=Config.MARIADB_DB,
+            port=Config.MARIADB_PORT,
+            cursorclass=pymysql.cursors.DictCursor
+        )
+        return _MariaDBConnection(conn)
     if Config.USE_POSTGRES:
         return _PgConnection(psycopg2.connect(Config.DATABASE_URL))
     conn = sqlite3.connect(Config.DATABASE)
@@ -55,6 +104,9 @@ def get_db():
     return conn
 
 def _insert_returning_id(cursor, sql, params):
+    if getattr(Config, 'USE_MARIADB', False):
+        cursor.execute(sql, params)
+        return cursor.lastrowid
     if Config.USE_POSTGRES:
         return cursor.execute(sql + ' RETURNING id', params).fetchone()['id']
     cursor.execute(sql, params)
@@ -118,7 +170,108 @@ _SCHEMA_POSTGRES = '''
     );
 '''
 
+_SCHEMA_MARIADB = '''
+    CREATE TABLE IF NOT EXISTS departments (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        code VARCHAR(255) UNIQUE NOT NULL,
+        description TEXT,
+        icon VARCHAR(255) DEFAULT 'bi-folder',
+        color VARCHAR(255) DEFAULT '#CB9727',
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255),
+        password_hash VARCHAR(255) NOT NULL,
+        role VARCHAR(255) DEFAULT 'user',
+        department_id INT,
+        active INT DEFAULT 1,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (department_id) REFERENCES departments (id) ON DELETE SET NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS user_departments (
+        user_id INT NOT NULL,
+        department_id INT NOT NULL,
+        PRIMARY KEY (user_id, department_id),
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+        FOREIGN KEY (department_id) REFERENCES departments (id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS reports (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        department_id INT NOT NULL,
+        embed_url TEXT NOT NULL,
+        icon VARCHAR(255) DEFAULT 'bi-bar-chart-line',
+        is_public INT DEFAULT 0,
+        display_order INT DEFAULT 0,
+        active INT DEFAULT 1,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (department_id) REFERENCES departments (id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS user_reports (
+        user_id INT NOT NULL,
+        report_id INT NOT NULL,
+        PRIMARY KEY (user_id, report_id),
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+        FOREIGN KEY (report_id) REFERENCES reports (id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS access_logs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT,
+        report_id INT,
+        action VARCHAR(255) NOT NULL,
+        ip_address VARCHAR(255),
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL,
+        FOREIGN KEY (report_id) REFERENCES reports (id) ON DELETE SET NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS portal_tools (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        url VARCHAR(255) NOT NULL,
+        icon VARCHAR(255) DEFAULT 'bi-link-45deg',
+        custom_svg TEXT,
+        is_active INT DEFAULT 1,
+        display_order INT DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS portal_settings (
+        `key` VARCHAR(255) PRIMARY KEY,
+        value TEXT,
+        description TEXT,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+'''
+
 def init_db():
+    if getattr(Config, 'USE_MARIADB', False):
+        conn = pymysql.connect(
+            host=Config.MARIADB_HOST,
+            user=Config.MARIADB_USER,
+            password=Config.MARIADB_PASSWORD,
+            database=Config.MARIADB_DB,
+            port=Config.MARIADB_PORT,
+            autocommit=True
+        )
+        with conn.cursor() as cursor:
+            # pymysql requires splitting multiple statements or executing one by one
+            for statement in _SCHEMA_MARIADB.split(';'):
+                if statement.strip():
+                    cursor.execute(statement)
+        conn.close()
+        return
+
     if Config.USE_POSTGRES:
         conn = psycopg2.connect(Config.DATABASE_URL)
         with conn.cursor() as cursor:
@@ -630,7 +783,10 @@ def get_portal_settings():
 def set_portal_setting(key, value, description=''):
     conn = get_db()
     c = conn.cursor()
-    if Config.USE_POSTGRES:
+    if getattr(Config, 'USE_MARIADB', False):
+        c.execute("INSERT INTO portal_settings (`key`, value, description, updated_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP) ON DUPLICATE KEY UPDATE value = VALUES(value), updated_at = CURRENT_TIMESTAMP",
+                  (key, value, description))
+    elif Config.USE_POSTGRES:
         c.execute("INSERT INTO portal_settings (key, value, description, updated_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = CURRENT_TIMESTAMP",
                   (key, value, description))
     else:
