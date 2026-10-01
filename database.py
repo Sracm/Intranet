@@ -776,7 +776,7 @@ def delete_portal_tool(tool_id):
 
 def get_portal_settings():
     conn = get_db()
-    rows = conn.execute("SELECT key, value FROM portal_settings").fetchall()
+    rows = conn.execute("SELECT * FROM portal_settings").fetchall()
     conn.close()
     return {r['key']: r['value'] for r in rows}
 
