@@ -233,6 +233,18 @@ def view_report(report_id):
     # Sanitiza URL de embed (adaptando localhost para o IP da rede se acessado remotamente)
     embed_url = resolve_embed_url(report['embed_url'].strip())
 
+    # Se for relatório do DRE Gestores (:5100), injeta o usuário autenticado e token seguro
+    username = session.get('username', '')
+    if ':5100' in embed_url and username:
+        import hmac, hashlib, time
+        secret = os.getenv("DRE_AUTH_SECRET", "mq-hair-dre-secure-token-2026")
+        exp = int(time.time()) + 86400
+        payload = f"{username}:{exp}"
+        sig = hmac.new(secret.encode(), payload.encode(), hashlib.sha256).hexdigest()
+        token = f"{payload}:{sig}"
+        sep = '&' if '?' in embed_url else '?'
+        embed_url = f"{embed_url}{sep}user={username}&token={token}"
+
     return render_template('report_view.html', report=report, embed_url=embed_url)
 
 # ----------------- PAINEL ADMINISTRATIVO ----------------- #
