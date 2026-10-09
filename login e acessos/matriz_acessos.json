@@ -1,527 +1,764 @@
 [
   {
-    "usuario": "antonio.mello",
-    "codcencus": 1010100,
-    "centro_resultado": "1010100 - VAREJO - SP",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
+    "usuario": "ricardo.pavao",
+    "canal": "Distribuição",
     "codcencus": 1010200,
-    "centro_resultado": "1010200 - VAREJO - RJ",
-    "canal": "Coordenação Geral",
-    "ativo": 1
+    "centro_resultado": "1010200 - VAREJO - RJ"
   },
   {
-    "usuario": "antonio.mello",
+    "usuario": "ricardo.pavao",
+    "canal": "Distribuição",
     "codcencus": 1010300,
-    "centro_resultado": "1010300 - VAREJO - ND",
-    "canal": "Coordenação Geral",
-    "ativo": 1
+    "centro_resultado": "1010300 - VAREJO - MG"
   },
   {
-    "usuario": "antonio.mello",
+    "usuario": "ricardo.pavao",
+    "canal": "Distribuição",
     "codcencus": 1010400,
-    "centro_resultado": "1010400 - VAREJO - SUL",
-    "canal": "Coordenação Geral",
-    "ativo": 1
+    "centro_resultado": "1010400 - VAREJO - RS"
   },
   {
-    "usuario": "antonio.mello",
+    "usuario": "ricardo.pavao",
+    "canal": "Distribuição",
     "codcencus": 1020000,
-    "centro_resultado": "1020000 - DISTRIBUICAO",
-    "canal": "Coordenação Geral",
-    "ativo": 1
+    "centro_resultado": "1020000 - DISTRIBUICAO"
   },
   {
-    "usuario": "antonio.mello",
-    "codcencus": 1050000,
-    "centro_resultado": "1050000 - COMERCIO EXTERIOR",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 2010000,
-    "centro_resultado": "2010000 - SAC",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 3000000,
-    "centro_resultado": "3000000 - ASSISTENCIA TECNICA",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 3010000,
-    "centro_resultado": "3010000 - ASSISTENCIA TECNICA",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 4010500,
-    "centro_resultado": "4010500 - LOGISTICA - SP",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 4010600,
-    "centro_resultado": "4010600 - LOGISTICA - RJ",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 4010700,
-    "centro_resultado": "4010700 - LOGISTICA - SC",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 6040000,
-    "centro_resultado": "6040000 - ADMINISTRATIVO",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 7010000,
-    "centro_resultado": "7010000 - TI - SERVICO INTERNO",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 7020000,
-    "centro_resultado": "7020000 - SERVICOS TI",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 9010000,
-    "centro_resultado": "9010000 - RH",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 10010000,
-    "centro_resultado": "10010000 - MARKETING",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 10011001,
-    "centro_resultado": "10011001 - MARKETING - NACIONAL - MQ",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 10011002,
-    "centro_resultado": "10011002 - MARKETING - NACIONAL - FORCE BARB",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 10011003,
-    "centro_resultado": "10011003 - MARKETING - NACIONAL - ACESSORIO",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 10011005,
-    "centro_resultado": "10011005 - MARKETING - DIGITAL",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 10020000,
-    "centro_resultado": "10020000 - DESENVOLVIMENTO DE PRODUTOS",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 12000000,
-    "centro_resultado": "12000000 - E-COMMERCE",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 12010000,
-    "centro_resultado": "12010000 - E-COMMERCE",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 12040000,
-    "centro_resultado": "12040000 - LOJA PROPRIA (FISICA)",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 12050000,
-    "centro_resultado": "12050000 - MERCADO LIVRE",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 12090000,
-    "centro_resultado": "12090000 - MAGALU",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 12130000,
-    "centro_resultado": "12130000 - LOJA VTEX",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 12140000,
-    "centro_resultado": "12140000 - LOJA DM COMMERCE (PARLUX)",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 12190000,
-    "centro_resultado": "12190000 - LOJA SHOPEE",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 19000000,
-    "centro_resultado": "19000000 - ADMINISTRATIVO - CORPORATIVO",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 23000000,
-    "centro_resultado": "23000000 - FCC COM",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 23010000,
-    "centro_resultado": "23010000 - FCC COMERCIO EUA",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
-    "codcencus": 23020000,
-    "centro_resultado": "23020000 - FCC COMERCIO",
-    "canal": "Coordenação Geral",
-    "ativo": 1
-  },
-  {
-    "usuario": "antonio.mello",
+    "usuario": "vinicius.resina",
+    "canal": "Ecommerce",
     "codcencus": 24000000,
-    "centro_resultado": "24000000 - FCC ECOMMERCE",
-    "canal": "Coordenação Geral",
-    "ativo": 1
+    "centro_resultado": "24000000 - FCC ECOMMERCE"
   },
   {
-    "usuario": "antonio.mello",
-    "codcencus": 24010101,
-    "centro_resultado": "24010101 - FCC AMAZON",
-    "canal": "Coordenação Geral",
-    "ativo": 1
+    "usuario": "vinicius.resina",
+    "canal": "Ecommerce",
+    "codcencus": 12190000,
+    "centro_resultado": "12190000 - LOJA SHOPEE"
   },
   {
-    "usuario": "dirceu.parente",
-    "codcencus": 4010500,
-    "centro_resultado": "4010500 - LOGISTICA - SP",
-    "canal": "Logística",
-    "ativo": 1
+    "usuario": "vinicius.resina",
+    "canal": "Ecommerce",
+    "codcencus": 12130000,
+    "centro_resultado": "12130000 - LOJA VTEX"
   },
   {
-    "usuario": "dirceu.parente",
-    "codcencus": 4010600,
-    "centro_resultado": "4010600 - LOGISTICA - RJ",
-    "canal": "Logística",
-    "ativo": 1
+    "usuario": "vinicius.resina",
+    "canal": "Ecommerce",
+    "codcencus": 12090000,
+    "centro_resultado": "12090000 - MAGALU"
   },
   {
-    "usuario": "dirceu.parente",
-    "codcencus": 4010700,
-    "centro_resultado": "4010700 - LOGISTICA - SC",
-    "canal": "Logística",
-    "ativo": 1
+    "usuario": "vinicius.resina",
+    "canal": "Ecommerce",
+    "codcencus": 12050000,
+    "centro_resultado": "12050000 - MERCADO LIVRE"
   },
   {
-    "usuario": "felipe.castellano",
-    "codcencus": 1050000,
-    "centro_resultado": "1050000 - COMERCIO EXTERIOR",
-    "canal": "Comex",
-    "ativo": 1
+    "usuario": "vinicius.resina",
+    "canal": "Ecommerce",
+    "codcencus": 12040000,
+    "centro_resultado": "12040000 - LOJA PROPRIA (FISICA)"
   },
   {
-    "usuario": "felipe.castellano",
-    "codcencus": 23000000,
-    "centro_resultado": "23000000 - FCC COM",
-    "canal": "Comex",
-    "ativo": 1
-  },
-  {
-    "usuario": "felipe.castellano",
-    "codcencus": 23010000,
-    "centro_resultado": "23010000 - FCC COMERCIO EUA",
-    "canal": "Comex",
-    "ativo": 1
-  },
-  {
-    "usuario": "felipe.castellano",
-    "codcencus": 23020000,
-    "centro_resultado": "23020000 - FCC COMERCIO",
-    "canal": "Comex",
-    "ativo": 1
-  },
-  {
-    "usuario": "felipe.castellano",
-    "codcencus": 24010101,
-    "centro_resultado": "24010101 - FCC AMAZON",
-    "canal": "Comex",
-    "ativo": 1
-  },
-  {
-    "usuario": "frederico.donizete",
-    "codcencus": 2010000,
-    "centro_resultado": "2010000 - SAC",
-    "canal": "Assit. & Adm",
-    "ativo": 1
-  },
-  {
-    "usuario": "frederico.donizete",
-    "codcencus": 3000000,
-    "centro_resultado": "3000000 - ASSISTENCIA TECNICA",
-    "canal": "Assit. & Adm",
-    "ativo": 1
-  },
-  {
-    "usuario": "frederico.donizete",
-    "codcencus": 3010000,
-    "centro_resultado": "3010000 - ASSISTENCIA TECNICA",
-    "canal": "Assit. & Adm",
-    "ativo": 1
-  },
-  {
-    "usuario": "frederico.donizete",
-    "codcencus": 6040000,
-    "centro_resultado": "6040000 - ADMINISTRATIVO",
-    "canal": "Assit. & Adm",
-    "ativo": 1
-  },
-  {
-    "usuario": "frederico.donizete",
-    "codcencus": 19000000,
-    "centro_resultado": "19000000 - ADMINISTRATIVO - CORPORATIVO",
-    "canal": "Assit. & Adm",
-    "ativo": 1
-  },
-  {
-    "usuario": "frederico.donizeti",
-    "codcencus": 2010000,
-    "centro_resultado": "2010000 - SAC",
-    "canal": "Assit. & Adm",
-    "ativo": 1
-  },
-  {
-    "usuario": "frederico.donizeti",
-    "codcencus": 3000000,
-    "centro_resultado": "3000000 - ASSISTENCIA TECNICA",
-    "canal": "Assit. & Adm",
-    "ativo": 1
-  },
-  {
-    "usuario": "frederico.donizeti",
-    "codcencus": 3010000,
-    "centro_resultado": "3010000 - ASSISTENCIA TECNICA",
-    "canal": "Assit. & Adm",
-    "ativo": 1
-  },
-  {
-    "usuario": "frederico.donizeti",
-    "codcencus": 6040000,
-    "centro_resultado": "6040000 - ADMINISTRATIVO",
-    "canal": "Assit. & Adm",
-    "ativo": 1
-  },
-  {
-    "usuario": "frederico.donizeti",
-    "codcencus": 19000000,
-    "centro_resultado": "19000000 - ADMINISTRATIVO - CORPORATIVO",
-    "canal": "Assit. & Adm",
-    "ativo": 1
-  },
-  {
-    "usuario": "maria.macedo",
-    "codcencus": 9010000,
-    "centro_resultado": "9010000 - RH",
-    "canal": "RH",
-    "ativo": 1
-  },
-  {
-    "usuario": "ricardo.pavao",
-    "codcencus": 1010200,
-    "centro_resultado": "1010200 - VAREJO - RJ",
-    "canal": "Distribuição",
-    "ativo": 1
-  },
-  {
-    "usuario": "ricardo.pavao",
-    "codcencus": 1010300,
-    "centro_resultado": "1010300 - VAREJO - ND",
-    "canal": "Distribuição",
-    "ativo": 1
-  },
-  {
-    "usuario": "ricardo.pavao",
-    "codcencus": 1010400,
-    "centro_resultado": "1010400 - VAREJO - SUL",
-    "canal": "Distribuição",
-    "ativo": 1
-  },
-  {
-    "usuario": "ricardo.pavao",
-    "codcencus": 1020000,
-    "centro_resultado": "1020000 - DISTRIBUICAO",
-    "canal": "Distribuição",
-    "ativo": 1
-  },
-  {
-    "usuario": "ricardo.stobodzian",
-    "codcencus": 1010100,
-    "centro_resultado": "1010100 - VAREJO - SP",
-    "canal": "Regional SP",
-    "ativo": 1
-  },
-  {
-    "usuario": "seije.luz",
-    "codcencus": 7010000,
-    "centro_resultado": "7010000 - TI - SERVICO INTERNO",
-    "canal": "Marketing",
-    "ativo": 1
-  },
-  {
-    "usuario": "seije.luz",
-    "codcencus": 7020000,
-    "centro_resultado": "7020000 - SERVIÇOS TI",
-    "canal": "Marketing",
-    "ativo": 1
-  },
-  {
-    "usuario": "seije.luz",
-    "codcencus": 10010000,
-    "centro_resultado": "10010000 - MARKETING",
-    "canal": "Marketing",
-    "ativo": 1
-  },
-  {
-    "usuario": "seije.luz",
-    "codcencus": 10011001,
-    "centro_resultado": "10011001 - MARKETING - NACIONAL - MQ",
-    "canal": "Marketing",
-    "ativo": 1
-  },
-  {
-    "usuario": "seije.luz",
-    "codcencus": 10011002,
-    "centro_resultado": "10011002 - MARKETING - NACIONAL - FORCE BARB",
-    "canal": "Marketing",
-    "ativo": 1
-  },
-  {
-    "usuario": "seije.luz",
-    "codcencus": 10011003,
-    "centro_resultado": "10011003 - MARKETING - NACIONAL - ACESSORIO",
-    "canal": "Marketing",
-    "ativo": 1
-  },
-  {
-    "usuario": "seije.luz",
-    "codcencus": 10011005,
-    "centro_resultado": "10011005 - MARKETING - DIGITAL",
-    "canal": "Marketing",
-    "ativo": 1
+    "usuario": "vinicius.resina",
+    "canal": "Ecommerce",
+    "codcencus": 12140000,
+    "centro_resultado": "12140000 - LOJA DM COMMERCE (PARLUX)"
   },
   {
     "usuario": "thiago.figueiredo",
-    "codcencus": 10020000,
-    "centro_resultado": "10020000 - DESENVOLVIMENTO DE PRODUTOS",
     "canal": "Desenv. Produtos",
-    "ativo": 1
+    "codcencus": 10020000,
+    "centro_resultado": "10020000 - DESENVOLVIMENTO DE PRODUTOS"
   },
   {
-    "usuario": "vinicius.resina",
-    "codcencus": 12040000,
-    "centro_resultado": "12040000 - LOJA PROPRIA (FISICA)",
+    "usuario": "ricardo.stobodzian",
+    "canal": "Regional SP",
+    "codcencus": 1010100,
+    "centro_resultado": "1010100 - VAREJO - SP"
+  },
+  {
+    "usuario": "felipe.castellano",
+    "canal": "Comex",
+    "codcencus": 1050000,
+    "centro_resultado": "1050000 - COMERCIO EXTERIOR"
+  },
+  {
+    "usuario": "felipe.castellano",
+    "canal": "Comex",
+    "codcencus": 24010101,
+    "centro_resultado": "24010101 - FCC AMAZON"
+  },
+  {
+    "usuario": "felipe.castellano",
+    "canal": "Comex",
+    "codcencus": 23020000,
+    "centro_resultado": "23020000 - FCC COMERCIO"
+  },
+  {
+    "usuario": "felipe.castellano",
+    "canal": "Comex",
+    "codcencus": 23010000,
+    "centro_resultado": "23010000 - FCC COMERCIO EUA"
+  },
+  {
+    "usuario": "maria.macedo",
+    "canal": "RH",
+    "codcencus": 9010000,
+    "centro_resultado": "9010000 - RH"
+  },
+  {
+    "usuario": "dirceu.parente",
+    "canal": "Logística",
+    "codcencus": 4010500,
+    "centro_resultado": "4010500 - LOGISTICA - SP"
+  },
+  {
+    "usuario": "dirceu.parente",
+    "canal": "Logística",
+    "codcencus": 4010600,
+    "centro_resultado": "4010600 - LOGISTICA - RJ"
+  },
+  {
+    "usuario": "dirceu.parente",
+    "canal": "Logística",
+    "codcencus": 4010700,
+    "centro_resultado": "4010700 - LOGISTICA - SC"
+  },
+  {
+    "usuario": "seije.luz",
+    "canal": "Marketing",
+    "codcencus": 10010000,
+    "centro_resultado": "10010000 - MARKETING"
+  },
+  {
+    "usuario": "seije.luz",
+    "canal": "Marketing",
+    "codcencus": 10011001,
+    "centro_resultado": "10011001 - MARKETING - NACIONAL - MQ"
+  },
+  {
+    "usuario": "seije.luz",
+    "canal": "Marketing",
+    "codcencus": 10011002,
+    "centro_resultado": "10011002 - MARKETING - NACIONAL - FORCE BARB"
+  },
+  {
+    "usuario": "seije.luz",
+    "canal": "Marketing",
+    "codcencus": 10011003,
+    "centro_resultado": "10011003 - MARKETING - NACIONAL - ACESSORIO"
+  },
+  {
+    "usuario": "seije.luz",
+    "canal": "Marketing",
+    "codcencus": 10011005,
+    "centro_resultado": "10011005 - MARKETING - DIGITAL"
+  },
+  {
+    "usuario": "seije.luz",
+    "canal": "Marketing",
+    "codcencus": 7010000,
+    "centro_resultado": "7010000 - TI - SERVICO INTERNO"
+  },
+  {
+    "usuario": "seije.luz",
+    "canal": "Marketing",
+    "codcencus": 7020000,
+    "centro_resultado": "7020000 - SERVICOS TI"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Distribuição",
+    "codcencus": 1010200,
+    "centro_resultado": "1010200 - VAREJO - RJ"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Distribuição",
+    "codcencus": 1010300,
+    "centro_resultado": "1010300 - VAREJO - MG"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Distribuição",
+    "codcencus": 1010400,
+    "centro_resultado": "1010400 - VAREJO - RS"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Distribuição",
+    "codcencus": 1020000,
+    "centro_resultado": "1020000 - DISTRIBUICAO"
+  },
+  {
+    "usuario": "admin",
     "canal": "Ecommerce",
-    "ativo": 1
-  },
-  {
-    "usuario": "vinicius.resina",
-    "codcencus": 12050000,
-    "centro_resultado": "12050000 - MERCADO LIVRE",
-    "canal": "Ecommerce",
-    "ativo": 1
-  },
-  {
-    "usuario": "vinicius.resina",
-    "codcencus": 12090000,
-    "centro_resultado": "12090000 - MAGALU",
-    "canal": "Ecommerce",
-    "ativo": 1
-  },
-  {
-    "usuario": "vinicius.resina",
-    "codcencus": 12130000,
-    "centro_resultado": "12130000 - LOJA VTEX",
-    "canal": "Ecommerce",
-    "ativo": 1
-  },
-  {
-    "usuario": "vinicius.resina",
-    "codcencus": 12140000,
-    "centro_resultado": "12140000 - LOJA DM COMMERCE (PARLUX)",
-    "canal": "Ecommerce",
-    "ativo": 1
-  },
-  {
-    "usuario": "vinicius.resina",
-    "codcencus": 12190000,
-    "centro_resultado": "12190000 - LOJA SHOPEE",
-    "canal": "Ecommerce",
-    "ativo": 1
-  },
-  {
-    "usuario": "vinicius.resina",
     "codcencus": 24000000,
-    "centro_resultado": "24000000 - FCC ECOMMERCE",
+    "centro_resultado": "24000000 - FCC ECOMMERCE"
+  },
+  {
+    "usuario": "admin",
     "canal": "Ecommerce",
-    "ativo": 1
+    "codcencus": 12190000,
+    "centro_resultado": "12190000 - LOJA SHOPEE"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Ecommerce",
+    "codcencus": 12130000,
+    "centro_resultado": "12130000 - LOJA VTEX"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Ecommerce",
+    "codcencus": 12090000,
+    "centro_resultado": "12090000 - MAGALU"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Ecommerce",
+    "codcencus": 12050000,
+    "centro_resultado": "12050000 - MERCADO LIVRE"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Ecommerce",
+    "codcencus": 12040000,
+    "centro_resultado": "12040000 - LOJA PROPRIA (FISICA)"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Ecommerce",
+    "codcencus": 12140000,
+    "centro_resultado": "12140000 - LOJA DM COMMERCE (PARLUX)"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Desenv. Produtos",
+    "codcencus": 10020000,
+    "centro_resultado": "10020000 - DESENVOLVIMENTO DE PRODUTOS"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Regional SP",
+    "codcencus": 1010100,
+    "centro_resultado": "1010100 - VAREJO - SP"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Comex",
+    "codcencus": 1050000,
+    "centro_resultado": "1050000 - COMERCIO EXTERIOR"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Comex",
+    "codcencus": 24010101,
+    "centro_resultado": "24010101 - FCC AMAZON"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Comex",
+    "codcencus": 23020000,
+    "centro_resultado": "23020000 - FCC COMERCIO"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Comex",
+    "codcencus": 23010000,
+    "centro_resultado": "23010000 - FCC COMERCIO EUA"
+  },
+  {
+    "usuario": "admin",
+    "canal": "RH",
+    "codcencus": 9010000,
+    "centro_resultado": "9010000 - RH"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Logística",
+    "codcencus": 4010500,
+    "centro_resultado": "4010500 - LOGISTICA - SP"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Logística",
+    "codcencus": 4010600,
+    "centro_resultado": "4010600 - LOGISTICA - RJ"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Logística",
+    "codcencus": 4010700,
+    "centro_resultado": "4010700 - LOGISTICA - SC"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Marketing",
+    "codcencus": 10010000,
+    "centro_resultado": "10010000 - MARKETING"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Marketing",
+    "codcencus": 10011001,
+    "centro_resultado": "10011001 - MARKETING - NACIONAL - MQ"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Marketing",
+    "codcencus": 10011002,
+    "centro_resultado": "10011002 - MARKETING - NACIONAL - FORCE BARB"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Marketing",
+    "codcencus": 10011003,
+    "centro_resultado": "10011003 - MARKETING - NACIONAL - ACESSORIO"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Marketing",
+    "codcencus": 10011005,
+    "centro_resultado": "10011005 - MARKETING - DIGITAL"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Marketing",
+    "codcencus": 7010000,
+    "centro_resultado": "7010000 - TI - SERVICO INTERNO"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Marketing",
+    "codcencus": 7020000,
+    "centro_resultado": "7020000 - SERVICOS TI"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Assist. & Adm",
+    "codcencus": 6040000,
+    "centro_resultado": "6040000 - ADMINISTRATIVO"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Assist. & Adm",
+    "codcencus": 19000000,
+    "centro_resultado": "19000000 - ADMINISTRATIVO - CORPORATIVO"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Assist. & Adm",
+    "codcencus": 3000000,
+    "centro_resultado": "3000000 - ASSISTENCIA TECNICA"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Assist. & Adm",
+    "codcencus": 3010000,
+    "centro_resultado": "3010000 - ASSISTENCIA TECNICA"
+  },
+  {
+    "usuario": "admin",
+    "canal": "Assist. & Adm",
+    "codcencus": 2010000,
+    "centro_resultado": "2010000 - SAC"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Distribuição",
+    "codcencus": 1010200,
+    "centro_resultado": "1010200 - VAREJO - RJ"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Distribuição",
+    "codcencus": 1010300,
+    "centro_resultado": "1010300 - VAREJO - MG"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Distribuição",
+    "codcencus": 1010400,
+    "centro_resultado": "1010400 - VAREJO - RS"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Distribuição",
+    "codcencus": 1020000,
+    "centro_resultado": "1020000 - DISTRIBUICAO"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Ecommerce",
+    "codcencus": 24000000,
+    "centro_resultado": "24000000 - FCC ECOMMERCE"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Ecommerce",
+    "codcencus": 12190000,
+    "centro_resultado": "12190000 - LOJA SHOPEE"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Ecommerce",
+    "codcencus": 12130000,
+    "centro_resultado": "12130000 - LOJA VTEX"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Ecommerce",
+    "codcencus": 12090000,
+    "centro_resultado": "12090000 - MAGALU"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Ecommerce",
+    "codcencus": 12050000,
+    "centro_resultado": "12050000 - MERCADO LIVRE"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Ecommerce",
+    "codcencus": 12040000,
+    "centro_resultado": "12040000 - LOJA PROPRIA (FISICA)"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Ecommerce",
+    "codcencus": 12140000,
+    "centro_resultado": "12140000 - LOJA DM COMMERCE (PARLUX)"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Desenv. Produtos",
+    "codcencus": 10020000,
+    "centro_resultado": "10020000 - DESENVOLVIMENTO DE PRODUTOS"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Regional SP",
+    "codcencus": 1010100,
+    "centro_resultado": "1010100 - VAREJO - SP"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Comex",
+    "codcencus": 1050000,
+    "centro_resultado": "1050000 - COMERCIO EXTERIOR"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Comex",
+    "codcencus": 24010101,
+    "centro_resultado": "24010101 - FCC AMAZON"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Comex",
+    "codcencus": 23020000,
+    "centro_resultado": "23020000 - FCC COMERCIO"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Comex",
+    "codcencus": 23010000,
+    "centro_resultado": "23010000 - FCC COMERCIO EUA"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "RH",
+    "codcencus": 9010000,
+    "centro_resultado": "9010000 - RH"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Logística",
+    "codcencus": 4010500,
+    "centro_resultado": "4010500 - LOGISTICA - SP"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Logística",
+    "codcencus": 4010600,
+    "centro_resultado": "4010600 - LOGISTICA - RJ"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Logística",
+    "codcencus": 4010700,
+    "centro_resultado": "4010700 - LOGISTICA - SC"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Marketing",
+    "codcencus": 10010000,
+    "centro_resultado": "10010000 - MARKETING"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Marketing",
+    "codcencus": 10011001,
+    "centro_resultado": "10011001 - MARKETING - NACIONAL - MQ"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Marketing",
+    "codcencus": 10011002,
+    "centro_resultado": "10011002 - MARKETING - NACIONAL - FORCE BARB"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Marketing",
+    "codcencus": 10011003,
+    "centro_resultado": "10011003 - MARKETING - NACIONAL - ACESSORIO"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Marketing",
+    "codcencus": 10011005,
+    "centro_resultado": "10011005 - MARKETING - DIGITAL"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Marketing",
+    "codcencus": 7010000,
+    "centro_resultado": "7010000 - TI - SERVICO INTERNO"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Marketing",
+    "codcencus": 7020000,
+    "centro_resultado": "7020000 - SERVICOS TI"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Assist. & Adm",
+    "codcencus": 6040000,
+    "centro_resultado": "6040000 - ADMINISTRATIVO"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Assist. & Adm",
+    "codcencus": 19000000,
+    "centro_resultado": "19000000 - ADMINISTRATIVO - CORPORATIVO"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Assist. & Adm",
+    "codcencus": 3000000,
+    "centro_resultado": "3000000 - ASSISTENCIA TECNICA"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Assist. & Adm",
+    "codcencus": 3010000,
+    "centro_resultado": "3010000 - ASSISTENCIA TECNICA"
+  },
+  {
+    "usuario": "vagner.luz",
+    "canal": "Assist. & Adm",
+    "codcencus": 2010000,
+    "centro_resultado": "2010000 - SAC"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Distribuição",
+    "codcencus": 1010200,
+    "centro_resultado": "1010200 - VAREJO - RJ"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Distribuição",
+    "codcencus": 1010300,
+    "centro_resultado": "1010300 - VAREJO - MG"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Distribuição",
+    "codcencus": 1010400,
+    "centro_resultado": "1010400 - VAREJO - RS"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Distribuição",
+    "codcencus": 1020000,
+    "centro_resultado": "1020000 - DISTRIBUICAO"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Ecommerce",
+    "codcencus": 24000000,
+    "centro_resultado": "24000000 - FCC ECOMMERCE"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Ecommerce",
+    "codcencus": 12190000,
+    "centro_resultado": "12190000 - LOJA SHOPEE"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Ecommerce",
+    "codcencus": 12130000,
+    "centro_resultado": "12130000 - LOJA VTEX"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Ecommerce",
+    "codcencus": 12090000,
+    "centro_resultado": "12090000 - MAGALU"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Ecommerce",
+    "codcencus": 12050000,
+    "centro_resultado": "12050000 - MERCADO LIVRE"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Ecommerce",
+    "codcencus": 12040000,
+    "centro_resultado": "12040000 - LOJA PROPRIA (FISICA)"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Ecommerce",
+    "codcencus": 12140000,
+    "centro_resultado": "12140000 - LOJA DM COMMERCE (PARLUX)"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Desenv. Produtos",
+    "codcencus": 10020000,
+    "centro_resultado": "10020000 - DESENVOLVIMENTO DE PRODUTOS"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Regional SP",
+    "codcencus": 1010100,
+    "centro_resultado": "1010100 - VAREJO - SP"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Comex",
+    "codcencus": 1050000,
+    "centro_resultado": "1050000 - COMERCIO EXTERIOR"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Comex",
+    "codcencus": 24010101,
+    "centro_resultado": "24010101 - FCC AMAZON"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Comex",
+    "codcencus": 23020000,
+    "centro_resultado": "23020000 - FCC COMERCIO"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Comex",
+    "codcencus": 23010000,
+    "centro_resultado": "23010000 - FCC COMERCIO EUA"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "RH",
+    "codcencus": 9010000,
+    "centro_resultado": "9010000 - RH"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Logística",
+    "codcencus": 4010500,
+    "centro_resultado": "4010500 - LOGISTICA - SP"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Logística",
+    "codcencus": 4010600,
+    "centro_resultado": "4010600 - LOGISTICA - RJ"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Logística",
+    "codcencus": 4010700,
+    "centro_resultado": "4010700 - LOGISTICA - SC"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Marketing",
+    "codcencus": 10010000,
+    "centro_resultado": "10010000 - MARKETING"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Marketing",
+    "codcencus": 10011001,
+    "centro_resultado": "10011001 - MARKETING - NACIONAL - MQ"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Marketing",
+    "codcencus": 10011002,
+    "centro_resultado": "10011002 - MARKETING - NACIONAL - FORCE BARB"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Marketing",
+    "codcencus": 10011003,
+    "centro_resultado": "10011003 - MARKETING - NACIONAL - ACESSORIO"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Marketing",
+    "codcencus": 10011005,
+    "centro_resultado": "10011005 - MARKETING - DIGITAL"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Marketing",
+    "codcencus": 7010000,
+    "centro_resultado": "7010000 - TI - SERVICO INTERNO"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Marketing",
+    "codcencus": 7020000,
+    "centro_resultado": "7020000 - SERVICOS TI"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Assist. & Adm",
+    "codcencus": 6040000,
+    "centro_resultado": "6040000 - ADMINISTRATIVO"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Assist. & Adm",
+    "codcencus": 19000000,
+    "centro_resultado": "19000000 - ADMINISTRATIVO - CORPORATIVO"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Assist. & Adm",
+    "codcencus": 3000000,
+    "centro_resultado": "3000000 - ASSISTENCIA TECNICA"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Assist. & Adm",
+    "codcencus": 3010000,
+    "centro_resultado": "3010000 - ASSISTENCIA TECNICA"
+  },
+  {
+    "usuario": "rodrigo.pinhata",
+    "canal": "Assist. & Adm",
+    "codcencus": 2010000,
+    "centro_resultado": "2010000 - SAC"
   }
 ]
