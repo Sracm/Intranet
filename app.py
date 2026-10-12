@@ -244,6 +244,10 @@ def view_report(report_id):
         token = f"{payload}:{sig}"
         sep = '&' if '?' in embed_url else '?'
         embed_url = f"{embed_url}{sep}user={username}&token={token}"
+    # DRE Empresa (:5150) e Dashboard TV (:5050): repassa o usuario logado para a saudacao da MQIA
+    elif (':5150' in embed_url or ':5050' in embed_url) and username and 'user=' not in embed_url:
+        sep = '&' if '?' in embed_url else '?'
+        embed_url = f"{embed_url}{sep}user={username}"
 
     return render_template('report_view.html', report=report, embed_url=embed_url)
 

@@ -497,5 +497,14 @@
   <!-- Core Scripts -->
   <script src="{{ url_for('static', filename='js/portal.js') }}?v=20260924_v11"></script>
   {% block extra_js %}{% endblock %}
+  <!-- Sincronizacao Usuario MQIA -->
+  {% if session.get('name') %}
+  <script>
+    try {
+      localStorage.setItem('mq_user_name', {{ session.get('name') | tojson }});
+      document.cookie = 'mq_user_name=' + encodeURIComponent({{ session.get('name') | tojson }}) + '; path=/; max-age=2592000';
+    } catch(e) {}
+  </script>
+  {% endif %}
 </body>
 </html>
