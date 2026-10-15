@@ -58,7 +58,7 @@ def run_seed():
             'color': '#6F42C1'
         },
         {
-            'name': 'Diretoria',
+            'name': 'Cockpit Geral de Indicadores Estratégicos',
             'code': 'diretoria',
             'description': 'Cockpit executivo, KPIs estratégicos consolidados e margem líquida.',
             'icon': 'bi-briefcase',

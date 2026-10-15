@@ -125,6 +125,9 @@
             </span>
           </div>
 
+          {% if r.is_top %}
+          <div title="{{ r.views }} acessos" style="display: inline-flex; align-items: center; gap: 5px; margin-bottom: 8px; background: rgba(245,158,11,0.14); border: 1px solid rgba(245,158,11,0.4); color: #f59e0b; padding: 2px 9px; border-radius: 20px; font-size: 10.5px; font-weight: 700;"><i class="bi bi-fire"></i> Mais acessado</div>
+          {% endif %}
           <h3 style="font-size: 15px; font-weight: 700; color: #fff; margin: 0 0 8px 0; line-height: 1.35;">{{ r.title }}</h3>
           <p style="font-size: 12px; color: #94a3b8; margin: 0; line-height: 1.5; min-height: 38px;">
             {{ r.description or 'Acompanhamento executivo, metas, indicadores consolidados e gestão de resultados.' }}
@@ -334,6 +337,9 @@
                   </div>
                   <span style="background: rgba(255,255,255,0.06); padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase;">{{ r.dept_name or 'Corporativo' }}</span>
                 </div>
+                {% if r.is_top %}
+                <div title="{{ r.views }} acessos" style="display: inline-flex; align-items: center; gap: 5px; margin-bottom: 6px; background: rgba(245,158,11,0.14); border: 1px solid rgba(245,158,11,0.4); color: #f59e0b; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700;"><i class="bi bi-fire"></i> Mais acessado</div>
+                {% endif %}
                 <h3 style="font-size: 13.5px; font-weight: 700; color: #fff; margin: 0 0 6px 0; line-height: 1.3;">{{ r.title }}</h3>
                 <p style="font-size: 11px; color: #94a3b8; margin: 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                   {{ r.description or 'Visualização interativa corporativa' }}

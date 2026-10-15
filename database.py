@@ -589,8 +589,27 @@ def get_reports_for_user(user_id, is_admin=False, department_code=None):
         query += ' ORDER BY r.display_order ASC, r.title ASC'
         reports = conn.execute(query, params).fetchall()
         
+    # Ranking por popularidade: mais acessados primeiro (desempate pela ordem manual e título)
+    counts = {
+        row['report_id']: row['n']
+        for row in conn.execute(
+            "SELECT report_id, COUNT(*) AS n FROM access_logs "
+            "WHERE action = 'view_report' AND report_id IS NOT NULL GROUP BY report_id"
+        ).fetchall()
+    }
     conn.close()
-    return reports
+
+    ranked = []
+    for report in reports:
+        item = dict(report)
+        item['views'] = counts.get(item['id'], 0)
+        ranked.append(item)
+    ranked.sort(key=lambda r: (-r['views'], r.get('display_order') or 0, (r.get('title') or '').lower()))
+
+    # Top 3 com pelo menos 1 acesso recebem o selo "Mais acessado"
+    for pos, item in enumerate(ranked):
+        item['is_top'] = pos < 3 and item['views'] > 0
+    return ranked
 
 def get_user_accessible_departments(user_id, is_admin=False):
     conn = get_db()
