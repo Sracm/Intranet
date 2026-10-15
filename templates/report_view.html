@@ -123,7 +123,7 @@
     <!-- Barra Superior de Controles -->
     <div class="viewer-toolbar">
         <div class="viewer-left">
-            <a href="{{ url_for('portal') }}" class="btn-mq-outline" style="padding: 0.45rem 0.9rem; font-size: 0.82rem;">
+            <a href="{{ url_for('portal', dept=report.department_code) if report.department_code else url_for('portal') }}" class="btn-mq-outline" style="padding: 0.45rem 0.9rem; font-size: 0.82rem;">
                 <i class="bi bi-arrow-left"></i> Voltar aos Relatórios
             </a>
 

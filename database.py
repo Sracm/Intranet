@@ -604,11 +604,23 @@ def get_reports_for_user(user_id, is_admin=False, department_code=None):
         item = dict(report)
         item['views'] = counts.get(item['id'], 0)
         ranked.append(item)
-    ranked.sort(key=lambda r: (-r['views'], r.get('display_order') or 0, (r.get('title') or '').lower()))
+    # display_order negativo = card fixado no topo (ordem crescente); demais por acessos
+    ranked.sort(key=lambda r: (
+        0 if (r.get('display_order') or 0) < 0 else 1,
+        (r.get('display_order') or 0) if (r.get('display_order') or 0) < 0 else 0,
+        -r['views'],
+        r.get('display_order') or 0,
+        (r.get('title') or '').lower(),
+    ))
 
-    # Top 3 com pelo menos 1 acesso recebem o selo "Mais acessado"
-    for pos, item in enumerate(ranked):
-        item['is_top'] = pos < 3 and item['views'] > 0
+    # Top 3 (não fixados) com pelo menos 1 acesso recebem o selo "Mais acessado"
+    unpinned_pos = 0
+    for item in ranked:
+        if (item.get('display_order') or 0) < 0:
+            item['is_top'] = False
+            continue
+        item['is_top'] = unpinned_pos < 3 and item['views'] > 0
+        unpinned_pos += 1
     return ranked
 
 def get_user_accessible_departments(user_id, is_admin=False):
