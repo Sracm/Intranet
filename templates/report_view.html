@@ -185,6 +185,15 @@
         frame.src = frame.src;
     }
 
+    function notifyIframeFullscreen(isFs) {
+        const frame = document.getElementById('pbiFrame');
+        if (frame && frame.contentWindow) {
+            try {
+                frame.contentWindow.postMessage({ type: 'MQ_FULLSCREEN_CHANGE', isFullscreen: isFs }, '*');
+            } catch(e) {}
+        }
+    }
+
     function toggleFullScreen() {
         const elem = document.getElementById('viewerWrapper');
         const icon = document.getElementById('fullscreenIcon');
@@ -199,13 +208,28 @@
             }
             icon.classList.remove('bi-fullscreen');
             icon.classList.add('bi-fullscreen-exit');
+            notifyIframeFullscreen(true);
         } else {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             }
             icon.classList.remove('bi-fullscreen-exit');
             icon.classList.add('bi-fullscreen');
+            notifyIframeFullscreen(false);
         }
     }
+
+    document.addEventListener('fullscreenchange', () => {
+        const isFs = !!document.fullscreenElement;
+        const icon = document.getElementById('fullscreenIcon');
+        if (icon) {
+            icon.className = isFs ? 'bi bi-fullscreen-exit' : 'bi bi-fullscreen';
+        }
+        notifyIframeFullscreen(isFs);
+    });
+    document.addEventListener('webkitfullscreenchange', () => {
+        const isFs = !!document.webkitFullscreenElement;
+        notifyIframeFullscreen(isFs);
+    });
 </script>
 {% endblock %}
