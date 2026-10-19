@@ -254,6 +254,24 @@ def run_seed():
             'icon': 'bi-graph-up-arrow',
             'is_public': 0,
             'order': 2
+        },
+        {
+            'title': 'Dashboard SAC & Assistencia Técnica 2',
+            'description': 'Cockpit Executivo & Operacional da Diretoria de Assistência Técnica & SAC (Versão Web). Indicadores de WhatsApp/CRC, Fale Conosco, CSAT/NPS e Ordens de Serviço.',
+            'dept': 'sac',
+            'url': 'http://localhost:5300/',
+            'icon': 'bi-headset',
+            'is_public': 0,
+            'order': 4
+        },
+        {
+            'title': 'Portal Corporativo • E-Commerce',
+            'description': 'Cockpit executivo e acompanhamento diário de vendas, projeções e metas por canal: Mercado Livre, VTEX, Shopee, Magalu e Parlux.',
+            'dept': 'ecommerce',
+            'url': 'http://localhost:5200/',
+            'icon': 'bi-cart-check',
+            'is_public': 0,
+            'order': -1
         }
     ]
 

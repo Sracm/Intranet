@@ -58,11 +58,12 @@ def resolve_embed_url(url):
     try:
         host = request.host.split(':')[0]
         if host in ('localhost', '127.0.0.1'):
-            return url.replace('10.11.1.162:', f'{host}:')
+            return url.replace('10.11.1.162:', f'{host}:').replace('10.11.1.100:', f'{host}:')
         else:
             return (url.replace('localhost:', f'{host}:')
                        .replace('127.0.0.1:', f'{host}:')
-                       .replace('10.11.1.162:', f'{host}:'))
+                       .replace('10.11.1.162:', f'{host}:')
+                       .replace('10.11.1.100:', f'{host}:'))
     except Exception:
         pass
     return url

@@ -93,6 +93,7 @@ def get_db():
             password=Config.MARIADB_PASSWORD,
             database=Config.MARIADB_DB,
             port=Config.MARIADB_PORT,
+            charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor
         )
         return _MariaDBConnection(conn)

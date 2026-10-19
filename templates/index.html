@@ -115,7 +115,7 @@
                 DRE OFICIAL
               {% elif 'nubmetric' in r.title|lower %}
                 NUBMETRICS
-              {% elif 'cockpit' in r.title|lower %}
+              {% elif 'cockpit' in r.title|lower or 'portal corporativo' in r.title|lower %}
                 COCKPIT EXECUTIVO
               {% elif 'tv' in r.title|lower %}
                 PAINEL TV
@@ -139,7 +139,7 @@
             <i class="bi bi-play-circle-fill"></i>
             <span>Acessar Painel</span>
           </a>
-          <a href="{{ r.embed_url }}" target="_blank" rel="noopener noreferrer" class="btn-pill-secondary" title="Abrir em Nova Aba" style="padding: 8px 12px; font-size: 12px; color: #94a3b8; text-decoration: none; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s;">
+          <a href="{{ resolve_url(r.embed_url) }}" target="_blank" rel="noopener noreferrer" class="btn-pill-secondary" title="Abrir em Nova Aba" style="padding: 8px 12px; font-size: 12px; color: #94a3b8; text-decoration: none; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s;">
             <i class="bi bi-box-arrow-up-right"></i>
           </a>
         </div>
@@ -350,7 +350,7 @@
                   <span>Acessar Painel</span>
                   <i class="bi bi-chevron-right" style="font-size: 10px;"></i>
                 </a>
-                <a href="{{ r.embed_url }}" target="_blank" rel="noopener noreferrer" style="color: #64748b; font-size: 11.5px; text-decoration: none;">
+                <a href="{{ resolve_url(r.embed_url) }}" target="_blank" rel="noopener noreferrer" style="color: #64748b; font-size: 11.5px; text-decoration: none;">
                   <i class="bi bi-box-arrow-up-right"></i>
                 </a>
               </div>
