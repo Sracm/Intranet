@@ -23,7 +23,7 @@ def generate_pdf():
             path=pdf_path,
             format='A4',
             print_background=True,
-            margin={'top': '12mm', 'bottom': '12mm', 'left': '12mm', 'right': '12mm'}
+            margin={'top': '5mm', 'bottom': '5mm', 'left': '8mm', 'right': '8mm'}
         )
         
         # Também salva na pasta do portfolio_standalone para download online
