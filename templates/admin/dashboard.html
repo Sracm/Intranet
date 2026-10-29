@@ -7,10 +7,15 @@
 {% endblock %}
 
 {% block content %}
-<div class="admin-header">
+<div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
     <div class="admin-title-group">
         <h1>Painel Geral de Administração</h1>
         <p>Visão consolidada de acessos, relatórios e governança do portal corporativo.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('analytics_dashboard') }}" class="mq-btn mq-btn-primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 18px; font-weight: 700; border-radius: 8px;">
+            <i class="bi bi-graph-up-arrow"></i> Cockpit Completo de Usabilidade BI
+        </a>
     </div>
 </div>
 
@@ -19,8 +24,11 @@
     <a href="{{ url_for('admin_dashboard') }}" class="admin-tab-link active">
         <i class="bi bi-speedometer2"></i> Visão Geral
     </a>
+    <a href="{{ url_for('analytics_dashboard') }}" class="admin-tab-link" style="color: var(--mq-gold); font-weight: 700;">
+        <i class="bi bi-graph-up-arrow"></i> Usabilidade &amp; Acessos
+    </a>
     <a href="{{ url_for('admin_users') }}" class="admin-tab-link">
-        <i class="bi bi-people-fill"></i> Usuários & Permissões
+        <i class="bi bi-people-fill"></i> Usuários &amp; Permissões
     </a>
     <a href="{{ url_for('admin_departments') }}" class="admin-tab-link">
         <i class="bi bi-diagram-3-fill"></i> Departamentos

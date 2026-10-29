@@ -1,0 +1,516 @@
+{% extends "base.html" %}
+
+{% block title %}Cockpit de Usabilidade & Acessos BI — Intranet MQ{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analytics.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="analytics-viewport">
+
+  <!-- ════ HEADER EXECUTIVO ════ -->
+  <div class="analytics-header">
+    <div class="analytics-title-group">
+      <div class="analytics-title-badge-row">
+        <span class="analytics-live-tag">
+          <span class="analytics-live-dot"></span> Telemetria Ativa
+        </span>
+        <span style="font-size: 0.76rem; color: var(--text-dim);">
+          <i class="bi bi-clock-history"></i> Atualizado em tempo real
+        </span>
+      </div>
+      <h1 class="analytics-title">
+        <i class="bi bi-graph-up-arrow analytics-title-gold"></i>
+        Cockpit de <span class="analytics-title-gold">Usabilidade &amp; Acessos</span> aos Dashboards
+      </h1>
+      <p class="analytics-subtitle">
+        Painel executivo de governança e adoção de todos os relatórios corporativos da MQ Hair: ranking de acessos, frequência mensal, raio-x de usuários e dias de pico.
+      </p>
+    </div>
+
+    <div class="analytics-actions">
+      <button id="btnExportAnalytics" class="btn-mq-action" title="Exportar dados consolidados em planilha CSV">
+        <i class="bi bi-file-earmark-excel"></i> Exportar Dados
+      </button>
+      <a href="{{ url_for('portal') }}" class="btn-mq-action btn-mq-gold" title="Voltar ao Portal Principal">
+        <i class="bi bi-grid-fill"></i> Portal Geral
+      </a>
+    </div>
+  </div>
+
+  <!-- ════ BARRA DE FILTROS EXECUTIVOS ════ -->
+  <div class="analytics-filter-card">
+    <div class="filter-group-row">
+      <!-- Filtro por Mês -->
+      <div class="filter-control">
+        <span class="filter-label"><i class="bi bi-calendar-event"></i> Período / Mês</span>
+        <select id="filterMonth" class="filter-select">
+          <option value="todos" {% if data.filters_meta.current_month == 'todos' %}selected{% endif %}>Todos os Meses (Geral)</option>
+          {% for m in data.filters_meta.available_months %}
+          <option value="{{ m }}" {% if data.filters_meta.current_month == m %}selected{% endif %}>
+            {% if m == '2026-10' %}Outubro / 2026
+            {% elif m == '2026-09' %}Setembro / 2026
+            {% elif m == '2026-08' %}Agosto / 2026
+            {% elif m == '2026-11' %}Novembro / 2026
+            {% elif m == '2026-12' %}Dezembro / 2026
+            {% else %}{{ m }}{% endif %}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Filtro por Departamento -->
+      <div class="filter-control">
+        <span class="filter-label"><i class="bi bi-diagram-3"></i> Diretoria / Setor</span>
+        <select id="filterDepartment" class="filter-select">
+          <option value="todos" {% if data.filters_meta.current_department == 'todos' %}selected{% endif %}>Todas as Diretorias</option>
+          {% for dept in data.filters_meta.departments %}
+          <option value="{{ dept.id }}" {% if data.filters_meta.current_department|string == dept.id|string %}selected{% endif %}>
+            {{ dept.name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Filtro por Usuário -->
+      <div class="filter-control">
+        <span class="filter-label"><i class="bi bi-person"></i> Usuário Específico</span>
+        <select id="filterUser" class="filter-select">
+          <option value="todos" {% if data.filters_meta.current_user == 'todos' %}selected{% endif %}>Todos os Usuários</option>
+          {% for u in data.filters_meta.users %}
+          <option value="{{ u.id }}" {% if data.filters_meta.current_user|string == u.id|string %}selected{% endif %}>
+            {{ u.name or u.username }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Busca Rápida -->
+      <div class="filter-control" style="flex: 1;">
+        <span class="filter-label"><i class="bi bi-search"></i> Busca Rápida</span>
+        <div class="filter-search-box">
+          <i class="bi bi-search"></i>
+          <input type="text" id="tableSearchInput" class="filter-input" placeholder="Buscar por dashboard, setor ou usuário...">
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <button id="btnResetFilters" class="filter-reset-btn" title="Limpar todos os filtros">
+        <i class="bi bi-arrow-counterclockwise"></i> Redefinir
+      </button>
+    </div>
+  </div>
+
+  <!-- ════ GRID DE KPIS EXECUTIVOS ════ -->
+  <div class="analytics-kpis-grid">
+    <!-- 1. Total Visualizações -->
+    <div class="kpi-card kpi-featured">
+      <div class="kpi-header">
+        <h3 class="kpi-title">Total Visualizações</h3>
+        <div class="kpi-icon-box">
+          <i class="bi bi-eye-fill"></i>
+        </div>
+      </div>
+      <div class="kpi-value kpi-value-gold" id="kpiTotalViews">{{ data.kpis.total_views }}</div>
+      <div class="kpi-footer">
+        <span>Acessos registrados a relatórios</span>
+      </div>
+    </div>
+
+    <!-- 2. Taxa de Adoção de Dashboards -->
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <h3 class="kpi-title">Taxa de Adoção</h3>
+        <div class="kpi-icon-box" style="background: rgba(40,167,69,0.12); border-color: rgba(40,167,69,0.3); color: #4ade80;">
+          <i class="bi bi-pie-chart-fill"></i>
+        </div>
+      </div>
+      <div class="kpi-value" id="kpiAdoptionRate">{{ data.kpis.adoption_rate }}%</div>
+      <div class="kpi-footer">
+        <span id="kpiAdoptionSub"><strong>{{ data.kpis.accessed_reports }}</strong> de {{ data.kpis.total_registered_reports }} dashboards ativos</span>
+      </div>
+    </div>
+
+    <!-- 3. Usuários Ativos -->
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <h3 class="kpi-title">Usuários Ativos</h3>
+        <div class="kpi-icon-box" style="background: rgba(13,110,253,0.12); border-color: rgba(13,110,253,0.3); color: #60a5fa;">
+          <i class="bi bi-people-fill"></i>
+        </div>
+      </div>
+      <div class="kpi-value" id="kpiTotalUsers">{{ data.kpis.total_users }}</div>
+      <div class="kpi-footer">
+        <span id="kpiUsersSub"><strong>{{ data.kpis.total_users }}</strong> colaboradores engajados</span>
+      </div>
+    </div>
+
+    <!-- 4. Frequência / Média por Usuário -->
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <h3 class="kpi-title">Média de Acessos</h3>
+        <div class="kpi-icon-box">
+          <i class="bi bi-speedometer2"></i>
+        </div>
+      </div>
+      <div class="kpi-value" id="kpiAvgViews">{{ data.kpis.avg_views_per_user }}</div>
+      <div class="kpi-footer">
+        <span>Views por usuário ativo</span>
+      </div>
+    </div>
+
+    <!-- 5. Dia de Pico Semanal -->
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <h3 class="kpi-title">Dia Mais Acessado</h3>
+        <div class="kpi-icon-box" style="background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.3); color: #fbbf24;">
+          <i class="bi bi-calendar-check-fill"></i>
+        </div>
+      </div>
+      <div class="kpi-value" id="kpiPeakDay" style="font-size: 1.35rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+        {{ data.kpis.peak_day }}
+      </div>
+      <div class="kpi-footer">
+        <span id="kpiPeakDayViews"><strong>{{ data.kpis.peak_day_views }} acessos</strong> ({{ data.kpis.peak_day_share }}%)</span>
+      </div>
+    </div>
+
+    <!-- 6. Dashboard #1 -->
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <h3 class="kpi-title">Dashboard #1 Mais Acessado</h3>
+        <div class="kpi-icon-box">
+          <i class="bi bi-trophy-fill"></i>
+        </div>
+      </div>
+      <div class="kpi-value kpi-value-gold" id="kpiTopDash" style="font-size: 1.15rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ data.kpis.top_dashboard }}">
+        {{ data.kpis.top_dashboard }}
+      </div>
+      <div class="kpi-footer">
+        <span id="kpiTopDashViews"><strong>{{ data.kpis.top_dashboard_views }}</strong> visualizações</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ GRÁFICOS: EVOLUÇÃO MENSAL (JAN A DEZ) & DIAS DA SEMANA ════ -->
+  <div class="analytics-charts-grid">
+    <!-- Gráfico 1: Evolução Mensal Jan a Dez -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="chart-card-title-group">
+          <i class="bi bi-graph-up chart-card-icon"></i>
+          <div>
+            <h3 class="chart-card-title">Evolução Mensal de Acessos aos Dashboards</h3>
+            <p class="chart-card-subtitle">Volume consolidado de consultas mês a mês ao longo do ano (Jan a Dez/2026)</p>
+          </div>
+        </div>
+        <span class="chart-card-badge">2026 Consolidado</span>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="chartMonthlyEvolution"></canvas>
+      </div>
+    </div>
+
+    <!-- Gráfico 2: Dias da Semana com Destaque de Pico -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="chart-card-title-group">
+          <i class="bi bi-calendar3 chart-card-icon"></i>
+          <div>
+            <h3 class="chart-card-title">Acessos por Dia da Semana</h3>
+            <p class="chart-card-subtitle">Identificação dos dias de pico de audiência</p>
+          </div>
+        </div>
+        <span class="chart-card-badge" style="background: rgba(203,151,39,0.18);">
+          Pico: {{ data.kpis.peak_day }}
+        </span>
+      </div>
+      <div class="chart-canvas-container">
+        <canvas id="chartDaysOfWeek"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ GRÁFICOS: PICOS DE HORÁRIO / TURNOS & PARTICIPAÇÃO POR DIRETORIA ════ -->
+  <div class="analytics-charts-grid-secondary">
+    <!-- Gráfico 3: Horários & Turnos -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="chart-card-title-group">
+          <i class="bi bi-clock chart-card-icon"></i>
+          <div>
+            <h3 class="chart-card-title">Distribuição por Horário &amp; Turnos</h3>
+            <p class="chart-card-subtitle">Picos de acessos durante o expediente e turnos de trabalho</p>
+          </div>
+        </div>
+        <span class="chart-card-badge">24 Horas</span>
+      </div>
+      <div class="chart-canvas-container" style="height: 200px;">
+        <canvas id="chartHourlyDistribution"></canvas>
+      </div>
+
+      <!-- Resumo dos 4 Turnos -->
+      <div class="turnos-summary-grid">
+        <div class="turno-box">
+          <div class="turno-label"><i class="bi bi-sunrise"></i> Manhã</div>
+          <div class="turno-value" id="turnoManha">
+            {% for p in data.periods_distribution %}{% if 'Manhã' in p.period %}{{ p.views }}{% endif %}{% endfor %}
+          </div>
+        </div>
+        <div class="turno-box turno-peak">
+          <div class="turno-label"><i class="bi bi-sun"></i> Tarde (Pico)</div>
+          <div class="turno-value" id="turnoTarde">
+            {% for p in data.periods_distribution %}{% if 'Tarde' in p.period %}{{ p.views }}{% endif %}{% endfor %}
+          </div>
+        </div>
+        <div class="turno-box">
+          <div class="turno-label"><i class="bi bi-moon"></i> Noite</div>
+          <div class="turno-value" id="turnoNoite">
+            {% for p in data.periods_distribution %}{% if 'Noite' in p.period %}{{ p.views }}{% endif %}{% endfor %}
+          </div>
+        </div>
+        <div class="turno-box">
+          <div class="turno-label"><i class="bi bi-stars"></i> Madrugada</div>
+          <div class="turno-value" id="turnoMadrugada">
+            {% for p in data.periods_distribution %}{% if 'Madrugada' in p.period %}{{ p.views }}{% endif %}{% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico 4: Participação por Diretoria / Departamento -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="chart-card-title-group">
+          <i class="bi bi-diagram-3 chart-card-icon"></i>
+          <div>
+            <h3 class="chart-card-title">Participação por Diretoria &amp; Setor</h3>
+            <p class="chart-card-subtitle">Concentração do volume de acessos por departamento</p>
+          </div>
+        </div>
+        <span class="chart-card-badge">Share %</span>
+      </div>
+      <div class="chart-canvas-container" style="height: 270px;">
+        <canvas id="chartDeptShare"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ SEÇÃO 1: RANKING DOS DASHBOARDS MAIS ACESSADOS ════ -->
+  <div class="analytics-section-title">
+    <h2 class="section-heading">
+      <i class="bi bi-trophy-fill"></i> Ranking de Acesso aos Dashboards
+    </h2>
+    <span style="font-size: 0.8rem; color: var(--text-dim);">
+      Ordenado pelo maior volume de visualizações
+    </span>
+  </div>
+
+  <div class="table-card">
+    <div class="analytics-table-responsive">
+      <table class="analytics-table">
+        <thead>
+          <tr>
+            <th style="width: 50px; text-align: center;">Pos.</th>
+            <th>Dashboard &amp; Diretoria</th>
+            <th>Participação (Share)</th>
+            <th>Acessos Totais</th>
+            <th>Usuários Distintos</th>
+            <th>Último Acesso</th>
+            <th style="text-align: right;">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="dashboardsTableBody">
+          {% for d in data.ranking_dashboards %}
+          <tr class="dashboard-row" data-title="{{ d.title|lower }}" data-dept="{{ d.dept_name|lower }}">
+            <td style="text-align: center;">
+              <span class="rank-badge {% if d.rank == 1 %}rank-badge-1{% elif d.rank == 2 %}rank-badge-2{% elif d.rank == 3 %}rank-badge-3{% endif %}">
+                {{ d.rank }}
+              </span>
+            </td>
+            <td>
+              <div style="font-weight: 700; color: #fff; font-size: 0.86rem; margin-bottom: 2px;">
+                {{ d.title }}
+              </div>
+              <span class="dept-pill">
+                <span class="dept-pill-dot" style="background: {{ d.dept_color or '#CB9727' }};"></span>
+                {{ d.dept_name }}
+              </span>
+            </td>
+            <td>
+              <div class="share-bar-container">
+                <div class="share-bar-track">
+                  <div class="share-bar-fill" style="width: {{ d.share_pct }}%;"></div>
+                </div>
+                <span class="share-bar-text">{{ d.share_pct }}%</span>
+              </div>
+            </td>
+            <td style="font-weight: 800; color: var(--mq-gold); font-size: 0.94rem;">
+              {{ d.total_views }}
+            </td>
+            <td>
+              <span class="user-reports-tag">
+                <i class="bi bi-people-fill"></i> {{ d.unique_users }} usuários
+              </span>
+            </td>
+            <td style="color: var(--text-muted); font-size: 0.76rem;">
+              {{ d.last_access_str or '-' }}
+            </td>
+            <td style="text-align: right; white-space: nowrap;">
+              <button class="table-btn btn-view-report-users" data-report-id="{{ d.id }}" title="Ver quem acessou este dashboard">
+                <i class="bi bi-person-lines-fill"></i> Quem Acessou
+              </button>
+              <a href="{{ url_for('view_report', report_id=d.id) }}" class="table-btn" style="background: rgba(203,151,39,0.12); color: var(--mq-gold); border-color: rgba(203,151,39,0.3);" title="Abrir Dashboard">
+                <i class="bi bi-box-arrow-up-right"></i> Abrir
+              </a>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-dim);">
+              Nenhum dashboard encontrado com os filtros selecionados.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════ SEÇÃO 2: RAIO-X DE USUÁRIOS (QUAL USUÁRIO ESTÁ ACESSANDO E QUAIS RELATÓRIOS) ════ -->
+  <div class="analytics-section-title">
+    <h2 class="section-heading">
+      <i class="bi bi-people-fill"></i> Raio-X de Usuários &amp; Relatórios Acessados
+    </h2>
+    <span style="font-size: 0.8rem; color: var(--text-dim);">
+      Identificação individual: quem está acessando e quais relatórios específicos consultou
+    </span>
+  </div>
+
+  <div class="table-card">
+    <div class="analytics-table-responsive">
+      <table class="analytics-table">
+        <thead>
+          <tr>
+            <th style="width: 50px; text-align: center;">Pos.</th>
+            <th>Usuário / Colaborador</th>
+            <th>Departamento</th>
+            <th>Total Acessos</th>
+            <th>Dashboards Consultados</th>
+            <th>Último Acesso</th>
+            <th style="text-align: right;">Detalhamento</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          {% for u in data.ranking_users %}
+          {% set initials = (u.name or u.username or 'MQ')[:2]|upper %}
+          <tr class="user-row" data-name="{{ (u.name or '')|lower }}" data-username="{{ (u.username or '')|lower }}">
+            <td style="text-align: center;">
+              <span class="rank-badge">{{ u.rank }}</span>
+            </td>
+            <td>
+              <div class="user-name-cell">
+                <span class="user-avatar-circle">{{ initials }}</span>
+                <div>
+                  <div style="font-weight: 700; color: #fff;">{{ u.name or u.username }}</div>
+                  <div style="font-size: 0.72rem; color: var(--text-dim);">@{{ u.username }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="dept-pill">{{ u.dept_name or 'Geral' }}</span>
+            </td>
+            <td style="font-weight: 800; color: var(--mq-gold); font-size: 0.94rem;">
+              {{ u.total_views }}
+            </td>
+            <td>
+              <span class="user-reports-tag" style="background: rgba(40, 167, 69, 0.12); color: #4ade80;">
+                <i class="bi bi-file-earmark-bar-graph"></i> {{ u.distinct_reports }} dashboards
+              </span>
+            </td>
+            <td style="color: var(--text-muted); font-size: 0.76rem;">
+              {{ u.last_access_str or '-' }}
+            </td>
+            <td style="text-align: right;">
+              <button class="table-btn btn-view-user-reports" data-user-id="{{ u.id }}" title="Ver todos os dashboards que este usuário acessou">
+                <i class="bi bi-bar-chart-steps"></i> Raio-X de Relatórios
+              </button>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-dim);">
+              Nenhum usuário registrado com acessos aos dashboards.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════ SEÇÃO 3: AUDITORIA AO VIVO (ÚLTIMOS ACESSOS REGISTRADOS) ════ -->
+  <div class="analytics-section-title">
+    <h2 class="section-heading">
+      <i class="bi bi-broadcast"></i> Feed de Auditoria em Tempo Real
+    </h2>
+    <span style="font-size: 0.8rem; color: var(--text-dim);">
+      Log das últimas consultas e interações registradas
+    </span>
+  </div>
+
+  <div class="table-card" style="padding: 1.2rem 1.4rem;">
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      {% for f in data.recent_feed %}
+      <div class="feed-item">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="bi bi-check2-circle" style="color: var(--mq-gold);"></i>
+          <span class="feed-user">{{ f.user_name }}</span>
+          <span style="color: var(--text-dim);">acessou</span>
+          <span class="feed-report">{{ f.report_title }}</span>
+          <span class="dept-pill" style="font-size: 0.68rem; padding: 1px 7px;">{{ f.dept_name }}</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          {% if f.ip_address %}
+          <span style="font-size: 0.7rem; color: var(--text-dim);"><i class="bi bi-hdd-network"></i> {{ f.ip_address }}</span>
+          {% endif %}
+          <span class="feed-time"><i class="bi bi-clock"></i> {{ f.created_at_str }}</span>
+        </div>
+      </div>
+      {% else %}
+      <div style="text-align: center; padding: 1.5rem; color: var(--text-dim);">Nenhum log recente disponível.</div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+<!-- ════ MODAL DRILL-DOWN EXECUTIVO ════ -->
+<div id="analyticsModalBackdrop" class="analytics-modal-backdrop">
+  <div class="analytics-modal-box">
+    <div class="analytics-modal-header">
+      <h3 id="analyticsModalTitle" class="analytics-modal-title">Detalhes</h3>
+      <button id="analyticsModalClose" class="analytics-modal-close" aria-label="Fechar modal">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div id="analyticsModalBody" class="analytics-modal-body">
+      <!-- Conteúdo inserido dinamicamente via JS -->
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js 4 UMD -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+
+<!-- Injeção dos Dados Iniciais para Renderização Instantânea -->
+<script>
+  window.INITIAL_ANALYTICS_DATA = {{ data | tojson }};
+</script>
+
+<!-- Script de Interatividade e Gráficos -->
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+{% endblock %}

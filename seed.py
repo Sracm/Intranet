@@ -157,38 +157,38 @@ def run_seed():
 
     reports = [
         {
-            'title': 'Dashboard Logística — Ciclo do Pedido',
-            'description': 'DIR. DASH LOGISTICA CICLO DO PEDIDO: Acompanhamento de todas as etapas do pedido, lead time de separação, faturamento e expedição.',
+            'title': 'DRE Logística',
+            'description': 'Demonstrativo de Resultados - Logística',
             'dept': 'logistica',
-            'url': sample_pbi_1,
-            'icon': 'bi-arrow-repeat',
+            'url': 'http://localhost:5150/dre-empresa',
+            'icon': 'bi-cash-coin',
             'is_public': 0,
             'order': 1
         },
         {
-            'title': 'Dashboard Logística — Demanda & Reabastecimento',
-            'description': 'DIR. DASH LOGISTICA DEMANDA REABASTECIMENTO: Planejamento e previsão de demanda, giro de estoque, ponto de reposição e controle de suprimentos.',
+            'title': 'Demandas de Reabastecimento do Estoque',
+            'description': 'Acompanhamento de demandas e reabastecimento de estoque',
             'dept': 'logistica',
-            'url': sample_pbi_2,
-            'icon': 'bi-graph-up-arrow',
+            'url': 'https://app.powerbi.com/reportEmbed?reportId=5a2a1ded-b800-406f-83ab-23a791544279&autoAuth=true&ctid=703fb3fc-27e0-412a-af01-fd5c3cd99e53&actionBarEnabled=true',
+            'icon': 'bi-box-seam',
             'is_public': 0,
             'order': 2
+        },
+        {
+            'title': 'Dashboard Logística — Ciclo do Pedido',
+            'description': 'DIR. DASH LOGISTICA CICLO DO PEDIDO: Acompanhamento de todas as etapas do pedido, lead time de separação, faturamento e expedição.',
+            'dept': 'logistica',
+            'url': 'https://app.powerbi.com/view?r=eyJrIjoiOTQ3YzUyZWMtYzM2YS00NWE0LWE0MmYtY2U2YzcxMjgxZmI3IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9',
+            'icon': 'bi-arrow-repeat',
+            'is_public': 0,
+            'order': 3
         },
         {
             'title': 'Dashboard Logística — Inventário',
             'description': 'DIR.DASH LOGISTICA INVENTARIO: Acuracidade de armazém, inventário físico rotativo x saldo contábil, perdas e auditoria de posições.',
             'dept': 'logistica',
-            'url': sample_pbi_3,
+            'url': 'https://app.powerbi.com/view?r=eyJrIjoiNzA1YWI0YjctMDhiNC00MjQzLWJiMDYtYzdkZjA1NTg2YTE5IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9',
             'icon': 'bi-boxes',
-            'is_public': 0,
-            'order': 3
-        },
-        {
-            'title': 'Dashboard Logística — Total Express',
-            'description': 'DIR.DASH LOGISTICA TOTALEXPRESS: Indicadores de performance de fretes e transportadora Total Express, SLA de entregas e ocorrências de rastreamento.',
-            'dept': 'logistica',
-            'url': sample_pbi_4,
-            'icon': 'bi-truck',
             'is_public': 0,
             'order': 4
         },

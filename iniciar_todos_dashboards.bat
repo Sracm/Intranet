@@ -39,6 +39,14 @@ echo Iniciando Call Center, Assistencia Tecnica e SAC (Porta 5300)...
 cd /d "C:\Users\amello\OneDrive - MQHAIR\T.I\PROJETOS BI\ANTIGRAVITY\PROJETOS\Diretoria ADM, Assistencia Tec. SAC"
 start "Call Center e SAC (5300)" cmd /k python app.py
 
+echo Iniciando Controle de Estoque e Acuracidade (Porta 5350)...
+cd /d "C:\Users\amello\OneDrive - MQHAIR\T.I\PROJETOS BI\ANTIGRAVITY\PROJETOS\Controle_Estoque"
+start "Controle de Estoque (5350)" cmd /k python app.py
+
+echo Iniciando Demanda e Reabastecimento (Porta 5400)...
+cd /d "C:\Users\amello\OneDrive - MQHAIR\T.I\PROJETOS BI\ANTIGRAVITY\PROJETOS\Demanda_Reabastecimento"
+start "Demanda e Reabastecimento (5400)" cmd /k python app.py
+
 :: Retorna para a pasta da Intranet no final
 cd /d "C:\Users\amello\OneDrive - MQHAIR\T.I\PROJETOS BI\ANTIGRAVITY\PROJETOS\INTRANET"
 

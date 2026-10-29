@@ -20,3 +20,7 @@ env/
 
 
 *.bak
+
+# Standalone submodule/nested repo
+portfolio_standalone/
+

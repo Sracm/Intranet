@@ -1,3 +1,4 @@
+import datetime
 import sqlite3
 import pymysql
 import pymysql.cursors
@@ -87,16 +88,21 @@ class _MariaDBConnection:
 
 def get_db():
     if getattr(Config, 'USE_MARIADB', False):
-        conn = pymysql.connect(
-            host=Config.MARIADB_HOST,
-            user=Config.MARIADB_USER,
-            password=Config.MARIADB_PASSWORD,
-            database=Config.MARIADB_DB,
-            port=Config.MARIADB_PORT,
-            charset='utf8mb4',
-            cursorclass=pymysql.cursors.DictCursor
-        )
-        return _MariaDBConnection(conn)
+        try:
+            conn = pymysql.connect(
+                host=Config.MARIADB_HOST,
+                user=Config.MARIADB_USER,
+                password=Config.MARIADB_PASSWORD,
+                database=Config.MARIADB_DB,
+                port=Config.MARIADB_PORT,
+                connect_timeout=2,
+                charset='utf8mb4',
+                cursorclass=pymysql.cursors.DictCursor
+            )
+            return _MariaDBConnection(conn)
+        except Exception as e:
+            print(f"[AVISO] Falha ao conectar ao MariaDB ({e}). Utilizando SQLite local.", flush=True)
+            Config.USE_MARIADB = False
     if Config.USE_POSTGRES:
         return _PgConnection(psycopg2.connect(Config.DATABASE_URL))
     conn = sqlite3.connect(Config.DATABASE)
@@ -257,21 +263,26 @@ _SCHEMA_MARIADB = '''
 
 def init_db():
     if getattr(Config, 'USE_MARIADB', False):
-        conn = pymysql.connect(
-            host=Config.MARIADB_HOST,
-            user=Config.MARIADB_USER,
-            password=Config.MARIADB_PASSWORD,
-            database=Config.MARIADB_DB,
-            port=Config.MARIADB_PORT,
-            autocommit=True
-        )
-        with conn.cursor() as cursor:
-            # pymysql requires splitting multiple statements or executing one by one
-            for statement in _SCHEMA_MARIADB.split(';'):
-                if statement.strip():
-                    cursor.execute(statement)
-        conn.close()
-        return
+        try:
+            conn = pymysql.connect(
+                host=Config.MARIADB_HOST,
+                user=Config.MARIADB_USER,
+                password=Config.MARIADB_PASSWORD,
+                database=Config.MARIADB_DB,
+                port=Config.MARIADB_PORT,
+                connect_timeout=2,
+                autocommit=True
+            )
+            with conn.cursor() as cursor:
+                # pymysql requires splitting multiple statements or executing one by one
+                for statement in _SCHEMA_MARIADB.split(';'):
+                    if statement.strip():
+                        cursor.execute(statement)
+            conn.close()
+            return
+        except Exception as e:
+            print(f"[AVISO] Falha ao conectar ao MariaDB em init_db ({e}). Utilizando SQLite local.", flush=True)
+            Config.USE_MARIADB = False
 
     if Config.USE_POSTGRES:
         conn = psycopg2.connect(Config.DATABASE_URL)
@@ -826,3 +837,399 @@ def set_portal_setting(key, value, description=''):
                   (key, value, description))
     conn.commit()
     conn.close()
+
+
+# ----------------- USABILIDADE & ANALYTICS DE DASHBOARDS ----------------- #
+
+def get_dashboard_usabilidade_analytics(month=None, department_id=None, user_id=None, report_id=None):
+    conn = get_db()
+    is_mariadb = getattr(Config, 'USE_MARIADB', False)
+    
+    where_clauses = ["al.action = 'view_report'"]
+    params = []
+    
+    # Filtro por mês
+    if month and month not in ('todos', 'all', ''):
+        if is_mariadb:
+            where_clauses.append("DATE_FORMAT(al.created_at, '%Y-%m') = ?")
+        else:
+            where_clauses.append("strftime('%Y-%m', al.created_at) = ?")
+        params.append(month)
+        
+    if department_id and str(department_id) not in ('todos', 'all', '0', ''):
+        where_clauses.append("r.department_id = ?")
+        params.append(int(department_id))
+        
+    if user_id and str(user_id) not in ('todos', 'all', '0', ''):
+        where_clauses.append("al.user_id = ?")
+        params.append(int(user_id))
+        
+    if report_id and str(report_id) not in ('todos', 'all', '0', ''):
+        where_clauses.append("al.report_id = ?")
+        params.append(int(report_id))
+        
+    where_sql = " AND ".join(where_clauses)
+    
+    # 1. Total KPIs
+    kpi_sql = f"""
+        SELECT 
+            COUNT(al.id) as total_views,
+            COUNT(DISTINCT al.user_id) as total_users,
+            COUNT(DISTINCT al.report_id) as total_reports
+        FROM access_logs al
+        JOIN reports r ON al.report_id = r.id
+        WHERE {where_sql}
+    """
+    kpi_row = conn.execute(kpi_sql, params).fetchone()
+    total_views = kpi_row['total_views'] if kpi_row and kpi_row['total_views'] else 0
+    total_users = kpi_row['total_users'] if kpi_row and kpi_row['total_users'] else 0
+    accessed_reports = kpi_row['total_reports'] if kpi_row and kpi_row['total_reports'] else 0
+    
+    total_registered_reports = conn.execute("SELECT COUNT(*) as c FROM reports WHERE active = 1").fetchone()['c'] or 1
+    total_registered_users = conn.execute("SELECT COUNT(*) as c FROM users WHERE active = 1").fetchone()['c'] or 1
+    adoption_rate = round((accessed_reports / total_registered_reports) * 100, 1) if total_registered_reports else 0
+    avg_views_per_user = round(total_views / total_users, 1) if total_users else 0
+    
+    # Total de Logins no período
+    login_where = ["al.action = 'login'"]
+    login_params = []
+    if month and month not in ('todos', 'all', ''):
+        if is_mariadb:
+            login_where.append("DATE_FORMAT(al.created_at, '%Y-%m') = ?")
+        else:
+            login_where.append("strftime('%Y-%m', al.created_at) = ?")
+        login_params.append(month)
+    if user_id and str(user_id) not in ('todos', 'all', '0', ''):
+        login_where.append("al.user_id = ?")
+        login_params.append(int(user_id))
+    total_logins = conn.execute(f"SELECT COUNT(*) as c FROM access_logs al WHERE {' AND '.join(login_where)}", login_params).fetchone()['c'] or 0
+
+    # 2. Ranking de Dashboards
+    dash_sql = f"""
+        SELECT r.id, r.title, d.name as dept_name, d.color as dept_color,
+               COUNT(al.id) as total_views,
+               COUNT(DISTINCT al.user_id) as unique_users,
+               MAX(al.created_at) as last_access
+        FROM access_logs al
+        JOIN reports r ON al.report_id = r.id
+        JOIN departments d ON r.department_id = d.id
+        WHERE {where_sql}
+        GROUP BY r.id, r.title, d.name, d.color
+        ORDER BY total_views DESC, r.title ASC
+    """
+    dashboards = [dict(r) for r in conn.execute(dash_sql, params).fetchall()]
+    
+    # Acessos por mês para cada dashboard
+    month_expr = "DATE_FORMAT(al.created_at, '%Y-%m')" if is_mariadb else "strftime('%Y-%m', al.created_at)"
+    dash_monthly_sql = f"""
+        SELECT al.report_id, 
+               {month_expr} as ym,
+               COUNT(al.id) as views
+        FROM access_logs al
+        JOIN reports r ON al.report_id = r.id
+        WHERE {where_sql}
+        GROUP BY al.report_id, ym
+    """
+    dash_monthly_rows = conn.execute(dash_monthly_sql, params).fetchall()
+    dash_monthly_map = {}
+    for row in dash_monthly_rows:
+        rid = row['report_id']
+        if rid not in dash_monthly_map:
+            dash_monthly_map[rid] = {}
+        dash_monthly_map[rid][row['ym']] = row['views']
+
+    for i, d in enumerate(dashboards):
+        d['rank'] = i + 1
+        d['share_pct'] = round((d['total_views'] / total_views) * 100, 1) if total_views else 0
+        d['monthly_views'] = dash_monthly_map.get(d['id'], {})
+        if d['last_access']:
+            if isinstance(d['last_access'], (datetime.datetime, datetime.date)):
+                d['last_access_str'] = d['last_access'].strftime('%d/%m/%Y %H:%M')
+                d['last_access'] = d['last_access'].isoformat()
+            else:
+                d['last_access_str'] = str(d['last_access'])[:16]
+                d['last_access'] = str(d['last_access'])
+        else:
+            d['last_access_str'] = '-'
+            d['last_access'] = None
+
+    # 3. Dias da Semana (Segunda a Domingo)
+    dow_names = {
+        1: 'Domingo',
+        2: 'Segunda-feira',
+        3: 'Terça-feira',
+        4: 'Quarta-feira',
+        5: 'Quinta-feira',
+        6: 'Sexta-feira',
+        7: 'Sábado'
+    }
+    dow_expr = "DAYOFWEEK(al.created_at)" if is_mariadb else "(CAST(strftime('%w', al.created_at) AS INTEGER) + 1)"
+    dow_sql = f"""
+        SELECT {dow_expr} as dow, COUNT(al.id) as views
+        FROM access_logs al
+        JOIN reports r ON al.report_id = r.id
+        WHERE {where_sql}
+        GROUP BY dow
+        ORDER BY dow
+    """
+    dow_counts = {r['dow']: r['views'] for r in conn.execute(dow_sql, params).fetchall()}
+    
+    dow_list = []
+    peak_dow = None
+    max_dow_views = -1
+    for dow_num in [2, 3, 4, 5, 6, 7, 1]:  # Seg a Dom
+        views = dow_counts.get(dow_num, 0)
+        share = round((views / total_views) * 100, 1) if total_views else 0
+        item = {
+            'dow': dow_num,
+            'name': dow_names[dow_num],
+            'short_name': dow_names[dow_num][:3],
+            'views': views,
+            'share': share,
+            'is_peak': False
+        }
+        if views > max_dow_views:
+            max_dow_views = views
+            peak_dow = item
+        dow_list.append(item)
+    if peak_dow and max_dow_views > 0:
+        peak_dow['is_peak'] = True
+
+    # 4. Evolução Mensal (Janeiro a Dezembro de 2026)
+    monthly_sql = f"""
+        SELECT {month_expr} as ym, COUNT(al.id) as views
+        FROM access_logs al
+        JOIN reports r ON al.report_id = r.id
+        WHERE {where_sql}
+        GROUP BY ym
+        ORDER BY ym ASC
+    """
+    monthly_raw = conn.execute(monthly_sql, params).fetchall()
+    monthly_views_dict = {r['ym']: r['views'] for r in monthly_raw}
+    
+    month_labels_pt = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+    evolution_12m = []
+    current_year = 2026
+    for m in range(1, 13):
+        ym_key = f"{current_year}-{m:02d}"
+        views = monthly_views_dict.get(ym_key, 0)
+        evolution_12m.append({
+            'ym': ym_key,
+            'month_num': m,
+            'label': f"{month_labels_pt[m-1]}/26",
+            'views': views
+        })
+
+    # 5. Distribuição por Horário e Turno
+    hour_expr = "HOUR(al.created_at)" if is_mariadb else "CAST(strftime('%H', al.created_at) AS INTEGER)"
+    hour_sql = f"""
+        SELECT {hour_expr} as hr, COUNT(al.id) as views
+        FROM access_logs al
+        JOIN reports r ON al.report_id = r.id
+        WHERE {where_sql}
+        GROUP BY hr
+        ORDER BY hr
+    """
+    hour_raw = conn.execute(hour_sql, params).fetchall()
+    hour_dict = {r['hr']: r['views'] for r in hour_raw}
+    hourly_distribution = []
+    periods = {
+        'Manhã (06h-12h)': 0,
+        'Tarde (12h-18h)': 0,
+        'Noite (18h-24h)': 0,
+        'Madrugada (00h-06h)': 0
+    }
+    for h in range(24):
+        v = hour_dict.get(h, 0)
+        hourly_distribution.append({'hour': h, 'label': f"{h:02d}h", 'views': v})
+        if 6 <= h < 12:
+            periods['Manhã (06h-12h)'] += v
+        elif 12 <= h < 18:
+            periods['Tarde (12h-18h)'] += v
+        elif 18 <= h < 24:
+            periods['Noite (18h-24h)'] += v
+        else:
+            periods['Madrugada (00h-06h)'] += v
+
+    # 6. Distribuição por Departamento
+    dept_sql = f"""
+        SELECT d.id, d.name, d.color, COUNT(al.id) as views
+        FROM access_logs al
+        JOIN reports r ON al.report_id = r.id
+        JOIN departments d ON r.department_id = d.id
+        WHERE {where_sql}
+        GROUP BY d.id, d.name, d.color
+        ORDER BY views DESC
+    """
+    dept_shares = [dict(r) for r in conn.execute(dept_sql, params).fetchall()]
+    for ds in dept_shares:
+        ds['share_pct'] = round((ds['views'] / total_views) * 100, 1) if total_views else 0
+
+    # 7. Ranking de Usuários e Raio-X
+    user_sql = f"""
+        SELECT u.id, u.username, u.name, d.name as dept_name,
+               COUNT(al.id) as total_views,
+               COUNT(DISTINCT al.report_id) as distinct_reports,
+               MAX(al.created_at) as last_access
+        FROM access_logs al
+        JOIN reports r ON al.report_id = r.id
+        JOIN users u ON al.user_id = u.id
+        LEFT JOIN departments d ON u.department_id = d.id
+        WHERE {where_sql}
+        GROUP BY u.id, u.username, u.name, d.name
+        ORDER BY total_views DESC, u.name ASC
+    """
+    users = [dict(u) for u in conn.execute(user_sql, params).fetchall()]
+    
+    user_reports_sql = f"""
+        SELECT al.user_id, r.id as report_id, r.title as report_title, d.name as dept_name,
+               COUNT(al.id) as views,
+               MAX(al.created_at) as last_access
+        FROM access_logs al
+        JOIN reports r ON al.report_id = r.id
+        JOIN departments d ON r.department_id = d.id
+        WHERE {where_sql}
+        GROUP BY al.user_id, r.id, r.title, d.name
+        ORDER BY views DESC
+    """
+    ur_rows = conn.execute(user_reports_sql, params).fetchall()
+    user_reports_map = {}
+    for row in ur_rows:
+        uid = row['user_id']
+        if uid not in user_reports_map:
+            user_reports_map[uid] = []
+        last_acc = row['last_access']
+        last_str = last_acc.strftime('%d/%m/%Y %H:%M') if isinstance(last_acc, (datetime.datetime, datetime.date)) else (str(last_acc)[:16] if last_acc else '-')
+        user_reports_map[uid].append({
+            'report_id': row['report_id'],
+            'title': row['report_title'],
+            'dept_name': row['dept_name'],
+            'views': row['views'],
+            'last_access_str': last_str
+        })
+        
+    for i, u in enumerate(users):
+        u['rank'] = i + 1
+        u['reports'] = user_reports_map.get(u['id'], [])
+        u['share_pct'] = round((u['total_views'] / total_views) * 100, 1) if total_views else 0
+        if u['last_access']:
+            if isinstance(u['last_access'], (datetime.datetime, datetime.date)):
+                u['last_access_str'] = u['last_access'].strftime('%d/%m/%Y %H:%M')
+                u['last_access'] = u['last_access'].isoformat()
+            else:
+                u['last_access_str'] = str(u['last_access'])[:16]
+                u['last_access'] = str(u['last_access'])
+        else:
+            u['last_access_str'] = '-'
+            u['last_access'] = None
+
+    # 8. Cruzamento Inverso: Para cada Dashboard, quais usuários acessaram
+    report_users_sql = f"""
+        SELECT al.report_id, u.id as user_id, u.username, u.name as user_name, d.name as user_dept,
+               COUNT(al.id) as views,
+               MAX(al.created_at) as last_access
+        FROM access_logs al
+        JOIN reports r ON al.report_id = r.id
+        JOIN users u ON al.user_id = u.id
+        LEFT JOIN departments d ON u.department_id = d.id
+        WHERE {where_sql}
+        GROUP BY al.report_id, u.id, u.username, u.name, d.name
+        ORDER BY views DESC
+    """
+    ru_rows = conn.execute(report_users_sql, params).fetchall()
+    report_users_map = {}
+    for row in ru_rows:
+        rid = row['report_id']
+        if rid not in report_users_map:
+            report_users_map[rid] = []
+        last_acc = row['last_access']
+        last_str = last_acc.strftime('%d/%m/%Y %H:%M') if isinstance(last_acc, (datetime.datetime, datetime.date)) else (str(last_acc)[:16] if last_acc else '-')
+        report_users_map[rid].append({
+            'user_id': row['user_id'],
+            'username': row['username'],
+            'name': row['user_name'],
+            'user_dept': row['user_dept'] or 'Geral',
+            'views': row['views'],
+            'last_access_str': last_str
+        })
+        
+    for d in dashboards:
+        d['users_accessed'] = report_users_map.get(d['id'], [])
+
+    # 9. Feed Recente de Auditoria (últimos 20 acessos)
+    recent_sql = f"""
+        SELECT al.id, al.action, al.ip_address, al.created_at,
+               u.id as user_id, u.name as user_name, u.username,
+               r.id as report_id, r.title as report_title, d.name as dept_name
+        FROM access_logs al
+        LEFT JOIN users u ON al.user_id = u.id
+        LEFT JOIN reports r ON al.report_id = r.id
+        LEFT JOIN departments d ON r.department_id = d.id
+        ORDER BY al.created_at DESC
+        LIMIT 20
+    """
+    recent_raw = conn.execute(recent_sql).fetchall()
+    recent_feed = []
+    for r in recent_raw:
+        dt = r['created_at']
+        dt_str = dt.strftime('%d/%m/%Y %H:%M:%S') if isinstance(dt, (datetime.datetime, datetime.date)) else (str(dt)[:19] if dt else '')
+        recent_feed.append({
+            'id': r['id'],
+            'action': r['action'],
+            'ip_address': r['ip_address'],
+            'created_at_str': dt_str,
+            'user_name': r['user_name'] or r['username'] or 'Sistema',
+            'username': r['username'] or '',
+            'report_title': r['report_title'] or ('Login' if r['action'] == 'login' else ('Logout' if r['action'] == 'logout' else r['action'])),
+            'dept_name': r['dept_name'] or 'MQ'
+        })
+
+    # 10. Listas para filtros dinâmicos
+    available_months_sql = f"""
+        SELECT DISTINCT {month_expr} as ym
+        FROM access_logs al
+        WHERE al.action = 'view_report' AND al.created_at IS NOT NULL
+        ORDER BY ym DESC
+    """
+    available_months = [r['ym'] for r in conn.execute(available_months_sql).fetchall() if r['ym']]
+    
+    all_departments = [dict(r) for r in conn.execute("SELECT id, name, code, color FROM departments ORDER BY name").fetchall()]
+    all_users_list = [dict(r) for r in conn.execute("SELECT id, name, username FROM users WHERE active = 1 ORDER BY name").fetchall()]
+    all_reports_list = [dict(r) for r in conn.execute("SELECT id, title FROM reports WHERE active = 1 ORDER BY title").fetchall()]
+
+    conn.close()
+
+    return {
+        'kpis': {
+            'total_views': total_views,
+            'total_logins': total_logins,
+            'total_users': total_users,
+            'total_registered_users': total_registered_users,
+            'accessed_reports': accessed_reports,
+            'total_registered_reports': total_registered_reports,
+            'adoption_rate': adoption_rate,
+            'avg_views_per_user': avg_views_per_user,
+            'peak_day': peak_dow['name'] if peak_dow else 'Quinta-feira',
+            'peak_day_views': peak_dow['views'] if peak_dow else 0,
+            'peak_day_share': peak_dow['share'] if peak_dow else 0,
+            'top_dashboard': dashboards[0]['title'] if dashboards else 'N/A',
+            'top_dashboard_views': dashboards[0]['total_views'] if dashboards else 0
+        },
+        'ranking_dashboards': dashboards,
+        'ranking_users': users,
+        'days_of_week': dow_list,
+        'evolution_12m': evolution_12m,
+        'hourly_distribution': hourly_distribution,
+        'periods_distribution': [{'period': k, 'views': v} for k, v in periods.items()],
+        'dept_shares': dept_shares,
+        'recent_feed': recent_feed,
+        'filters_meta': {
+            'current_month': month or 'todos',
+            'current_department': department_id or 'todos',
+            'current_user': user_id or 'todos',
+            'available_months': available_months,
+            'departments': all_departments,
+            'users': all_users_list,
+            'reports': all_reports_list
+        }
+    }

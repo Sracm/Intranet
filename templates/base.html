@@ -235,6 +235,14 @@
     </div>
 
     <div class="header-actions">
+      <!-- Botão Usabilidade & Acessos BI -->
+      <a href="{{ url_for('analytics_dashboard') }}" id="header-btn-analytics" class="btn-admin-header {% if 'analytics' in request.endpoint %}active{% endif %}" title="Dashboard de Usabilidade & Acessos aos Dashboards" style="text-decoration: none; border-color: rgba(203, 151, 39, 0.35);">
+        <span class="admin-icon">
+          <span class="material-symbols-outlined" style="font-size: 18px; color: var(--brand-secondary-dourado, #CB9727);">monitoring</span>
+        </span>
+        <span class="admin-btn-label">Usabilidade BI</span>
+      </a>
+
       <!-- Botão de Administração (Exclusivo para admin) -->
       {% if current_user.is_admin %}
       <a href="{{ url_for('admin_dashboard') }}" id="header-btn-admin" class="btn-admin-header {% if 'admin' in request.endpoint %}active{% endif %}" title="Painel Geral de Administração" style="text-decoration: none;">
@@ -300,6 +308,10 @@
         <img src="{{ url_for('static', filename='assets/2c16c5da87caef193c0a763a19ce7925f314a9c2.svg') }}" alt="Senha" class="menu-icon">
         <span>Mudar a Senha</span>
       </a>
+      <a href="{{ url_for('analytics_dashboard') }}" class="profile-menu-item">
+        <span class="material-symbols-outlined" style="font-size: 16px; color: var(--brand-secondary-dourado, #CB9727);">monitoring</span>
+        <span>Usabilidade BI</span>
+      </a>
       {% if current_user.is_admin %}
       <a href="{{ url_for('admin_dashboard') }}" class="profile-menu-item">
         <span class="material-symbols-outlined" style="font-size: 16px; color: var(--brand-secondary-dourado, #CB9727);">admin_panel_settings</span>
@@ -328,6 +340,16 @@
           <a href="{{ url_for('portal') }}" id="nav-item-home" class="nav-item-btn {% if request.endpoint == 'portal' and (not request.args.get('dept') or request.args.get('dept') == 'todos') %}active{% endif %}" style="text-decoration:none;">
             <span class="nav-item-icon"><img src="{{ url_for('static', filename='assets/icons/home_icon.svg') }}" alt="Home"></span>
             <span class="nav-item-label">Home</span>
+          </a>
+        </li>
+
+        <!-- Cockpit de Usabilidade & Acessos BI -->
+        <li>
+          <a href="{{ url_for('analytics_dashboard') }}" id="nav-item-analytics" class="nav-item-btn {% if request.endpoint == 'analytics_dashboard' %}active{% endif %}" style="text-decoration:none;" title="Usabilidade & Acesso aos Dashboards">
+            <span class="nav-item-icon">
+              <span class="material-symbols-outlined" style="font-size: 20px; color: var(--brand-secondary-dourado, #CB9727);">monitoring</span>
+            </span>
+            <span class="nav-item-label">Acessos &amp; Usabilidade</span>
           </a>
         </li>
 
@@ -365,11 +387,11 @@
           </a>
         </li>
 
-        <!-- 5. Desenvolvimento de Produtos -->
+        <!-- 5. Desenvolvimento de Produtos & Projetos -->
         <li>
-          <a href="{{ url_for('portal', dept='desenvolvimento') }}" class="nav-item-btn {% if request.endpoint == 'portal' and request.args.get('dept') == 'desenvolvimento' %}active{% endif %}" style="text-decoration:none;" title="Desenvolvimento de Produtos">
-            <span class="nav-item-icon"><img src="{{ url_for('static', filename='assets/icons/desenvolvimento_icon.svg') }}" alt="Produtos"></span>
-            <span class="nav-item-label">Desenvolvimento de Produtos</span>
+          <a href="{{ url_for('portal', dept='desenvolvimento') }}" class="nav-item-btn {% if request.endpoint == 'portal' and request.args.get('dept') == 'desenvolvimento' %}active{% endif %}" style="text-decoration:none;" title="Desenvolvimento de Produtos &amp; Projetos">
+            <span class="nav-item-icon"><img src="{{ url_for('static', filename='assets/icons/desenvolvimento_icon.svg') }}" alt="Produtos &amp; Projetos"></span>
+            <span class="nav-item-label">Desenvolvimento de Produtos &amp; Projetos</span>
           </a>
         </li>
 
@@ -381,25 +403,20 @@
           </a>
         </li>
 
-        <!-- 7. Regionais com Submenu Sanfona (Regional SP e Regional FSP) -->
-        <li class="nav-category-group {% if request.args.get('dept') in ['regional_fsp', 'regional_sp'] %}expanded{% endif %}">
-          <div class="nav-item-btn nav-category-header {% if request.args.get('dept') in ['regional_fsp', 'regional_sp'] %}active{% endif %}" id="btn-regionais-toggle" style="cursor: pointer;">
-            <span class="nav-item-icon"><img src="{{ url_for('static', filename='assets/icons/regionais_icon.svg') }}" alt="Regionais"></span>
-            <span class="nav-item-label">Regionais</span>
-            <span class="material-symbols-outlined accordion-arrow" style="font-size:16px; margin-left:auto; transition: transform 0.3s; {% if request.args.get('dept') in ['regional_fsp', 'regional_sp'] %}transform: rotate(180deg);{% endif %}">keyboard_arrow_down</span>
-          </div>
-          <ul class="sidebar-submenu" style="{% if request.args.get('dept') in ['regional_fsp', 'regional_sp'] %}display: flex;{% else %}display: none;{% endif %}">
-            <li>
-              <a href="{{ url_for('portal', dept='regional_sp') }}" class="submenu-btn {% if request.args.get('dept') == 'regional_sp' %}active{% endif %}">
-                Regional SP
-              </a>
-            </li>
-            <li>
-              <a href="{{ url_for('portal', dept='regional_fsp') }}" class="submenu-btn {% if request.args.get('dept') == 'regional_fsp' %}active{% endif %}">
-                Regional FSP
-              </a>
-            </li>
-          </ul>
+        <!-- 7. Regional SP -->
+        <li>
+          <a href="{{ url_for('portal', dept='regional_sp') }}" class="nav-item-btn {% if request.endpoint == 'portal' and request.args.get('dept') == 'regional_sp' %}active{% endif %}" style="text-decoration:none;" title="Regional SP">
+            <span class="nav-item-icon"><img src="{{ url_for('static', filename='assets/icons/regionais_icon.svg') }}" alt="Regional SP"></span>
+            <span class="nav-item-label">Regional SP</span>
+          </a>
+        </li>
+
+        <!-- 8. Regional FSP -->
+        <li>
+          <a href="{{ url_for('portal', dept='regional_fsp') }}" class="nav-item-btn {% if request.endpoint == 'portal' and request.args.get('dept') == 'regional_fsp' %}active{% endif %}" style="text-decoration:none;" title="Regional FSP">
+            <span class="nav-item-icon"><img src="{{ url_for('static', filename='assets/icons/regionais_icon.svg') }}" alt="Regional FSP"></span>
+            <span class="nav-item-label">Regional FSP</span>
+          </a>
         </li>
 
         <!-- 8. Diretoria Executiva -->

@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+  
+  @page {
+    size: A4 portrait;
+    margin: 1.5cm 1.2cm;
+    @bottom-right {
+      content: counter(page);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 8pt;
+      color: #777;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    color: #1a1a1a;
+    background: #fff;
+    line-height: 1.4;
+    font-size: 9pt;
+  }
+
+  /* CAPA DO PORTFÓLIO */
+  .cover-page {
+    page-break-after: always;
+    height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2.5cm 1.5cm;
+    background: linear-gradient(145deg, #0d0d0d 0%, #171717 100%);
+    color: #fff;
+    border-radius: 8px;
+    position: relative;
+    border: 2px solid #CB9727;
+  }
+
+  .cover-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #CB9727 0%, #F5D372 50%, #A6781B 100%);
+    color: #000;
+    font-weight: 900;
+    font-size: 10pt;
+    padding: 6px 14px;
+    border-radius: 4px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+
+  .cover-title {
+    font-size: 26pt;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-top: 1.5cm;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+  .cover-title span {
+    color: #CB9727;
+  }
+
+  .cover-subtitle {
+    font-size: 12pt;
+    color: #b0b5bc;
+    margin-top: 0.8cm;
+    font-weight: 400;
+    max-width: 90%;
+    line-height: 1.5;
+  }
+
+  .cover-stats-box {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 2cm;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(203, 151, 39, 0.3);
+    border-radius: 8px;
+  }
+
+  .cover-stat-item {
+    text-align: center;
+  }
+  .cover-stat-val {
+    font-size: 20pt;
+    font-weight: 900;
+    color: #CB9727;
+  }
+  .cover-stat-lbl {
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    color: #999;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  .cover-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 1cm;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .author-name {
+    font-size: 14pt;
+    font-weight: 800;
+    color: #fff;
+  }
+  .author-role {
+    font-size: 9pt;
+    color: #CB9727;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  .author-contact {
+    font-size: 8pt;
+    color: #999;
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  /* PÁGINAS INTERNAS */
+  .page-header {
+    border-bottom: 2px solid #CB9727;
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .page-title {
+    font-size: 13pt;
+    font-weight: 800;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .page-subtitle {
+    font-size: 8pt;
+    color: #666;
+    font-weight: 600;
+  }
+
+  /* SUMÁRIO EXECUTIVO */
+  .executive-summary {
+    background: #f8f9fa;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #CB9727;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 8.5pt;
+    color: #333;
+    line-height: 1.5;
+  }
+
+  /* SEÇÕES DE DEPARTAMENTOS */
+  .dept-section {
+    margin-bottom: 24px;
+    page-break-inside: auto;
+  }
+
+  .dept-header {
+    background: #111;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 9.5pt;
+    font-weight: 800;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-left: 5px solid #CB9727;
+  }
+  .dept-count {
+    background: #CB9727;
+    color: #000;
+    font-size: 7.5pt;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+
+  /* TABELA / CARDS DE DASHBOARDS */
+  .dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 14px;
+  }
+
+  .dashboard-table tr {
+    page-break-inside: avoid;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .dashboard-table td {
+    padding: 9px 8px;
+    vertical-align: top;
+  }
+
+  .cell-title {
+    width: 32%;
+  }
+  .dash-name {
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.25;
+  }
+  .dash-tech {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 6.8pt;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .tech-pbi {
+    background: #fff8e1;
+    color: #b78103;
+    border: 1px solid #ffe082;
+  }
+  .tech-full {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+  }
+
+  .cell-desc {
+    width: 44%;
+    font-size: 8pt;
+    color: #4a5568;
+    line-height: 1.35;
+  }
+  .impact-callout {
+    font-size: 7.5pt;
+    color: #744210;
+    background: #fffaf0;
+    padding: 3px 6px;
+    border-radius: 3px;
+    margin-top: 4px;
+    border-left: 2px solid #CB9727;
+  }
+
+  .cell-stack {
+    width: 24%;
+    font-size: 7.2pt;
+    color: #666;
+  }
+  .stack-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  .pill {
+    background: #edf2f7;
+    color: #4a5568;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+  <!-- CAPA -->
+  <div class="cover-page">
+    <div>
+      <span class="cover-badge">Visão completa, controle total.</span>
+      <h1 class="cover-title">Cockpit Executivo Estratégico</h1>
+      <p class="cover-subtitle">
+        Catálogo corporativo consolidado com mais de 60 soluções analíticas, englobando modelagem dimensional Star Schema, ETL robusto, governança, dashboards executivos Power BI e plataformas analíticas Fullstack sob medida.
+      </p>
+
+      <div class="cover-stats-box">
+        <div class="cover-stat-item">
+          <div class="cover-stat-val">78</div>
+          <div class="cover-stat-lbl">Dashboards Criados</div>
+        </div>
+        <div class="cover-stat-item">
+          <div class="cover-stat-val">12</div>
+          <div class="cover-stat-lbl">Departamentos / Áreas</div>
+        </div>
+        <div class="cover-stat-item">
+          <div class="cover-stat-val">43</div>
+          <div class="cover-stat-lbl">Modelos Power BI</div>
+        </div>
+        <div class="cover-stat-item">
+          <div class="cover-stat-val">35</div>
+          <div class="cover-stat-lbl">Web Apps Python</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <div>
+        <div class="author-name">Antonio Mello</div>
+        <div class="author-role">Especialista em Business Intelligence & Engenharia de Dados</div>
+      </div>
+      <div class="author-contact">
+        LinkedIn: linkedin.com/in/antonio-carlos-mello/<br>
+        Contato / WhatsApp: (11) 99955-3359<br>
+        E-mail: acmello.106@gmail.com<br>
+        Localização: São Paulo, SP<br>
+        Especialidades: Power BI • DAX • SQL • Python • Oracle • Modelagem Dimensional
+      </div>
+    </div>
+  </div>
+
+  <!-- PÁGINA INTERNA 1: SUMÁRIO EXECUTIVO & METODOLOGIA -->
+  <div class="page-header">
+    <div class="page-title">Sumário Executivo & Diferenciais Técnicos</div>
+    <div class="page-subtitle">Antonio Mello • Portfólio de Business Intelligence</div>
+  </div>
+
+  <div class="executive-summary">
+    <strong>Resumo de Competências & Perfil Profissional:</strong><br>
+    Profissional com sólida trajetória no desenvolvimento de ecossistemas analíticos completos. Atuação direta com Diretorias Executivas, Gerentes e Líderes de Operação para traduzir desafios de negócios em painéis de alta disponibilidade com impacto direto em receita, contenção de despesas operacionais e otimização de estoque.
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px;">
+    <div style="background: #fafafa; border: 1px solid #e0e0e0; padding: 10px; border-radius: 6px;">
+      <h3 style="font-size: 8.5pt; font-weight: 800; color: #111; margin-bottom: 6px; color: #b78103;">
+        ✦ ARQUITETURA & MODELAGEM DIMENSIONAL
+      </h3>
+      <p style="font-size: 7.8pt; color: #555; line-height: 1.4;">
+        Criação de Data Warehouses e modelos Star Schema (Fatos e Dimensões) otimizados. Cálculos avançados com DAX estruturado, Time Intelligence e otimização de performance via VertiPaq.
+      </p>
+    </div>
+    <div style="background: #fafafa; border: 1px solid #e0e0e0; padding: 10px; border-radius: 6px;">
+      <h3 style="font-size: 8.5pt; font-weight: 800; color: #111; margin-bottom: 6px; color: #2e7d32;">
+        ✦ ENGENHARIA & DESENVOLVIMENTO FULLSTACK
+      </h3>
+      <p style="font-size: 7.8pt; color: #555; line-height: 1.4;">
+        Desenvolvimento de aplicações analíticas web em Python (Flask) conectadas nativamente a bancos relacionais (Oracle ERP Sankhya, MariaDB, PostgreSQL), proporcionando automação sem custo de licenças.
+      </p>
+    </div>
+  </div>
+
+  <!-- CATÁLOGO DETALHADO POR DEPARTAMENTO -->
+  <div class="page-header" style="margin-top: 10px;">
+    <div class="page-title">Catálogo Completo de Soluções Implementadas (78 Projetos)</div>
+    <div class="page-subtitle">Página de Detalhamento Técnico</div>
+  </div>
+
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>Assistência Técnica & SAC</span>
+            <span class="dept-count">7 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR. ASSISTEC. DASHBOARD FORECAST SPARE_PARTS</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Previsão de demanda futura de peças sobressalentes e reposição (Spare Parts).
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE Assistencia Tecnica & SAC - Gestão de Resultados</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultados. Acompanhamento de custos operacionais e garantias.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard R.A</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Acompanhamento de reclamações, tempo de resposta e reputação no Reclame Aqui.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard SAC & Assistencia Técnica</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Visão geral de atendimentos, chamados SAC e produtividade da assistência técnica.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard SAC & Assistencia Técnica 2</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Cockpit Executivo & Operacional da Diretoria de Assistência Técnica & SAC (Versão Web). Indicadores de WhatsApp/CRC, Fale Conosco, CSAT/NPS e Ordens de Serviço.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Demanda de Reabastecimento</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Planejamento de reposição e demanda de peças e componentes em estoque.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Retorno de Peças</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Controle e rastreamento de devolução e retorno de peças para assistência técnica.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>Comercial & Vendas</span>
+            <span class="dept-count">1 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Painel de Performance Comercial & Vendas B2B</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Faturamento por região, margem por produto, ranking de clientes e curva ABC de vendas.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>Comex</span>
+            <span class="dept-count">6 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR DASH DISTRIBUIÇÃO VISAO GERAL- GESTOR - COMEX</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Distribuição e visão geral estratégica para gestores COMEX.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR DASH VISÃO COMEX</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Visão consolidada de comércio exterior, importações e exportações.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR. CML. ACOMP. PERF. PRODUTO E CANAL COMEX</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Acompanhamento comercial de performance por produto e canal COMEX.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR. DASH. PERFORMANCE EQUIPES COMEX</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Indicadores de produtividade e performance operacional das equipes COMEX.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR.CML. PROBABILIDADE DE COMPRAS - COMEX</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Modelos preditivos e análise de probabilidade de compras COMEX.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE Comex - Gestão de Resultados</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultados do Comércio Exterior (Comex). Acompanhamento de faturamento líquido, margens e custos operacionais.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>Desenvolvimento de Produtos & Projetos</span>
+            <span class="dept-count">8 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DASH. DESENV. PRODUTOS INDICADORES DE IMPORTACAO</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Indicadores de importação, lead time, custos e desembaraço de produtos.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DASH. DIR. DESNV. PRODUTOS - NUBMETRICS 10</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Dashboard executivo da Diretoria de Desenvolvimento de Produtos - Nubmetrics (versão 10).
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DASHBOARD RA</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Gestão de chamados, reputação e índices de atendimento no Reclame Aqui da Assistência Técnica.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR.CML ESTOQUE ATUAL CUSTO FINANCEIRO</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Estoque atual e custo financeiro consolidado - Diretoria Comercial e Desenvolvimento.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR.DASH. ANALISE MARGEM CUSTO GER vs5</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Análise gerencial de margens, composição de custos e rentabilidade de produtos.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE Desenvolvimento de Produtos</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultados do Exercício (DRE) da linha de desenvolvimento de produtos e projetos.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">RETORNO DE PEÇAS.</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Controle, índices de retorno e conformidade de peças em garantia.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">SHOPPING PREÇO</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Comparativo dinâmico de preços de produtos no mercado (Shopping de Preço).
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>Diretoria Executiva</span>
+            <span class="dept-count">23 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Cockpit Geral de Indicadores Estratégicos MQ</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Visão macro corporativa com faturamento acumulado, pedidos totais e metas globais da empresa.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE Consolidado Empresa</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultados Consolidado por Empresa
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE Gestores - Geral (Diretoria)</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultado do Exercício - DRE Executivo e Gerencial de Gestores.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard Nubmetrics - Diretoria</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Inteligência de mercado, análise de vendas e tabelas de indicadores competitivos Nubmetrics.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Mensal (%) Performance Geral</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Cockpit de vendas mensal consolidado com metas corporativas e oscilacoes em tempo real.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Acumulado do Ano (YTD)</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Acompanhamento de vendas acumuladas no ano e atingimento de metas anuais.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Performance Trimestral (1T a 4T)</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Acompanhamento financeiro por trimestre: Despesas Fixas, Variaveis, Totais, Faturamento e Lucro Liquido.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Todos os Canais (Cockpit 6)</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Visao executiva unificada dos 6 principais canais com relogios de meta e historico trimestral.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Categorias de Produtos</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Distribuicao percentual e metas por categorias de produtos (Secadores, Pranchas, etc.).
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Marcas Corporativas</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Performance executiva e metas de faturamento por marcas corporativas (MQ Hair, Parlux).
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Canal Distribuicao</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Acompanhamento dedicado do canal Distribuicao com metas e indicadores diarios.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Canal E-commerce MQ</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Painel em tempo real de vendas e metas do canal E-commerce MQ.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Canal Varejo SP</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Monitoramento de metas e vendas do canal Varejo Especializado SP.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Canal Comex</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Metas e exportacoes internacionais do canal Comercio Exterior.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Regional NO/ND</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Acompanhamento regional das vendas Norte e Nordeste.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Regional RJ/MG/ES</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Painel de vendas e atingimento de metas Rio de Janeiro, Minas e Espirito Santo.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Regional Sul</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Monitoramento estrategico da Regional Sul do Brasil.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Mapa Brasil (Geografico)</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Geolocalizacao de faturamento e rankings por estado e regioes do Brasil.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Empresa Consolidado</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Painel macro corporativo de faturamento e objetivos gerais da empresa.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Diario por Canal</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Evolucao diaria dia-a-dia do faturamento realizado por canal.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Diario por Marcas</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Evolucao diaria de faturamento e share de marcas corporativas.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Paises & Exportacao Global</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Mapa mundi e exportacoes internacionais com share por pais.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard TV - Estoque & Previsao de Ruptura</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Monitoramento de ruptura de estoque, giro e reposicao imediata.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python / Flask</span><span class="pill">Apache ECharts</span><span class="pill">MariaDB</span><span class="pill">GitHub Actions</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>E-commerce</span>
+            <span class="dept-count">5 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">MQ Professional — Painel Executivo E-commerce</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Painel Executivo de Performance E-commerce: evolução diária acumulada (Meta vs Realizado), projeção de fechamento e indicadores por canal (Total E-commerce, Mercado Livre, VTEX e Shopee).
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DASH. DIR. DESNV. PRODUTOS - NUBMETRICS</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Inteligência competitiva, tendências de mercado e análise de produtos Nubmetrics.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR. CML. MKT. PLANO DE MIDIA 2026 -VS02</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Planejamento e acompanhamento estratégico do plano de mídia de marketing e comercial 2026.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR. DASH. PERFORMANCE EQUIPES 2.0 ECOMMERCE</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Acompanhamento de metas, produtividade e performance da equipe de E-commerce 2.0.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE E-commerce</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultados - E-commerce
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>Financeiro</span>
+            <span class="dept-count">1 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE Gestores - Geral (Diretoria)</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultados do Exercício Consolidado MQ Professional (Diretoria e Gestores). Acompanhamento de faturamento, custos e margem.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>Logística</span>
+            <span class="dept-count">5 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Controle de Estoque & Acuracidade (Inventário x Kardex)</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Dashboard do Gerente de Logística: Acompanhamento de inventário físico, conferência contra Kardex, acuracidade (IRA), divergências por categoria, produto, grupo e mês.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DASHBOARD DEMANDA REABASTECIMENTO</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                DIR. DASH LOGISTICA DEMANDA REABASTECIMENTO: Módulo nativo conectado ao Oracle Sankhya com cálculo de média de consumo, dias de estoque e sugestão de transferência.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE Logística</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultados - Logística
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard Logística — Ciclo do Pedido</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                DIR. DASH LOGISTICA CICLO DO PEDIDO: Acompanhamento de todas as etapas do pedido, lead time de separação, faturamento e expedição.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard Logística — Inventário</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                DIR.DASH LOGISTICA INVENTARIO: Acuracidade de armazém, inventário físico rotativo x saldo contábil, perdas e auditoria de posições.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>RH</span>
+            <span class="dept-count">1 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE RH — Recursos Humanos</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultados do Exercício — Centro de Custo RH (9010000). Acompanhamento de despesas e custos operacionais de Recursos Humanos.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>Regional FSP</span>
+            <span class="dept-count">12 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">ACOMPANHAMENTO DIARIO DO CANAL - FORA SP</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Acompanhamento Diário de Vendas, Marcas e YTD Fora SP
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DASH. EVOLUÇÃO REDE E PROD. VISÃO GER. FORA SP</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Evolução de Redes, Parceiros e Produtos Visão Geral Fora SP
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR CML DASH. PROFUNDIDADE - MIX - CARTEIRA FORA SP</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Profundidade de Carteira e Mix de Produtos Fora SP
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR. CML DASH. NEGOCIOS E ESTRATEGIAS FORA SP</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Painel Comercial de Negócios e Estratégias Regionais Fora SP
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR. CML VAREJO ESPECIALIZADO GESTOR FORA SP v2</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Gestão de Varejo Especializado, Parceiros e Curva ABC Fora SP
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR. CML. ACOMP. PERF. PRODUTO E CANAL - REG. FSP</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Acompanhamento de Performance por Produto e Canal Regional FSP
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR. DASH. PERFORMANCE EQUIPE GER. REGIONAL FORA SP v2</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Performance de Equipe, Metas e Faturamento Projetado Fora SP
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE MQ.2.1 - VAREJO_FORASP_DISTRIBUICAO</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultados DRE Varejo Fora SP & Distribuição
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE Regional FSP — Gestão de Resultados</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultados da Regional FSP (Distribuição 1020000, Varejo RJ 1010200, Varejo ND 1010300 e Varejo SUL 1010400). Acompanhamento de faturamento líquido, margens e custos operacionais.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard Nubmetrics</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Inteligência de mercado, análise de vendas e indicadores competitivos Nubmetrics da Regional FSP.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">SELLOUT PROMOTOR VERSAO 1</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Acompanhamento e Apuração de Sell-out de Promotores
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">SHOPPING PREÇO 2</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Price Tracking e Shopping de Preços - Regional Fora SP
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>Regional SP</span>
+            <span class="dept-count">8 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DASH. EVOLUÇÃO REDE E PROD. VISÃO  GER. REGIONAL SP</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Evolução de vendas da rede e de produtos com visão gerencial da Regional SP.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR CML DASH. PROFUNDIDADE - MIX- CARTEIRA REGIONAL SP</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Análise profunda de mix de produtos, positivação e carteira de clientes da Regional SP.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR. CML  VAREJO ESPECIALIZADO GESTOR SP.</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Gestão e indicadores de vendas no canal Varejo Especializado da Regional SP.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DIR. CML. ACOMP. PERF. PRODUTO E CANAL REG.SP</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Acompanhamento detalhado de performance por linha de produto e canal comercial.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">DRE Regional SP – Gestão de Resultados</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Demonstrativo de Resultados do Exercício (DRE) consolidado da Regional SP.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">Dashboard Guelta (Ação Promocional AP)</div>
+                <span class="dash-tech tech-full">Web / Python</span>
+              </td>
+              <td class="cell-desc">
+                Inteligência executiva da campanha promocional Guelta (AP), vendas por loja, revendedora e produtos.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SQL (Oracle/MariaDB)</span><span class="pill">HTML5/CSS3 Moderno</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">SELLOUT  PROMOTOR</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Performance e acompanhamento do volume de sell-out registrado pelos promotores de vendas.
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">SHOPPING PREÇO</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                Inteligência competitiva, monitoramento e comparativo de preços de mercado (Shopping Preço).
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+        <div class="dept-section">
+          <div class="dept-header">
+            <span>TI & BI</span>
+            <span class="dept-count">1 Painéis</span>
+          </div>
+
+          <table class="dashboard-table">
+        
+            <tr>
+              <td class="cell-title">
+                <div class="dash-name">teste</div>
+                <span class="dash-tech tech-pbi">Power BI Pro</span>
+              </td>
+              <td class="cell-desc">
+                
+                <div class="impact-callout">
+                  <strong>Impacto:</strong> Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.
+                </div>
+              </td>
+              <td class="cell-stack">
+                <div class="stack-pills"><span class="pill">Power BI Pro</span><span class="pill">Modelagem Dimensional (Star Schema)</span><span class="pill">DAX Avançado</span><span class="pill">ETL / Power Query</span></div>
+              </td>
+            </tr>
+            
+          </table>
+        </div>
+        
+</body>
+</html>
