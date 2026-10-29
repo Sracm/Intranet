@@ -2,7 +2,7 @@ import os
 from functools import wraps
 from flask import (
     Flask, render_template, request, redirect, url_for,
-    flash, session, jsonify, abort
+    flash, session, jsonify, abort, send_file
 )
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import check_password_hash
@@ -15,7 +15,7 @@ from database import (
     get_reports_for_user, get_user_accessible_departments, user_can_access_report,
     get_user_department_ids, log_access, get_stats,
     list_portal_tools, create_portal_tool, update_portal_tool, delete_portal_tool,
-    get_portal_settings, set_portal_setting
+    get_portal_settings, set_portal_setting, get_dashboard_usabilidade_analytics
 )
 
 app = Flask(__name__)
@@ -57,13 +57,9 @@ def resolve_embed_url(url):
         return ''
     try:
         host = request.host.split(':')[0]
-        if host in ('localhost', '127.0.0.1'):
-            return url.replace('10.11.1.162:', f'{host}:').replace('10.11.1.100:', f'{host}:')
-        else:
-            return (url.replace('localhost:', f'{host}:')
-                       .replace('127.0.0.1:', f'{host}:')
-                       .replace('10.11.1.162:', f'{host}:')
-                       .replace('10.11.1.100:', f'{host}:'))
+        for origin in ('localhost:', '127.0.0.1:', '10.11.1.162:', '10.11.1.100:', '192.168.15.37:', '10.81.234.4:'):
+            if origin in url:
+                return url.replace(origin, f'{host}:')
     except Exception:
         pass
     return url
@@ -231,10 +227,12 @@ def view_report(report_id):
     # Registra log de visualização
     log_access(user_id, report_id, 'view_report', request.remote_addr)
 
-    # Sanitiza URL de embed (adaptando localhost para o IP da rede se acessado remotamente)
-    embed_url = resolve_embed_url(report['embed_url'].strip())
+    # Se for o próprio Dashboard de Usabilidade, redireciona diretamente para renderização nativa
+    if report['embed_url'].strip() == '/analytics' or report['embed_url'].strip().endswith('/analytics'):
+        return redirect(url_for('analytics_dashboard'))
 
     # Se for relatório do DRE Gestores (:5100), injeta o usuário autenticado e token seguro
+    embed_url = resolve_embed_url(report['embed_url'].strip())
     username = session.get('username', '')
     if ':5100' in embed_url and username:
         import hmac, hashlib, time
@@ -251,6 +249,79 @@ def view_report(report_id):
         embed_url = f"{embed_url}{sep}user={username}"
 
     return render_template('report_view.html', report=report, embed_url=embed_url)
+
+# ----------------- COCKPIT DE ANALYTICS & USABILIDADE DOS DASHBOARDS ----------------- #
+
+@app.route('/analytics')
+@login_required
+def analytics_dashboard():
+    month = request.args.get('month', 'todos')
+    department_id = request.args.get('dept', 'todos')
+    user_id = request.args.get('user', 'todos')
+    report_id = request.args.get('report', 'todos')
+
+    data = get_dashboard_usabilidade_analytics(
+        month=month,
+        department_id=department_id,
+        user_id=user_id,
+        report_id=report_id
+    )
+
+    return render_template('analytics_dashboard.html', data=data)
+
+
+@app.route('/api/analytics')
+@login_required
+def api_analytics():
+    month = request.args.get('month', 'todos')
+    department_id = request.args.get('dept', 'todos')
+    user_id = request.args.get('user', 'todos')
+    report_id = request.args.get('report', 'todos')
+
+    data = get_dashboard_usabilidade_analytics(
+        month=month,
+        department_id=department_id,
+        user_id=user_id,
+        report_id=report_id
+    )
+    return jsonify(data)
+
+
+@app.route('/api/analytics/log', methods=['POST'])
+@app.route('/api/log_access', methods=['GET', 'POST'])
+def api_log_access():
+    user_id = None
+    report_id = None
+    action = 'view_report'
+
+    if request.method == 'POST':
+        data = request.get_json(silent=True) or request.form
+        username = data.get('username')
+        report_id = data.get('report_id')
+        action = data.get('action', 'view_report')
+    else:
+        username = request.args.get('username')
+        report_id = request.args.get('report_id')
+        action = request.args.get('action', 'view_report')
+
+    if username:
+        user = get_user_by_username(username)
+        if user:
+            user_id = user['id']
+    elif 'user_id' in session:
+        user_id = session['user_id']
+
+    if report_id:
+        try:
+            report_id = int(report_id)
+        except Exception:
+            report_id = None
+
+    if user_id or report_id:
+        log_access(user_id, report_id, action, request.remote_addr)
+        return jsonify({'status': 'ok', 'logged': True})
+    return jsonify({'status': 'ignored', 'reason': 'no user or report identified'}), 400
+
 
 # ----------------- PAINEL ADMINISTRATIVO ----------------- #
 
@@ -483,6 +554,97 @@ def admin_settings():
 
     settings = get_portal_settings()
     return render_template('admin/settings.html', settings=settings)
+
+
+# ----------------- PORTFÓLIO EXECUTIVO (SITE & PDF) ----------------- #
+
+@app.route('/portfolio')
+def portfolio():
+    """
+    Página web pública do Portfólio Executivo de Dashboards,
+    apresentando catálogo com mais de 60 soluções analíticas, estatísticas e filtros dinâmicos.
+    """
+    import json
+    dataset_file = os.path.join(os.path.dirname(__file__), 'portfolio_final_dataset.json')
+    if os.path.exists(dataset_file):
+        with open(dataset_file, 'r', encoding='utf-8') as f:
+            dashboards = json.load(f)
+    else:
+        dashboards = []
+    
+    return render_template('portfolio.html', dashboards_json=json.dumps(dashboards, ensure_ascii=False))
+
+
+@app.route('/dre_assistencia/')
+@app.route('/dre_assistencia/<path:filename>')
+def serve_dre_assistencia_portfolio(filename='index.html'):
+    from flask import send_from_directory
+    dre_dir = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'dre_assistencia')
+    return send_from_directory(dre_dir, filename)
+
+
+@app.route('/dre_empresa/')
+@app.route('/dre_empresa/<path:filename>')
+def serve_dre_empresa_portfolio(filename='index.html'):
+    from flask import send_from_directory
+    emp_dir = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'dre_empresa')
+    return send_from_directory(emp_dir, filename)
+
+
+@app.route('/ecommerce/')
+@app.route('/ecommerce/<path:filename>')
+def serve_ecommerce_portfolio(filename='index.html'):
+    from flask import send_from_directory
+    ecom_dir = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'ecommerce')
+    return send_from_directory(ecom_dir, filename)
+
+
+@app.route('/dashboard_tv/')
+@app.route('/dashboard_tv/<path:filename>')
+def serve_dashboard_tv_portfolio(filename='tv.html'):
+    from flask import send_from_directory
+    tv_dir = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'dashboard_tv')
+    return send_from_directory(tv_dir, filename)
+
+
+
+@app.route('/portfolio/download-pdf')
+def download_portfolio_pdf():
+    """
+    Download do PDF executivo diagramado e pronto para envio a recrutadores e vagas de emprego.
+    """
+    pdf_path = os.path.join(os.path.dirname(__file__), 'static', 'portfolio_anderson_mello.pdf')
+    
+    # Se o PDF ainda não existir, regera automaticamente
+    if not os.path.exists(pdf_path):
+        from generate_portfolio_pdf import generate_portfolio_pdf
+        generate_portfolio_pdf()
+        
+    return send_file(
+        pdf_path,
+        as_attachment=True,
+        download_name='Portfolio_Anderson_Mello_BI_Executive.pdf',
+        mimetype='application/pdf'
+    )
+
+
+@app.route('/Portfolio_Antonio_Mello_BI_Executive.pptx')
+@app.route('/portfolio/download-pptx')
+def download_portfolio_pptx():
+    """
+    Download do PowerPoint (.pptx) editável do portfólio.
+    """
+    pptx_path = os.path.join(os.path.dirname(__file__), 'static', 'Portfolio_Antonio_Mello_BI_Executive.pptx')
+    if not os.path.exists(pptx_path):
+        from create_portfolio_pptx import create_portfolio_powerpoint
+        create_portfolio_powerpoint(output_pptx=pptx_path)
+        
+    return send_file(
+        pptx_path,
+        as_attachment=True,
+        download_name='Portfolio_Antonio_Mello_BI_Executive.pptx',
+        mimetype='application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    )
 
 
 if __name__ == '__main__':
