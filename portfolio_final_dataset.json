@@ -13,7 +13,7 @@
       "ETL / Power Query"
     ],
     "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_5_cockpit_geral_de_indicadores_estrat.jpg?v=20261028_reab",
+    "image": "static/portfolio_screenshots/dash_5_cockpit_geral_de_indicadores_estrat.jpg?v=20261030_blur",
     "is_static": true,
     "live_url": null,
     "github_repo": null
@@ -886,25 +886,6 @@
     "github_repo": null
   },
   {
-    "id": 77,
-    "title": "SHOPPING PREÇO",
-    "department": "Desenvolvimento de Produtos & Projetos",
-    "description": "Comparativo dinâmico de preços de produtos no mercado (Shopping de Preço).",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_77_shopping_pre__o.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
-  },
-  {
     "id": 48,
     "title": "Painel Executivo E-commerce Multi-Canal",
     "department": "E-commerce",
@@ -1339,44 +1320,6 @@
     "github_repo": null
   },
   {
-    "id": 30,
-    "title": "SELLOUT PROMOTOR VERSAO 1",
-    "department": "Regional FSP",
-    "description": "Acompanhamento e Apuração de Sell-out de Promotores",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_30_sellout_promotor_versao_1.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
-  },
-  {
-    "id": 29,
-    "title": "SHOPPING PREÇO 2",
-    "department": "Regional FSP",
-    "description": "Price Tracking e Shopping de Preços - Regional Fora SP",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_29_shopping_pre__o_2.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
-  },
-  {
     "id": 62,
     "title": "DASH. EVOLUÇÃO REDE E PROD. VISÃO  GER. REGIONAL SP",
     "department": "Regional SP",
@@ -1493,44 +1436,6 @@
     "github_repo": null,
     "is_static": true,
     "live_url": null
-  },
-  {
-    "id": 66,
-    "title": "SELLOUT  PROMOTOR",
-    "department": "Regional SP",
-    "description": "Performance e acompanhamento do volume de sell-out registrado pelos promotores de vendas.",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_66_sellout__promotor.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
-  },
-  {
-    "id": 67,
-    "title": "SHOPPING PREÇO",
-    "department": "Regional SP",
-    "description": "Inteligência competitiva, monitoramento e comparativo de preços de mercado (Shopping Preço).",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_67_shopping_pre__o.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
   },
   {
     "id": 11,

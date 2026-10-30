@@ -219,22 +219,6 @@
       "url": "https://app.powerbi.com/view?r=eyJrIjoiNmRjODc4ZDctNDczNS00OGM0LWE3NWEtZTg2ZTViMWUzZGYwIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
       "tech": "Power BI Service (Embedded)",
       "icon": "bi-graph-up-arrow"
-    },
-    {
-      "id": 30,
-      "title": "SELLOUT PROMOTOR VERSAO 1",
-      "description": "Acompanhamento e ApuraÃ§Ã£o de Sell-out de Promotores",
-      "url": "https://app.powerbi.com/view?r=eyJrIjoiYmVlZTkxY2MtNjdkMS00NmZjLTg5MGEtYTE5MWQxODY2ZGMxIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
-      "tech": "Power BI Service (Embedded)",
-      "icon": "bi-person-badge"
-    },
-    {
-      "id": 29,
-      "title": "SHOPPING PREÃO 2",
-      "description": "Price Tracking e Shopping de PreÃ§os - Regional Fora SP",
-      "url": "https://app.powerbi.com/view?r=eyJrIjoiM2I1Y2JkY2UtYjMyYS00YjBjLTlmNmQtMDJlNTdkMWQwZTQ0IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
-      "tech": "Power BI Service (Embedded)",
-      "icon": "bi-tags-fill"
     }
   ],
   "RH": [
@@ -319,14 +303,6 @@
       "url": "https://app.powerbi.com/view?r=eyJrIjoiMWY0NGM2NzEtZWNjOS00YmEwLTliZDUtMjNmZjZiYThiYzVlIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
       "tech": "Power BI Service (Embedded)",
       "icon": "bi-arrow-return-left"
-    },
-    {
-      "id": 77,
-      "title": "SHOPPING PREÃO",
-      "description": "Comparativo dinÃ¢mico de preÃ§os de produtos no mercado (Shopping de PreÃ§o).",
-      "url": "https://app.powerbi.com/view?r=eyJrIjoiNzEyM2M3OWUtNDUyOS00MGY4LThmNjItMjc0MDA0MDU5NTRjIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
-      "tech": "Power BI Service (Embedded)",
-      "icon": "bi-cart-check-fill"
     },
     {
       "id": 78,
@@ -485,22 +461,6 @@
       "url": "http://10.11.1.100:5250/",
       "tech": "Flask / Python / Fullstack",
       "icon": "bi-award-fill"
-    },
-    {
-      "id": 66,
-      "title": "SELLOUT  PROMOTOR",
-      "description": "Performance e acompanhamento do volume de sell-out registrado pelos promotores de vendas.",
-      "url": "https://app.powerbi.com/reportEmbed?reportId=0f33e57c-8f3d-4703-89e9-44d1c92e37ea&autoAuth=true&ctid=703fb3fc-27e0-412a-af01-fd5c3cd99e53&actionBarEnabled=true",
-      "tech": "Power BI Service (Embedded)",
-      "icon": "bi-person-check-fill"
-    },
-    {
-      "id": 67,
-      "title": "SHOPPING PREÃO",
-      "description": "InteligÃªncia competitiva, monitoramento e comparativo de preÃ§os de mercado (Shopping PreÃ§o).",
-      "url": "https://app.powerbi.com/reportEmbed?reportId=a90031fa-3505-4b0d-8816-801d7d465385&autoAuth=true&ctid=703fb3fc-27e0-412a-af01-fd5c3cd99e53&actionBarEnabled=true",
-      "tech": "Power BI Service (Embedded)",
-      "icon": "bi-cart-check-fill"
     }
   ],
   "AssistÃªncia TÃ©cnica & SAC": [
