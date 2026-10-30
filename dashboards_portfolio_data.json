@@ -59,7 +59,7 @@
     "id": 4,
     "title": "Análise de Recorrência & Recompra de Clientes",
     "department": "Comercial & Vendas",
-    "description": "Ciclo de vida do cliente MQ, intervalo entre compras e retenção por canal de distribuição.",
+    "description": "Ciclo de vida do cliente, intervalo entre compras e retenção por canal de distribuição.",
     "url": "https://app.powerbi.com/reportEmbed?reportId=5a2a1ded-b800-406f-83ab-23a791544279&autoAuth=true&ctid=703fb3fc-27e0-412a-af01-fd5c3cd99e53",
     "icon": "bi-arrow-repeat"
   },
@@ -217,7 +217,7 @@
   },
   {
     "id": 5,
-    "title": "Cockpit Geral de Indicadores Estratégicos MQ",
+    "title": "Cockpit Geral de Indicadores Estratégicos",
     "department": "Diretoria",
     "description": "Visão macro corporativa com faturamento acumulado, pedidos totais e metas globais da empresa.",
     "url": "https://app.powerbi.com/reportEmbed?reportId=5a2a1ded-b800-406f-83ab-23a791544279&autoAuth=true&ctid=703fb3fc-27e0-412a-af01-fd5c3cd99e53",
@@ -289,7 +289,7 @@
   },
   {
     "id": 48,
-    "title": "Portal Corporativo • E-Commerce",
+    "title": "Painel Executivo E-commerce Multi-Canal",
     "department": "E-commerce",
     "description": "Cockpit executivo e acompanhamento diário de vendas, projeções e metas por canal: Mercado Livre, VTEX, Shopee, Magalu e Parlux.",
     "url": "http://localhost:5200/",
@@ -299,7 +299,7 @@
     "id": 13,
     "title": "DRE Gestores — Geral",
     "department": "Financeiro",
-    "description": "Demonstrativo de Resultados do Exercício Consolidado MQ Professional (Diretoria e Gestores). Acompanhamento de faturamento, custos e margem.",
+    "description": "Demonstrativo de Resultados do Exercício Consolidado (Diretoria e Gestores). Acompanhamento de faturamento, custos e margem.",
     "url": "http://localhost:5100/",
     "icon": "bi-file-earmark-spreadsheet-fill"
   },
@@ -425,7 +425,7 @@
   },
   {
     "id": 31,
-    "title": "DRE MQ.2.1 - VAREJO_FORASP_DISTRIBUICAO",
+    "title": "DRE 2.1 - VAREJO_FORASP_DISTRIBUICAO",
     "department": "Regional FSP",
     "description": "Demonstrativo de Resultados DRE Varejo Fora SP & Distribuição",
     "url": "https://app.powerbi.com/view?r=eyJrIjoiMzFjNWM4NzgtM2IzYS00MjVlLThjMWEtNTc0ZGE1NDE3ZDgyIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",

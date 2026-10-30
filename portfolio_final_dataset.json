@@ -1,7 +1,7 @@
 [
   {
     "id": 5,
-    "title": "Cockpit Geral de Indicadores Estratégicos MQ",
+    "title": "Cockpit Geral de Indicadores Estratégicos",
     "department": "Diretoria Executiva",
     "description": "Visão macro corporativa com faturamento acumulado, pedidos totais e metas globais da empresa.",
     "url": "#",
@@ -43,7 +43,7 @@
     "id": 28,
     "title": "DRE Gestores - Geral (Diretoria)",
     "department": "Diretoria Executiva",
-    "description": "Demonstrativo de Resultado do Exercício - DRE Executivo e Gerencial de Gestores.",
+    "description": "Demonstrativo de Resultados do Exercício Consolidado (Diretoria e Gestores). Acompanhamento de faturamento, custos e margem.",
     "url": "dre_assistencia/index.html?regional=geral",
     "tech": "Fullstack Flask / Python / SQL",
     "stack": [
@@ -188,7 +188,7 @@
     "id": 263,
     "title": "Dashboard TV - Marcas Corporativas",
     "department": "Diretoria Executiva",
-    "description": "Performance executiva e metas de faturamento por marcas corporativas (MQ Hair, Parlux).",
+    "description": "Performance executiva e metas de faturamento por marcas corporativas do grupo.",
     "url": "dashboard_tv/marcas.html",
     "url_tv": "/marcas",
     "github_repo": "https://github.com/Sracm/dashboard-tv",
@@ -228,11 +228,11 @@
   },
   {
     "id": 272,
-    "title": "Dashboard TV - Canal E-commerce MQ",
+    "title": "Dashboard TV - Canal E-commerce",
     "department": "Diretoria Executiva",
-    "description": "Painel em tempo real de vendas e metas do canal E-commerce MQ.",
-    "url": "dashboard_tv/canal_ecommerce_mq.html",
-    "url_tv": "/canal/ecommerce_mq",
+    "description": "Painel em tempo real de vendas e metas do canal E-commerce.",
+    "url": "dashboard_tv/canal_ecommerce.html",
+    "url_tv": "/canal/ecommerce",
     "github_repo": "https://github.com/Sracm/dashboard-tv",
     "tech": "Fullstack Python / Flask / ECharts (Web TV)",
     "stack": [
@@ -245,7 +245,7 @@
     "impact": "Cockpit de transmissao continua em televisores corporativos com atualizacao automatica a cada 10 min e rotacao em tempo real.",
     "image": "static/portfolio_screenshots/tv_canais.jpg?v=20261028_reab",
     "is_static": false,
-    "live_url": "dashboard_tv/canal_ecommerce_mq.html"
+    "live_url": "dashboard_tv/canal_ecommerce.html"
   },
   {
     "id": 273,
@@ -906,7 +906,7 @@
   },
   {
     "id": 48,
-    "title": "MQ Professional — Painel Executivo E-commerce",
+    "title": "Painel Executivo E-commerce Multi-Canal",
     "department": "E-commerce",
     "description": "Painel Executivo de Performance E-commerce: evolução diária acumulada (Meta vs Realizado), projeção de fechamento e indicadores por canal (Total E-commerce, Mercado Livre, VTEX e Shopee).",
     "url": "ecommerce/index.html",
@@ -1007,7 +1007,7 @@
     "id": 13,
     "title": "DRE Gestores - Geral (Diretoria)",
     "department": "Financeiro",
-    "description": "Demonstrativo de Resultados do Exercício Consolidado MQ Professional (Diretoria e Gestores). Acompanhamento de faturamento, custos e margem.",
+    "description": "Demonstrativo de Resultados do Exercício Consolidado (Diretoria e Gestores). Acompanhamento de faturamento, custos e margem.",
     "url": "dre_assistencia/index.html?regional=geral",
     "tech": "Fullstack Flask / Python / SQL",
     "stack": [
@@ -1281,7 +1281,7 @@
   },
   {
     "id": 31,
-    "title": "DRE MQ.2.1 - VAREJO_FORASP_DISTRIBUICAO",
+    "title": "DRE 2.1 - VAREJO_FORASP_DISTRIBUICAO",
     "department": "Regional FSP",
     "description": "Demonstrativo de Resultados DRE Varejo Fora SP & Distribuição",
     "url": "#",

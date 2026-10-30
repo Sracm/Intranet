@@ -17,6 +17,18 @@ ALLOWED_COMPANIES = [
     'SL ONLINE - SP', 'VLS - RJ', 'VLS - SP', 'FORX MG'
 ]
 
+def sanitize_account_name(name):
+    if not name:
+        return ""
+    val = name.strip()
+    val = re.sub(r'\bMQ\s*PROFESSIONAL\b', 'LINHA 01', val, flags=re.IGNORECASE)
+    val = re.sub(r'\bMQ\s*BEAUTY\b', 'LINHA 02', val, flags=re.IGNORECASE)
+    val = re.sub(r'\bMQ\s*HAIR\b', '', val, flags=re.IGNORECASE)
+    val = re.sub(r'\bMQ\b', '', val, flags=re.IGNORECASE)
+    val = re.sub(r'\bMCR\b', 'OPERACIONAL', val, flags=re.IGNORECASE)
+    val = re.sub(r'\s{2,}', ' ', val).strip(' -')
+    return val
+
 def extract_dre_empresa_data():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -36,19 +48,33 @@ def extract_dre_empresa_data():
         WHERE nome IN ({placeholders})
         ORDER BY nome
     """, ALLOWED_COMPANIES)
-    empresas = [{"CODEMP": r["nome"], "NOME": r["nome"]} for r in cur.fetchall()]
+    
+    # Anonymize empresas: Empresa 01, Empresa 02...
+    raw_empresas = cur.fetchall()
+    empresas = []
+    emp_anon_map = {}
+    for idx, r in enumerate(raw_empresas):
+        nome_orig = r["nome"]
+        if "consolida" in nome_orig.lower():
+            nome_anon = "Consolidação Geral"
+        else:
+            nome_anon = f"Empresa {idx:02d}"
+        empresas.append({"CODEMP": nome_orig, "NOME": nome_anon})
+        emp_anon_map[nome_orig] = nome_anon
 
+    # Unique centros deduplicated by codcencus
     cur.execute("""
-        SELECT codcencus, nome FROM dre_filtros_centros
+        SELECT DISTINCT codcencus FROM dre_filtros_centros
         WHERE codcencus > 0 AND codcencus != 21010000
         ORDER BY codcencus
     """)
+    centros_rows = cur.fetchall()
     centros = [
-        {"CODCENCUS": int(r["codcencus"]), "NOME": f"{r['codcencus']} - {r['nome']}"}
-        for r in cur.fetchall()
+        {"CODCENCUS": int(r["codcencus"]), "NOME": f"Centro de Resultado {idx+1:02d}"}
+        for idx, r in enumerate(centros_rows)
     ]
 
-    # 1. Linhas agrupadas por (ano, mes, empresa, bloco, titulo, descrnat) -> ~60k linhas
+    # 1. Linhas agrupadas por (ano, mes, empresa, bloco, titulo, descrnat)
     cur.execute(f"""
         SELECT ano, mes, empresa, bloco, titulo, descrnat,
                ROUND(SUM(orcado), 2) AS orcado,
@@ -90,11 +116,20 @@ def extract_dre_empresa_data():
     compact_rows = []
     compact_cenc_rows = []
 
+    # Pre-map distinct descrcencs to Centro de Resultado 01, 02...
+    distinct_dc = sorted(list(set((r["descrcencus"] or "").strip() for r in cenc_rows if (r["descrcencus"] or "").strip())))
+    dc_name_map = {}
+    for idx, dc in enumerate(distinct_dc):
+        anon_name = f"Centro de Resultado {idx+1:02d}"
+        dc_name_map[dc] = anon_name
+        dc_map[anon_name] = len(descrcencs)
+        descrcencs.append(anon_name)
+
     for r in emp_rows:
         e = (r["empresa"] or "").strip()
         b = (r["bloco"] or "").strip()
-        t = (r["titulo"] or "").strip()
-        d = (r["descrnat"] or "").strip()
+        t = sanitize_account_name(r["titulo"])
+        d = sanitize_account_name(r["descrnat"])
         if e not in e_map:
             e_map[e] = len(emp_list)
             emp_list.append(e)
@@ -122,23 +157,22 @@ def extract_dre_empresa_data():
     for r in cenc_rows:
         e = (r["empresa"] or "").strip()
         b = (r["bloco"] or "").strip()
-        dc = (r["descrcencus"] or "").strip()
+        dc_raw = (r["descrcencus"] or "").strip()
+        dc_anon = dc_name_map.get(dc_raw, f"Centro de Resultado {len(descrcencs)+1:02d}")
+
         if e not in e_map:
             e_map[e] = len(emp_list)
             emp_list.append(e)
         if b not in b_map:
             b_map[b] = len(blocos)
             blocos.append(b)
-        if dc not in dc_map:
-            dc_map[dc] = len(descrcencs)
-            descrcencs.append(dc)
 
         compact_cenc_rows.append([
             int(r["ano"]),
             int(r["mes"]),
             e_map[e],
             int(r["codcencus"]),
-            dc_map[dc],
+            dc_map[dc_anon],
             b_map[b],
             round(float(r["orcado"] or 0), 2),
             round(float(r["realizado"] or 0), 2)
@@ -159,7 +193,7 @@ def extract_dre_empresa_data():
 
 
 JS_ENGINE = """// ============================================================================
-// DRE CONSOLIDADO EMPRESA — STANDALONE ENGINE (GitHub Pages / Portfólio)
+// DRE CONSOLIDADO EMPRESA — STANDALONE ENGINE (Portfólio Executivo)
 // ============================================================================
 (function() {
   const DB = window.__DRE_EMPRESA_DB__;
@@ -502,70 +536,17 @@ JS_ENGINE = """// ==============================================================
       g.realizado += row[7];
     }
 
-    let vbOrc = 0, vbReal = 0;
+    const map = {};
     for (const g of groups.values()) {
-      if (g.titulo === "1.Venda Bruta") {
-        vbOrc += g.orcado; vbReal += g.realizado;
-      }
-    }
-
-    const blocoOrdem = [
-      "1.Venda Liquida", "2.Custo Mercadoria Vendida", "3.Despesas com Vendas",
-      "4.Despesas Comercial Operacional", "5.Despesas Administrativa Operacional",
-      "6.Receitas/Despesas Financeiras", "7.Vendas IC"
-    ];
-    const blocosDict = new Map();
-    blocoOrdem.forEach(bo => blocosDict.set(bo, { bloco: bo, orcado: 0, realizado: 0, titulos: [] }));
-
-    for (const g of Array.from(groups.values()).sort((a, b) => a.titulo.localeCompare(b.titulo))) {
-      let bd = blocosDict.get(g.bloco);
-      if (!bd) {
-        bd = { bloco: g.bloco, orcado: 0, realizado: 0, titulos: [] };
-        blocosDict.set(g.bloco, bd);
-      }
-      bd.orcado += g.orcado;
-      bd.realizado += g.realizado;
-      bd.titulos.push({
+      if (!map[g.bloco]) map[g.bloco] = [];
+      map[g.bloco].push({
         titulo: g.titulo, orcado: g.orcado, realizado: g.realizado,
-        dif: g.realizado - g.orcado, pct: calcRo(g.realizado, g.orcado),
-        pct_orc: pct(g.orcado, vbOrc) || 0, pct_real: pct(g.realizado, vbReal) || 0
+        dif: g.realizado - g.orcado,
+        pct: Math.abs(g.orcado) > 0.001 ? ((g.realizado - g.orcado) / Math.abs(g.orcado) * 100) : 0
       });
     }
 
-    const vl = blocosDict.get("1.Venda Liquida") || { orcado: 0, realizado: 0 };
-    const cmv = blocosDict.get("2.Custo Mercadoria Vendida") || { orcado: 0, realizado: 0 };
-    const mcOrc = vl.orcado + cmv.orcado;
-    const mcReal = vl.realizado + cmv.realizado;
-
-    let mOrc = 0, mReal = 0;
-    const blocosList = [];
-    for (const bo of blocoOrdem) {
-      const bd = blocosDict.get(bo);
-      if (bd) {
-        mOrc += bd.orcado; mReal += bd.realizado;
-        blocosList.push({
-          bloco: bo, orcado: bd.orcado, realizado: bd.realizado,
-          dif: bd.realizado - bd.orcado, pct: calcRo(bd.realizado, bd.orcado),
-          pct_orc: pct(bd.orcado, vbOrc) || 0, pct_real: pct(bd.realizado, vbReal) || 0,
-          titulos: bd.titulos
-        });
-      }
-    }
-
-    return {
-      ano: anoVal, mes: mesVal, modo: modo, vb_orc: vbOrc, vb_real: vbReal,
-      margem_contribuicao: {
-        nome: "Margem de Contribuição", orcado: mcOrc, realizado: mcReal,
-        dif: mcReal - mcOrc, pct: calcRo(mcReal, mcOrc),
-        pct_orc: pct(mcOrc, vbOrc) || 0, pct_real: pct(mcReal, vbReal) || 0
-      },
-      margem: {
-        nome: "MARGEM", orcado: mOrc, realizado: mReal,
-        dif: mReal - mOrc, pct: calcRo(mReal, mOrc),
-        pct_orc: pct(mOrc, vbOrc) || 0, pct_real: pct(mReal, vbReal) || 0,
-        blocos: blocosList
-      }
-    };
+    return { ano: anoVal, mes: mesVal, modo: modo, grupos: map };
   }
 
   function handleTabelaMensal(params) {
@@ -629,20 +610,33 @@ JS_ENGINE = """// ==============================================================
   const origFetch = window.fetch.bind(window);
   window.fetch = async function(input, init) {
     const rawUrl = typeof input === "string" ? input : (input && input.url ? input.url : "");
-    if (rawUrl.includes("/api/")) {
-      const u = new URL(rawUrl, window.location.origin);
+    if (rawUrl) {
+      const u = new URL(rawUrl, window.location.href);
       const path = u.pathname;
-      let payload = null;
-      if (path.endsWith("/api/filtros")) payload = handleFiltros();
-      else if (path.endsWith("/api/dre/ultima-sincronizacao")) payload = { ultima_sincronizacao: "28/10/2026 08:30:00", status: "success" };
-      else if (path.endsWith("/api/dre/sincronizar-status")) payload = { status: "success", pct: 100, msg: "Sincronizado" };
-      else if (path.endsWith("/api/dre/mensal")) payload = handleMensal(u.searchParams);
-      else if (path.endsWith("/api/dre/tabela-acumulado")) payload = handleTabelaAcumulado(u.searchParams);
-      else if (path.endsWith("/api/dre/tabela-mensal")) payload = handleTabelaMensal(u.searchParams);
-      else if (path.endsWith("/api/dre")) payload = handleDre(u.searchParams);
+      const params = u.searchParams;
 
-      if (payload !== null) {
-        return new Response(JSON.stringify(payload), {
+      if (path.endsWith("/api/filtros")) {
+        return new Response(JSON.stringify(handleFiltros()), {
+          status: 200, headers: { "Content-Type": "application/json" }
+        });
+      }
+      if (path.endsWith("/api/dre") && !path.includes("mensal") && !path.includes("acumulado")) {
+        return new Response(JSON.stringify(handleDre(params)), {
+          status: 200, headers: { "Content-Type": "application/json" }
+        });
+      }
+      if (path.endsWith("/api/dre/mensal")) {
+        return new Response(JSON.stringify(handleMensal(params)), {
+          status: 200, headers: { "Content-Type": "application/json" }
+        });
+      }
+      if (path.endsWith("/api/dre/tabela-acumulado")) {
+        return new Response(JSON.stringify(handleTabelaAcumulado(params)), {
+          status: 200, headers: { "Content-Type": "application/json" }
+        });
+      }
+      if (path.endsWith("/api/dre/tabela-mensal")) {
+        return new Response(JSON.stringify(handleTabelaMensal(params)), {
           status: 200, headers: { "Content-Type": "application/json" }
         });
       }
@@ -654,7 +648,7 @@ JS_ENGINE = """// ==============================================================
 
 
 def build_dre_empresa_standalone():
-    print("1. Extraindo dados do DRE Consolidado Empresa...")
+    print("1. Extraindo dados do DRE Consolidado Empresa (Whitelabel / Portfolio)...")
     data = extract_dre_empresa_data()
     print(f"   -> {len(data['rows'])} linhas por empresa | {len(data['cenc_rows'])} linhas por centro")
 
@@ -671,10 +665,6 @@ def build_dre_empresa_standalone():
 
     shutil.copy2(os.path.join(DRE_EMP_DIR, "static", "js", "app.js"), os.path.join(out_dir, "static", "js", "app.js"))
 
-    svg_src = os.path.join(DRE_EMP_DIR, "static", "assets", "a2ae7eaafd5d53c3ac8f9dcc3513af5c8beb9482.svg")
-    if os.path.exists(svg_src):
-        shutil.copy2(svg_src, os.path.join(out_dir, "static", "assets", "a2ae7eaafd5d53c3ac8f9dcc3513af5c8beb9482.svg"))
-
     avatar_src = os.path.join(DRE_EMP_DIR, "static", "img", "ai_avatar.png")
     if os.path.exists(avatar_src):
         shutil.copy2(avatar_src, os.path.join(out_dir, "static", "img", "ai_avatar.png"))
@@ -683,11 +673,50 @@ def build_dre_empresa_standalone():
     html = re.sub(r"\{\{\s*url_for\('static',\s*filename='([^']+)'\)\s*\}\}", r"static/\1", tpl)
     html = html.replace('href="http://localhost:5080/portal"', 'href="../index.html"')
     html = html.replace('<span>Portal Intranet</span>', '<span>Voltar ao Portfólio</span>')
+
+    # Remove qualquer conotação à MQ Hair Company no HTML
+    html = html.replace('<title>DRE Empresa — MQ Hair</title>', '<title>DRE Consolidado — Demonstrativo de Resultado</title>')
+    html = html.replace('Demonstrativo de Resultado do Exercício por Empresa MQ Hair — Realizado vs Orçado por centro de custo e empresa.', 'Demonstrativo de Resultado do Exercício Consolidado — Realizado vs Orçado por centro de resultado.')
+    html = html.replace('Portal Corporativo • DRE Empresa', 'Portfólio Executivo • DRE Consolidado')
+    html = html.replace('MQ PROFESSIONAL &bull; <span>DRE EMPRESA</span>', 'EXECUTIVE ANALYTICS &bull; <span>DRE CONSOLIDADO</span>')
+    html = html.replace('<span>Desenvolvido por <strong>BI MQ Hair Company</strong></span>', '<span>Desenvolvido por <strong>Antonio Mello | BI Architecture</strong></span>')
+    html = html.replace('Pesquisar conta (ex: Frete, Amazon, Parlux)...', 'Pesquisar conta (ex: Frete, Marketing, Logística)...')
+
+    # Substituir Logo MQ Hair Company por Marca Executiva Limpa
+    mq_logo_pattern = r'<div class="header-logo-box">.*?</div>'
+    clean_logo_replacement = (
+        '<div class="header-logo-box">\n'
+        '        <a href="../index.html" title="Voltar ao Portfólio" style="text-decoration: none;">\n'
+        '          <div style="font-family: \'Montserrat\', sans-serif; font-size: 15px; font-weight: 800; color: #fff; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">\n'
+        '            <span style="color: var(--brand-secondary-dourado, #cb9727); font-size: 18px;">✦</span>\n'
+        '            <span>EXECUTIVE <strong>ANALYTICS</strong></span>\n'
+        '          </div>\n'
+        '        </a>\n'
+        '      </div>'
+    )
+    html = re.sub(mq_logo_pattern, clean_logo_replacement, html, flags=re.DOTALL)
+
+    # Tirar o filtro Empresa (ocultar com display: none para não quebrar app.js)
+    html = html.replace(
+        '<div class="filtro-group filtro-empresa filter-field">',
+        '<div class="filtro-group filtro-empresa filter-field" style="display: none !important;">'
+    )
+
+    # Renomear Filtro Centro de Custo para Centro de Resultado
+    html = html.replace(
+        '<label class="filter-label" style="color: #ffffff !important; font-weight: 700;">Centro de Custo</label>',
+        '<label class="filter-label" style="color: #ffffff !important; font-weight: 700;">Centro de Resultado</label>'
+    )
+    html = html.replace('title="Clique para selecionar um ou mais Centros de Custo"', 'title="Clique para selecionar Centros de Resultado"')
+    html = html.replace('Todos os Centros', 'Todos os Centros de Resultado')
+    html = html.replace('Buscar centro...', 'Buscar centro de resultado...')
+    html = html.replace('Carregando centros…', 'Carregando centros de resultado…')
+
     html = html.replace(
         '<script src="static/js/app.js?v=20261019_no_ytd"></script>',
-        '<script src="static/js/dre_empresa_data.js?v=20261028"></script>\n'
-        '<script src="static/js/dre_empresa_engine.js?v=20261028"></script>\n'
-        '<script src="static/js/app.js?v=20261028"></script>'
+        '<script src="static/js/dre_empresa_data.js?v=20261030_whitelabel"></script>\n'
+        '<script src="static/js/dre_empresa_engine.js?v=20261030_whitelabel"></script>\n'
+        '<script src="static/js/app.js?v=20261030_whitelabel"></script>'
     )
 
     with open(os.path.join(out_dir, "static", "js", "dre_empresa_data.js"), "w", encoding="utf-8") as f:
@@ -699,9 +728,8 @@ def build_dre_empresa_standalone():
     with open(os.path.join(out_dir, "index.html"), "w", encoding="utf-8") as f:
         f.write(html)
 
-    print(f"2. DRE Consolidado Empresa standalone gerado em: {out_dir}")
+    print(f"2. DRE Consolidado Empresa whitelabel gerado com sucesso em: {out_dir}")
 
 
 if __name__ == "__main__":
     build_dre_empresa_standalone()
-

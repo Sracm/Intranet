@@ -647,6 +647,41 @@ def download_portfolio_pptx():
     )
 
 
+
+@app.route('/curriculo')
+@app.route('/curriculo.html')
+def serve_curriculo():
+    curriculo_path = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'curriculo.html')
+    return send_file(curriculo_path, mimetype='text/html')
+
+
+@app.route('/curriculo/download-pdf')
+@app.route('/Curriculo_Antonio_Carlos_de_Mello_BI.pdf')
+def serve_curriculo_pdf():
+    pdf_path = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'Curriculo_Antonio_Carlos_de_Mello_BI.pdf')
+    if not os.path.exists(pdf_path):
+        pdf_path = os.path.join(os.path.dirname(__file__), 'Curriculo_Antonio_Carlos_de_Mello_BI.pdf')
+    return send_file(
+        pdf_path,
+        as_attachment=True,
+        download_name='Curriculo_Antonio_Carlos_de_Mello_BI.pdf',
+        mimetype='application/pdf'
+    )
+
+
+@app.route('/Portfolio_Antonio_Mello_BI_Executive.pdf')
+def serve_portfolio_pdf_direct():
+    pdf_path = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'Portfolio_Antonio_Mello_BI_Executive.pdf')
+    if not os.path.exists(pdf_path):
+        pdf_path = os.path.join(os.path.dirname(__file__), 'static', 'Portfolio_Antonio_Mello_BI_Executive.pdf')
+    return send_file(
+        pdf_path,
+        as_attachment=True,
+        download_name='Portfolio_Antonio_Mello_BI_Executive.pdf',
+        mimetype='application/pdf'
+    )
+
+
 if __name__ == '__main__':
     print(f"Iniciando Portal Intranet MQ em http://localhost:{Config.PORT}")
     app.run(host=Config.HOST, port=Config.PORT, debug=Config.DEBUG, use_reloader=False)
