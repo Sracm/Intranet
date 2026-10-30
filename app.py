@@ -561,18 +561,9 @@ def admin_settings():
 @app.route('/portfolio')
 def portfolio():
     """
-    Página web pública do Portfólio Executivo de Dashboards,
-    apresentando catálogo com mais de 60 soluções analíticas, estatísticas e filtros dinâmicos.
+    Página web pública do Portfólio Executivo de Dashboards (Desativado Temporariamente).
     """
-    import json
-    dataset_file = os.path.join(os.path.dirname(__file__), 'portfolio_final_dataset.json')
-    if os.path.exists(dataset_file):
-        with open(dataset_file, 'r', encoding='utf-8') as f:
-            dashboards = json.load(f)
-    else:
-        dashboards = []
-    
-    return render_template('portfolio.html', dashboards_json=json.dumps(dashboards, ensure_ascii=False))
+    return render_template('desativado.html')
 
 
 @app.route('/dre_assistencia/')
@@ -682,6 +673,34 @@ def serve_portfolio_pdf_direct():
     )
 
 
+
+@app.route('/modelos')
+@app.route('/modelos_dashboards.html')
+def serve_modelos_hub():
+    return render_template('desativado.html')
+
+@app.route('/modelo-dre-ebitda')
+@app.route('/modelo-dre-ebitda.html')
+def serve_modelo_dre():
+    return render_template('desativado.html')
+
+@app.route('/modelo-ecommerce-cohort')
+@app.route('/modelo-ecommerce-cohort.html')
+def serve_modelo_ecommerce():
+    return render_template('desativado.html')
+
+@app.route('/modelo-supply-chain')
+@app.route('/modelo-supply-chain.html')
+def serve_modelo_supply():
+    return render_template('desativado.html')
+
+@app.route('/showcase')
+@app.route('/showcase.html')
+def serve_showcase():
+    return render_template('desativado.html')
+
 if __name__ == '__main__':
     print(f"Iniciando Portal Intranet MQ em http://localhost:{Config.PORT}")
     app.run(host=Config.HOST, port=Config.PORT, debug=Config.DEBUG, use_reloader=False)
+
+
