@@ -566,6 +566,25 @@ def portfolio():
     return render_template('desativado.html')
 
 
+@app.route('/portfolio-privado')
+def portfolio_privado():
+    """
+    Acesso exclusivo ao portfólio para Antonio Mello (protegido por PIN ou acesso local).
+    """
+    from flask import request
+    pin = request.args.get('pin') or request.args.get('chave')
+    if pin == 'mello2026' or request.remote_addr in ('127.0.0.1', '::1', 'localhost'):
+        import json
+        dataset_file = os.path.join(os.path.dirname(__file__), 'portfolio_final_dataset.json')
+        if os.path.exists(dataset_file):
+            with open(dataset_file, 'r', encoding='utf-8') as f:
+                dashboards = json.load(f)
+        else:
+            dashboards = []
+        return render_template('portfolio.html', dashboards_json=json.dumps(dashboards, ensure_ascii=False))
+    return render_template('desativado.html')
+
+
 @app.route('/dre_assistencia/')
 @app.route('/dre_assistencia/<path:filename>')
 def serve_dre_assistencia_portfolio(filename='index.html'):
