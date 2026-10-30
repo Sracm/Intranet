@@ -1436,24 +1436,5 @@
     "github_repo": null,
     "is_static": true,
     "live_url": null
-  },
-  {
-    "id": 11,
-    "title": "teste",
-    "department": "TI & BI",
-    "description": "",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_11_teste.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
   }
 ]

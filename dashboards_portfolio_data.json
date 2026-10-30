@@ -486,13 +486,5 @@
     "description": "Inteligência executiva da campanha promocional Guelta (AP), vendas por loja, revendedora e produtos.",
     "url": "http://10.11.1.100:5250/",
     "icon": "bi-award-fill"
-  },
-  {
-    "id": 11,
-    "title": "teste",
-    "department": "TI & BI",
-    "description": "",
-    "url": "https://app.powerbi.com/reportEmbed?reportId=66e08f51-ba77-4605-9c88-ba59db026c92&autoAuth=true&ctid=703fb3fc-27e0-412a-af01-fd5c3cd99e53",
-    "icon": "bi-bar-chart-line"
   }
 ]
