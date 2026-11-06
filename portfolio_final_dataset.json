@@ -479,49 +479,9 @@
     "live_url": "dashboard_tv/teste_estoque.html"
   },
   {
-    "id": 43,
-    "title": "DIR. ASSISTEC. DASHBOARD FORECAST SPARE_PARTS",
-    "department": "Assistência Técnica & SAC",
-    "description": "Previsão de demanda futura de peças sobressalentes e reposição (Spare Parts).",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_43_dir__assistec__dashboard_forecast_s.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
-  },
-  {
-    "id": 24,
-    "title": "DRE Assistencia Tecnica & SAC - Gestão de Resultados",
-    "department": "Assistência Técnica & SAC",
-    "description": "Demonstrativo de Resultados. Acompanhamento de custos operacionais e garantias.",
-    "url": "dre_assistencia/index.html?regional=assistencia",
-    "tech": "Fullstack Flask / Python / SQL",
-    "stack": [
-      "Python 3",
-      "Flask",
-      "SQL (Oracle/MariaDB)",
-      "HTML5/CSS3 Moderno",
-      "Bootstrap",
-      "JavaScript"
-    ],
-    "impact": "Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.",
-    "image": "static/portfolio_screenshots/dash_24_dre_assistencia_tecnica___sac_-_ges.jpg?v=20261028_reab",
-    "live_url": "dre_assistencia/index.html?regional=assistencia",
-    "github_repo": "https://github.com/Sracm/dre_gestores",
-    "is_static": false
-  },
-  {
     "id": 42,
-    "title": "Dashboard R.A",
-    "department": "Assistência Técnica & SAC",
+    "title": "Status dos Processos",
+    "department": "Assistência",
     "description": "Acompanhamento de reclamações, tempo de resposta e reputação no Reclame Aqui.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -532,15 +492,15 @@
       "ETL / Power Query"
     ],
     "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_42_dashboard_r_a.jpg?v=20261028_reab",
+    "image": "static/portfolio_screenshots/dash_42_dashboard_r_a.jpg?v=20261030_status_processos",
     "is_static": true,
     "live_url": null,
     "github_repo": null
   },
   {
     "id": 40,
-    "title": "Dashboard SAC & Assistencia Técnica",
-    "department": "Assistência Técnica & SAC",
+    "title": "Dashboard Entrada de Pedidos",
+    "department": "Assistência",
     "description": "Visão geral de atendimentos, chamados SAC e produtividade da assistência técnica.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -551,55 +511,15 @@
       "ETL / Power Query"
     ],
     "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_40_dashboard_sac___assistencia_t__cnic.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
-  },
-  {
-    "id": 47,
-    "title": "Dashboard SAC & Assistencia Técnica 2",
-    "department": "Assistência Técnica & SAC",
-    "description": "Cockpit Executivo & Operacional da Diretoria de Assistência Técnica & SAC (Versão Web). Indicadores de WhatsApp/CRC, Fale Conosco, CSAT/NPS e Ordens de Serviço.",
-    "url": "#",
-    "tech": "Fullstack Flask / Python / SQL",
-    "stack": [
-      "Python 3",
-      "Flask",
-      "SQL (Oracle/MariaDB)",
-      "HTML5/CSS3 Moderno",
-      "Bootstrap",
-      "JavaScript"
-    ],
-    "impact": "Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.",
-    "image": "static/portfolio_screenshots/dash_47_dashboard_sac___assistencia_t__cnic.jpg?v=20261028_reab",
-    "github_repo": null,
-    "is_static": true,
-    "live_url": null
-  },
-  {
-    "id": 41,
-    "title": "Demanda de Reabastecimento",
-    "department": "Assistência Técnica & SAC",
-    "description": "Planejamento de reposição e demanda de peças e componentes em estoque.",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_41_demanda_de_reabastecimento.jpg?v=20261028_reab",
+    "image": "static/portfolio_screenshots/dash_40_dashboard_sac___assistencia_t__cnic.jpg?v=20261030_pedidos",
     "is_static": true,
     "live_url": null,
     "github_repo": null
   },
   {
     "id": 39,
-    "title": "Retorno de Peças",
-    "department": "Assistência Técnica & SAC",
+    "title": "Acompanhamento Diário",
+    "department": "Assistência",
     "description": "Controle e rastreamento de devolução e retorno de peças para assistência técnica.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -610,7 +530,7 @@
       "ETL / Power Query"
     ],
     "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_39_retorno_de_pe__as.jpg?v=20261028_reab",
+    "image": "static/portfolio_screenshots/dash_39_retorno_de_pe__as.jpg?v=20261030_acompanhamento",
     "is_static": true,
     "live_url": null,
     "github_repo": null
@@ -637,7 +557,7 @@
   {
     "id": 49,
     "title": "DIR DASH DISTRIBUIÇÃO VISAO GERAL- GESTOR - COMEX",
-    "department": "Comex",
+    "department": "Países",
     "description": "Distribuição e visão geral estratégica para gestores COMEX.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -656,7 +576,7 @@
   {
     "id": 50,
     "title": "DIR DASH VISÃO COMEX",
-    "department": "Comex",
+    "department": "Países",
     "description": "Visão consolidada de comércio exterior, importações e exportações.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -675,7 +595,7 @@
   {
     "id": 51,
     "title": "DIR. CML. ACOMP. PERF. PRODUTO E CANAL COMEX",
-    "department": "Comex",
+    "department": "Países",
     "description": "Acompanhamento comercial de performance por produto e canal COMEX.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -694,7 +614,7 @@
   {
     "id": 52,
     "title": "DIR. DASH. PERFORMANCE EQUIPES COMEX",
-    "department": "Comex",
+    "department": "Países",
     "description": "Indicadores de produtividade e performance operacional das equipes COMEX.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -713,7 +633,7 @@
   {
     "id": 53,
     "title": "DIR.CML. PROBABILIDADE DE COMPRAS - COMEX",
-    "department": "Comex",
+    "department": "Países",
     "description": "Modelos preditivos e análise de probabilidade de compras COMEX.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -732,7 +652,7 @@
   {
     "id": 22,
     "title": "DRE Comex - Gestão de Resultados",
-    "department": "Comex",
+    "department": "Países",
     "description": "Demonstrativo de Resultados do Comércio Exterior (Comex). Acompanhamento de faturamento líquido, margens e custos operacionais.",
     "url": "dre_assistencia/index.html?regional=comex",
     "tech": "Fullstack Flask / Python / SQL",
@@ -753,7 +673,7 @@
   {
     "id": 79,
     "title": "DASH. DESENV. PRODUTOS INDICADORES DE IMPORTACAO",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "description": "Indicadores de importação, lead time, custos e desembaraço de produtos.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -772,7 +692,7 @@
   {
     "id": 71,
     "title": "DASH. DIR. DESNV. PRODUTOS - NUBMETRICS 10",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "description": "Dashboard executivo da Diretoria de Desenvolvimento de Produtos - Nubmetrics (versão 10).",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -791,7 +711,7 @@
   {
     "id": 73,
     "title": "DASHBOARD RA",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "description": "Gestão de chamados, reputação e índices de atendimento no Reclame Aqui da Assistência Técnica.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -810,7 +730,7 @@
   {
     "id": 74,
     "title": "DIR.CML ESTOQUE ATUAL CUSTO FINANCEIRO",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "description": "Estoque atual e custo financeiro consolidado - Diretoria Comercial e Desenvolvimento.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -829,7 +749,7 @@
   {
     "id": 75,
     "title": "DIR.DASH. ANALISE MARGEM CUSTO GER vs5",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "description": "Análise gerencial de margens, composição de custos e rentabilidade de produtos.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -848,7 +768,7 @@
   {
     "id": 69,
     "title": "DRE Desenvolvimento de Produtos",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "description": "Demonstrativo de Resultados do Exercício (DRE) da linha de desenvolvimento de produtos e projetos.",
     "url": "dre_assistencia/index.html?regional=produto",
     "tech": "Fullstack Flask / Python / SQL",
@@ -869,7 +789,7 @@
   {
     "id": 76,
     "title": "RETORNO DE PEÇAS.",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "description": "Controle, índices de retorno e conformidade de peças em garantia.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -888,7 +808,7 @@
   {
     "id": 48,
     "title": "Painel Executivo E-commerce Multi-Canal",
-    "department": "E-commerce",
+    "department": "Marketplace",
     "description": "Painel Executivo de Performance E-commerce: evolução diária acumulada (Meta vs Realizado), projeção de fechamento e indicadores por canal (Total E-commerce, Mercado Livre, VTEX e Shopee).",
     "url": "ecommerce/index.html",
     "tech": "Fullstack Flask / Python / SQL",
@@ -909,7 +829,7 @@
   {
     "id": 19,
     "title": "DASH. DIR. DESNV. PRODUTOS - NUBMETRICS",
-    "department": "E-commerce",
+    "department": "Marketplace",
     "description": "Inteligência competitiva, tendências de mercado e análise de produtos Nubmetrics.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -928,7 +848,7 @@
   {
     "id": 44,
     "title": "DIR. CML. MKT. PLANO DE MIDIA 2026 -VS02",
-    "department": "E-commerce",
+    "department": "Marketplace",
     "description": "Planejamento e acompanhamento estratégico do plano de mídia de marketing e comercial 2026.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -947,7 +867,7 @@
   {
     "id": 45,
     "title": "DIR. DASH. PERFORMANCE EQUIPES 2.0 ECOMMERCE",
-    "department": "E-commerce",
+    "department": "Marketplace",
     "description": "Acompanhamento de metas, produtividade e performance da equipe de E-commerce 2.0.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -966,7 +886,7 @@
   {
     "id": 18,
     "title": "DRE E-commerce",
-    "department": "E-commerce",
+    "department": "Marketplace",
     "description": "Demonstrativo de Resultados - E-commerce",
     "url": "dre_assistencia/index.html?regional=ecommerce",
     "tech": "Fullstack Flask / Python / SQL",
@@ -1107,30 +1027,9 @@
     "github_repo": null
   },
   {
-    "id": 14,
-    "title": "DRE RH — Recursos Humanos",
-    "department": "RH",
-    "description": "Demonstrativo de Resultados do Exercício — Centro de Custo RH (9010000). Acompanhamento de despesas e custos operacionais de Recursos Humanos.",
-    "url": "dre_assistencia/index.html?regional=rh",
-    "tech": "Fullstack Flask / Python / SQL",
-    "stack": [
-      "Python 3",
-      "Flask",
-      "SQL (Oracle/MariaDB)",
-      "HTML5/CSS3 Moderno",
-      "Bootstrap",
-      "JavaScript"
-    ],
-    "impact": "Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.",
-    "image": "static/portfolio_screenshots/dash_14_dre_rh_____recursos_humanos.jpg?v=20261028_reab",
-    "live_url": "dre_assistencia/index.html?regional=rh",
-    "github_repo": "https://github.com/Sracm/dre_gestores",
-    "is_static": false
-  },
-  {
     "id": 38,
     "title": "ACOMPANHAMENTO DIARIO DO CANAL - FORA SP",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "description": "Acompanhamento Diário de Vendas, Marcas e YTD Fora SP",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -1149,7 +1048,7 @@
   {
     "id": 37,
     "title": "DASH. EVOLUÇÃO REDE E PROD. VISÃO GER. FORA SP",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "description": "Evolução de Redes, Parceiros e Produtos Visão Geral Fora SP",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -1168,7 +1067,7 @@
   {
     "id": 36,
     "title": "DIR CML DASH. PROFUNDIDADE - MIX - CARTEIRA FORA SP",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "description": "Profundidade de Carteira e Mix de Produtos Fora SP",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -1187,7 +1086,7 @@
   {
     "id": 34,
     "title": "DIR. CML DASH. NEGOCIOS E ESTRATEGIAS FORA SP",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "description": "Painel Comercial de Negócios e Estratégias Regionais Fora SP",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -1206,7 +1105,7 @@
   {
     "id": 35,
     "title": "DIR. CML VAREJO ESPECIALIZADO GESTOR FORA SP v2",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "description": "Gestão de Varejo Especializado, Parceiros e Curva ABC Fora SP",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -1225,7 +1124,7 @@
   {
     "id": 33,
     "title": "DIR. CML. ACOMP. PERF. PRODUTO E CANAL - REG. FSP",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "description": "Acompanhamento de Performance por Produto e Canal Regional FSP",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -1244,7 +1143,7 @@
   {
     "id": 32,
     "title": "DIR. DASH. PERFORMANCE EQUIPE GER. REGIONAL FORA SP v2",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "description": "Performance de Equipe, Metas e Faturamento Projetado Fora SP",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -1263,7 +1162,7 @@
   {
     "id": 31,
     "title": "DRE 2.1 - VAREJO_FORASP_DISTRIBUICAO",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "description": "Demonstrativo de Resultados DRE Varejo Fora SP & Distribuição",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -1282,7 +1181,7 @@
   {
     "id": 12,
     "title": "DRE Regional FSP — Gestão de Resultados",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "description": "Demonstrativo de Resultados da Regional FSP (Distribuição 1020000, Varejo RJ 1010200, Varejo ND 1010300 e Varejo SUL 1010400). Acompanhamento de faturamento líquido, margens e custos operacionais.",
     "url": "dre_assistencia/index.html?regional=regional.fsp",
     "tech": "Fullstack Flask / Python / SQL",
@@ -1303,7 +1202,7 @@
   {
     "id": 15,
     "title": "Dashboard Nubmetrics",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "description": "Inteligência de mercado, análise de vendas e indicadores competitivos Nubmetrics da Regional FSP.",
     "url": "#",
     "tech": "Power BI (Demonstração Estática)",
@@ -1318,123 +1217,5 @@
     "is_static": true,
     "live_url": null,
     "github_repo": null
-  },
-  {
-    "id": 62,
-    "title": "DASH. EVOLUÇÃO REDE E PROD. VISÃO  GER. REGIONAL SP",
-    "department": "Regional SP",
-    "description": "Evolução de vendas da rede e de produtos com visão gerencial da Regional SP.",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_62_dash__evolu____o_rede_e_prod__vis__.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
-  },
-  {
-    "id": 63,
-    "title": "DIR CML DASH. PROFUNDIDADE - MIX- CARTEIRA REGIONAL SP",
-    "department": "Regional SP",
-    "description": "Análise profunda de mix de produtos, positivação e carteira de clientes da Regional SP.",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_63_dir_cml_dash__profundidade_-_mix-_c.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
-  },
-  {
-    "id": 64,
-    "title": "DIR. CML  VAREJO ESPECIALIZADO GESTOR SP.",
-    "department": "Regional SP",
-    "description": "Gestão e indicadores de vendas no canal Varejo Especializado da Regional SP.",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_64_dir__cml__varejo_especializado_gest.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
-  },
-  {
-    "id": 65,
-    "title": "DIR. CML. ACOMP. PERF. PRODUTO E CANAL REG.SP",
-    "department": "Regional SP",
-    "description": "Acompanhamento detalhado de performance por linha de produto e canal comercial.",
-    "url": "#",
-    "tech": "Power BI (Demonstração Estática)",
-    "stack": [
-      "Power BI Pro",
-      "Modelagem Dimensional (Star Schema)",
-      "DAX Avançado",
-      "ETL / Power Query"
-    ],
-    "impact": "Acompanhamento estratégico em tempo real, governança de dados corporativa e integração ERP.",
-    "image": "static/portfolio_screenshots/dash_65_dir__cml__acomp__perf__produto_e_ca.jpg?v=20261028_reab",
-    "is_static": true,
-    "live_url": null,
-    "github_repo": null
-  },
-  {
-    "id": 23,
-    "title": "DRE Regional SP – Gestão de Resultados",
-    "department": "Regional SP",
-    "description": "Demonstrativo de Resultados do Exercício (DRE) consolidado da Regional SP.",
-    "url": "dre_assistencia/index.html?regional=regional-sp",
-    "tech": "Fullstack Flask / Python / SQL",
-    "stack": [
-      "Python 3",
-      "Flask",
-      "SQL (Oracle/MariaDB)",
-      "HTML5/CSS3 Moderno",
-      "Bootstrap",
-      "JavaScript"
-    ],
-    "impact": "Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.",
-    "image": "static/portfolio_screenshots/dash_23_dre_regional_sp_____gest__o_de_resu.jpg?v=20261028_reab",
-    "live_url": "dre_assistencia/index.html?regional=regional-sp",
-    "github_repo": "https://github.com/Sracm/dre_gestores",
-    "is_static": false
-  },
-  {
-    "id": 68,
-    "title": "Dashboard Guelta (Ação Promocional AP)",
-    "department": "Regional SP",
-    "description": "Inteligência executiva da campanha promocional Guelta (AP), vendas por loja, revendedora e produtos.",
-    "url": "#",
-    "tech": "Fullstack Flask / Python / SQL",
-    "stack": [
-      "Python 3",
-      "Flask",
-      "SQL (Oracle/MariaDB)",
-      "HTML5/CSS3 Moderno",
-      "Bootstrap",
-      "JavaScript"
-    ],
-    "impact": "Solução web sob medida desenvolvida para automação em tempo real, sem custo de licença por usuário.",
-    "image": "static/portfolio_screenshots/dash_68_dashboard_guelta__a____o_promociona.jpg?v=20261028_reab",
-    "github_repo": null,
-    "is_static": true,
-    "live_url": null
   }
 ]

@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Executivo de Performance • Ricardo Pavão</title>
+  
+  <!-- Fontes Google de Alto Padrão -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #0B0F19;
+      --bg-card: #111827;
+      --bg-card-hover: #162032;
+      --border: #1F2937;
+      --border-highlight: #374151;
+      --text: #F9FAFB;
+      --text-muted: #9CA3AF;
+      --text-subtle: #6B7280;
+      
+      --accent-gold: #F59E0B;
+      --accent-gold-glow: rgba(245, 158, 11, 0.25);
+      --accent-green: #10B981;
+      --accent-green-glow: rgba(16, 185, 129, 0.25);
+      --accent-cyan: #06B6D4;
+      --accent-cyan-glow: rgba(6, 182, 212, 0.25);
+      --accent-blue: #3B82F6;
+
+      --font-title: 'Montserrat', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 32px 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1140px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* CABEÇALHO DO PERFIL */
+    .header-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px 36px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--accent-gold) 0%, var(--accent-green) 100%);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .profile-title h1 {
+      font-family: var(--font-title);
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .profile-title h1 span {
+      background: linear-gradient(135deg, var(--accent-gold), #FBBF24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .profile-title p {
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      font-weight: 500;
+    }
+
+    .kpi-tagline {
+      text-align: right;
+    }
+
+    .kpi-tagline .cycle-pill {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      display: inline-block;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .kpi-tagline .cycle-sub {
+      font-size: 0.82rem;
+      color: var(--text-subtle);
+      font-weight: 500;
+    }
+
+    /* GRID DE VELOCÍMETROS / RELÓGIOS */
+    .gauges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .gauge-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px 22px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 4px 20px -2px rgba(0,0,0,0.2);
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .gauge-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-highlight);
+    }
+
+    .gauge-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+
+    .badge-green {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--accent-green);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .badge-cyan {
+      background: rgba(6, 182, 212, 0.12);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+    }
+
+    .badge-gold {
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--accent-gold);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .gauge-title {
+      font-family: var(--font-title);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .gauge-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      line-height: 1.4;
+    }
+
+    /* CANVAS DO VELOCÍMETRO */
+    .gauge-container {
+      position: relative;
+      width: 280px;
+      height: 165px;
+      margin: 16px 0 6px 0;
+    }
+
+    .gauge-container canvas {
+      width: 280px;
+      height: 165px;
+    }
+
+    .gauge-metric-value {
+      position: absolute;
+      bottom: 6px;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .metric-number {
+      font-family: var(--font-title);
+      font-size: 2.3rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .metric-caption {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-subtle);
+      margin-top: 4px;
+    }
+
+    .gauge-footer-details {
+      margin-top: 16px;
+      width: 100%;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+    }
+
+    .footer-impact {
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* SEÇÃO DE EVOLUÇÃO E METODOLOGIA (PARA O ENTREVISTADOR) */
+    .evolution-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px 36px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.25);
+    }
+
+    .evolution-header {
+      margin-bottom: 24px;
+    }
+
+    .evolution-header h2 {
+      font-family: var(--font-title);
+      font-size: 1.35rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+    }
+
+    .evolution-header h2 i {
+      color: var(--accent-gold);
+    }
+
+    .evolution-header p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-top: 4px;
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      position: relative;
+    }
+
+    .timeline-step {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 20px;
+      position: relative;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-gold);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-title);
+      font-weight: 800;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .timeline-step h3 {
+      font-family: var(--font-title);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .timeline-step p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .highlight-pill {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--accent-green);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 20px 0 10px 0;
+      color: var(--text-subtle);
+      font-size: 0.82rem;
+    }
+  
+            /* BOTAO EXPORTAR PDF */
+    .kpi-actions {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-export-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(245, 158, 11, 0.08));
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #F59E0B;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-family: var(--font-title);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-export-pdf:hover {
+      background: #F59E0B;
+      color: #000000;
+      border-color: #F59E0B;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-export-pdf i {
+      font-size: 0.95rem;
+    }
+
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 5mm;
+      }
+      html, body {
+        background-color: #0B0F19 !important;
+        color: #F9FAFB !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+        height: 100% !important;
+      }
+      .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        zoom: 0.73 !important;
+      }
+      .header-card {
+        padding: 16px 24px !important;
+        margin-bottom: 12px !important;
+      }
+      .gauges-grid {
+        gap: 12px !important;
+        margin-bottom: 12px !important;
+      }
+      .gauge-card {
+        padding: 14px 12px 10px !important;
+      }
+      .timeline-card {
+        padding: 14px 18px !important;
+      }
+      .timeline-grid {
+        gap: 10px !important;
+      }
+      .timeline-step {
+        padding: 10px 12px !important;
+      }
+      footer {
+        margin-top: 6px !important;
+        padding-top: 4px !important;
+        font-size: 0.72rem !important;
+      }
+      .btn-export-pdf, .kpi-actions {
+        display: none !important;
+      }
+      .header-card, .gauge-card, .timeline-card {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- CABEÇALHO DO PERFIL -->
+    <div class="header-card">
+      <div class="header-content">
+        <div class="profile-title">
+          <h1>RICARDO <span>PAVÃO</span></h1>
+          <p>Liderança Comercial • Gestão de Canais • Estratégia de Vendas & Eficiência</p>
+        </div>
+        <div class="kpi-tagline">
+          <div class="cycle-pill">
+            <i class="fa-solid fa-chart-line-up"></i> RESULTADOS ACUMULADO 2026
+          </div>
+          <div class="cycle-sub">Indicadores de Desempenho e Impacto Financeiro</div>
+          <div class="kpi-actions">
+            <button onclick="exportarPDF()" class="btn-export-pdf" title="Exportar Dashboard em PDF (Download imediato / Impressão)">
+              <i class="fa-solid fa-file-pdf"></i> Exportar em PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VELOCÍMETROS / GAUGE CHARTS -->
+    <div class="gauges-grid">
+
+      <!-- VELOCÍMETRO 1: SELL-IN -->
+      <div class="gauge-card">
+        <span class="gauge-badge badge-green">
+          <i class="fa-solid fa-arrow-trend-up"></i> Performance de Vendas
+        </span>
+        <h2 class="gauge-title">Sell-in Consolidado</h2>
+        <div class="gauge-subtitle">
+          Gerência canais Distribuição e Varejo regional
+        </div>
+
+        <div class="gauge-container">
+          <canvas id="gaugeSellIn" width="280" height="165"></canvas>
+          <div class="gauge-metric-value">
+            <span class="metric-number" style="color: var(--accent-green);" id="valSellIn">0%</span>
+            <span class="metric-caption">Crescimento Consolidado</span>
+          </div>
+        </div>
+
+        <div class="gauge-footer-details">
+          <span style="color: var(--text-muted);">Escala de Tração</span>
+          <span class="footer-impact" style="color: var(--accent-green);">
+            <i class="fa-solid fa-circle-check"></i> Superação de Meta
+          </span>
+        </div>
+      </div>
+
+      <!-- VELOCÍMETRO 2: REDUÇÃO NO INVESTIMENTO -->
+      <div class="gauge-card">
+        <span class="gauge-badge badge-cyan">
+          <i class="fa-solid fa-piggy-bank"></i> Eficiência Orçamentária
+        </span>
+        <h2 class="gauge-title">Redução no Investimento</h2>
+        <div class="gauge-subtitle">
+          Otimização de budget sem perda de tração de mercado
+        </div>
+
+        <div class="gauge-container">
+          <canvas id="gaugeInvestment" width="280" height="165"></canvas>
+          <div class="gauge-metric-value">
+            <span class="metric-number" style="color: var(--accent-cyan);" id="valInvest">0%</span>
+            <span class="metric-caption">Economia Direta / Saving</span>
+          </div>
+        </div>
+
+        <div class="gauge-footer-details">
+          <span style="color: var(--text-muted);">Alavanca Financeira</span>
+          <span class="footer-impact" style="color: var(--accent-cyan);">
+            <i class="fa-solid fa-shield-halved"></i> Mais com Menos
+          </span>
+        </div>
+      </div>
+
+      <!-- VELOCÍMETRO 3: COMISSÕES E VENDA DIRETA -->
+      <div class="gauge-card">
+        <span class="gauge-badge badge-gold">
+          <i class="fa-solid fa-hand-holding-dollar"></i> Rentabilidade Líquida
+        </span>
+        <h2 class="gauge-title">Redução de Comissões</h2>
+        <div class="gauge-subtitle">
+          Foco estratégico na prospecção e venda direta
+        </div>
+
+        <div class="gauge-container">
+          <canvas id="gaugeCommissions" width="280" height="165"></canvas>
+          <div class="gauge-metric-value">
+            <span class="metric-number" style="color: var(--accent-gold);" id="valComms">0%</span>
+            <span class="metric-caption">Custo de Intermediação</span>
+          </div>
+        </div>
+
+        <div class="gauge-footer-details">
+          <span style="color: var(--text-muted);">Modelo Comercial</span>
+          <span class="footer-impact" style="color: var(--accent-gold);">
+            <i class="fa-solid fa-bullseye"></i> Venda Direta
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SEÇÃO VISUAL DE EVOLUÇÃO DO TRABALHO -->
+    <div class="evolution-card">
+      <div class="evolution-header">
+        <h2>
+          <i class="fa-solid fa-diagram-project"></i>
+          Apresentação Executiva: A Jornada de Evolução do Trabalho
+        </h2>
+        <p>Visão de liderança e raciocínio estratégico: como os resultados acima foram construídos e sustentados.</p>
+      </div>
+
+      <div class="timeline-grid">
+        
+        <div class="timeline-step">
+          <div class="step-number">1</div>
+          <h3>Diagnóstico & Canais</h3>
+          <p>Mapeamento cirúrgico dos gargalos nos canais de Distribuição e Varejo Regional. Identificação de oportunidades de penetração de mercado e eliminação de sobreposição de custos.</p>
+          <span class="highlight-pill">Alinhamento Estratégico</span>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-number">2</div>
+          <h3>Repactuação de Verbas</h3>
+          <p>Revisão de contratos e negociações de incentivos. <strong>Redução de 15% nos investimentos</strong> mantendo o mesmo poder de fogo comercial através de contrapartidas mensuráveis.</p>
+          <span class="highlight-pill">Saving de 15%</span>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-number">3</div>
+          <h3>Prospecção Ativa</h3>
+          <p>Migração estratégica para <strong>venda direta</strong> e hunting de novas contas chave, gerando <strong>5% de economia em comissionamento</strong> e blindando a margem da empresa.</p>
+          <span class="highlight-pill">-5% Comissões</span>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-number">4</div>
+          <h3>Entrega de Resultado</h3>
+          <p>Consolidação do <strong>Sell-in em 30%</strong> em Distribuição e Varejo Regional. Crescimento sustentável, com margem protegida e orçamento otimizado.</p>
+          <span class="highlight-pill">+30% Sell-in Realizado</span>
+        </div>
+
+      </div>
+    </div>
+
+    <footer>
+      Material Executivo preparado para Apresentação Profissional e Entrevistas de Liderança • 2026
+    </footer>
+
+  </div>
+
+  <script>
+    const gaugeConfigs = [
+      {
+        canvasId: 'gaugeSellIn',
+        valId: 'valSellIn',
+        targetValue: 30,
+        maxValue: 50,
+        suffix: '%',
+        color: '#10B981',
+        trackColor: '#1F2937'
+      },
+      {
+        canvasId: 'gaugeInvestment',
+        valId: 'valInvest',
+        targetValue: 15,
+        maxValue: 30,
+        suffix: '%',
+        color: '#06B6D4',
+        trackColor: '#1F2937'
+      },
+      {
+        canvasId: 'gaugeCommissions',
+        valId: 'valComms',
+        targetValue: 5,
+        maxValue: 20,
+        suffix: '%',
+        color: '#F59E0B',
+        trackColor: '#1F2937'
+      }
+    ];
+
+    function drawGauge(canvas, currentVal, maxVal, activeColor, trackColor) {
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const width = 280;
+      const height = 165;
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const centerX = width / 2;
+      const centerY = height - 25;
+      const radius = 100;
+      const startAngle = Math.PI;
+      const endAngle = 2 * Math.PI;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // 1. ARCO DE FUNDO ESCURO
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, startAngle, endAngle, false);
+      ctx.lineWidth = 18;
+      ctx.strokeStyle = trackColor;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // 2. ARCO DE PREENCHIMENTO ATIVO (VALOR ATUAL)
+      const ratio = Math.min(Math.max(currentVal / maxVal, 0), 1);
+      const currentAngle = startAngle + ratio * Math.PI;
+
+      if (ratio > 0.005) {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, startAngle, currentAngle, false);
+        ctx.lineWidth = 18;
+        ctx.strokeStyle = activeColor;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+      }
+
+      // 3. GRADUAÇÕES / TICKS
+      const ticksCount = 10;
+      for (let i = 0; i <= ticksCount; i++) {
+        const tickRatio = i / ticksCount;
+        const tickAngle = startAngle + tickRatio * Math.PI;
+        const innerRadius = radius - 16;
+        const outerRadius = radius - 24;
+
+        const x1 = centerX + Math.cos(tickAngle) * innerRadius;
+        const y1 = centerY + Math.sin(tickAngle) * innerRadius;
+        const x2 = centerX + Math.cos(tickAngle) * outerRadius;
+        const y2 = centerY + Math.sin(tickAngle) * outerRadius;
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineWidth = (i === 0 || i === ticksCount / 2 || i === ticksCount) ? 2 : 1;
+        ctx.strokeStyle = (i / ticksCount <= ratio) ? activeColor : 'rgba(156, 163, 175, 0.3)';
+        ctx.stroke();
+      }
+
+      // 4. PONTEIRO METÁLICO (NEEDLE)
+      const needleAngle = currentAngle;
+      const needleLength = radius - 8;
+
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.rotate(needleAngle - Math.PI / 2);
+
+      // Sombra projetada
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+      ctx.shadowBlur = 6;
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 2;
+
+      ctx.beginPath();
+      ctx.moveTo(-3, 0);
+      ctx.lineTo(0, needleLength);
+      ctx.lineTo(3, 0);
+      ctx.closePath();
+      ctx.fillStyle = activeColor;
+      ctx.fill();
+      ctx.restore();
+
+      // 5. NÚCLEO DO VELOCÍMETRO (CENTRAL HUB)
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI, false);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 4, 0, 2 * Math.PI, false);
+      ctx.fillStyle = activeColor;
+      ctx.fill();
+    }
+
+    // ANIMAÇÃO DOS VELOCÍMETROS
+    function animateGauge(config) {
+      const canvas = document.getElementById(config.canvasId);
+      const valEl = document.getElementById(config.valId);
+      const startTime = performance.now();
+      const duration = 1400;
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const currentVal = ease * config.targetValue;
+
+        drawGauge(canvas, currentVal, config.maxValue, config.color, config.trackColor);
+        valEl.textContent = Math.round(currentVal) + config.suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          valEl.textContent = config.targetValue + config.suffix;
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    function animateAllGauges() {
+      gaugeConfigs.forEach(cfg => animateGauge(cfg));
+    }
+
+    function drawAllInitial() {
+      gaugeConfigs.forEach(cfg => {
+        const c = document.getElementById(cfg.canvasId);
+        const v = document.getElementById(cfg.valId);
+        if (c && v) {
+          drawGauge(c, cfg.targetValue, cfg.maxValue, cfg.color, cfg.trackColor);
+          v.textContent = cfg.targetValue + cfg.suffix;
+        }
+      });
+    }
+
+    // Desenha imediatamente para capturas instantaneas de PDF
+    drawAllInitial();
+
+    window.addEventListener('DOMContentLoaded', () => {
+      drawAllInitial();
+      setTimeout(animateAllGauges, 150);
+    });
+  
+    function exportarPDF() {
+      // 1. Tenta baixar o PDF de alta fidelidade compilado se estiver no servidor
+      const pdfUrl = '/static/downloads/Dashboard_Ricardo_Pavao.pdf';
+      fetch(pdfUrl, { method: 'HEAD' })
+        .then(res => {
+          if (res.ok) {
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            link.download = 'Dashboard_Ricardo_Pavao.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          } else {
+            window.print();
+          }
+        })
+        .catch(() => {
+          window.print();
+        });
+    }
+
+  </script>
+
+</body>
+</html>

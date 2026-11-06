@@ -718,6 +718,22 @@ def serve_modelo_supply():
 def serve_showcase():
     return render_template('desativado.html')
 
+
+@app.route('/ricardo-pavao')
+@app.route('/ricardo-pavao.html')
+@app.route('/pavao')
+def serve_dashboard_ricardo_pavao():
+    import os
+    from flask import send_file
+    return send_file(os.path.join(os.path.dirname(__file__), 'dashboard_ricardo_pavao.html'))
+
+@app.route('/proposta-pptx')
+@app.route('/proposta-pptx.html')
+@app.route('/download-proposta')
+def serve_proposta_pptx():
+    return render_template('proposta_pptx.html')
+
+
 if __name__ == '__main__':
     print(f"Iniciando Portal Intranet MQ em http://localhost:{Config.PORT}")
     app.run(host=Config.HOST, port=Config.PORT, debug=Config.DEBUG, use_reloader=False)
