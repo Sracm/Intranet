@@ -992,11 +992,11 @@
   },
   {
     "id": 91,
-    "title": "Automação de Processos & Workflows com n8n & IA",
+    "title": "Dashboard de Acompanhamento de Efetividade da Automação",
     "department": "Automação & Processos",
     "powerbi_url": "",
     "web_url": "https://sracm.github.io/portfolio-bi/16_automacao_processos_n8n/index.html",
-    "description": "Cockpit operacional e analítico de orquestração de esteiras de dados corporativos com n8n e LLMs: monitoramento de saúde de cluster (99.85%), redução de 384h de trabalho/mês (2.4 FTEs) e simulador em tempo real.",
+    "description": "Cockpit analítico para medição em tempo real da efetividade e ROI de automações corporativas com n8n & IA: disponibilidade de cluster (99.85%), redução de 384h/mês de trabalho (2.4 FTEs) e simulador em tempo real.",
     "tech": "n8n / Python / LLM (Aplicação Web Interativa)",
     "github_repo": "https://github.com/Sracm/portfolio-bi",
     "live_portfolio_url": "https://sracm.github.io/portfolio-bi/16_automacao_processos_n8n/index.html"
