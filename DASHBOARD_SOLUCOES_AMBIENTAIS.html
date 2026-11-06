@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Resíduos & OKRs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .emerald-glow { box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.15); }
+    .amber-glow { box-shadow: 0 4px 20px -2px rgba(245, 158, 11, 0.15); }
+    .transition-all-custom { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+  </style>
+<style>
+  /* ══════════════════════════════════════════════════════════════════════════
+     🤖 AGENTE DE IA FLUTUANTE — ASSISTENTE PESSOAL (BASE ECOSOLUTIONS BI)
+     ══════════════════════════════════════════════════════════════════════════ */
+  #ai-chat-widget {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 350px !important;
+    height: 520px !important;
+    background: #18191e !important;
+    border: 1px solid #CB9727 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    z-index: 999999 !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    overflow: hidden !important;
+    font-family: inherit !important;
+  }
+  
+  #ai-chat-widget.ai-chat-collapsed {
+    height: 56px !important;
+    width: 56px !important;
+    border-radius: 28px !important;
+    border: 2px solid #10b981 !important;
+    background: #18191e !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 16px rgba(16, 185, 129, 0.6) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    animation: pulseMQIA 2.5s infinite !important;
+  }
+  
+  @keyframes pulseMQIA {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  }
+  
+  #ai-chat-widget.ai-chat-collapsed .ai-chat-header {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    justify-content: center !important;
+  }
+  
+  #ai-chat-widget.ai-chat-collapsed .ai-chat-title span:last-child,
+  #ai-chat-widget.ai-chat-collapsed .ai-chat-controls,
+  #ai-chat-widget.ai-chat-collapsed .ai-chat-body,
+  #ai-chat-widget.ai-chat-collapsed .ai-chat-footer {
+    display: none !important;
+  }
+  
+  #ai-chat-widget.ai-chat-collapsed .ai-avatar-img {
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    display: block !important;
+    object-fit: cover !important;
+    object-position: center 35% !important;
+  }
+  
+  .ai-chat-header {
+    height: 48px !important;
+    min-height: 48px !important;
+    background: #121317 !important;
+    border-bottom: 1px solid rgba(203, 151, 39, 0.3) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 16px !important;
+    cursor: pointer !important;
+    user-select: none !important;
+  }
+  
+  .ai-chat-title {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    color: #CB9727 !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+  }
+  
+  .ai-avatar-img {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    object-position: center 35% !important;
+    border: 2px solid #10b981 !important;
+  }
+  
+  .ai-chat-controls button {
+    background: none !important;
+    border: none !important;
+    color: #94a3b8 !important;
+    font-size: 18px !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+    padding: 4px 6px !important;
+  }
+  .ai-chat-controls button:hover {
+    color: #CB9727 !important;
+  }
+  
+  .ai-chat-body {
+    flex: 1 !important;
+    padding: 14px !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    background: rgba(0, 0, 0, 0.25) !important;
+  }
+  
+  .ai-message {
+    padding: 10px 14px !important;
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+    word-wrap: break-word !important;
+  }
+  
+  .ai-message.ai {
+    background: #23252d !important;
+    color: #ffffff !important;
+    border-left: 3px solid #CB9727 !important;
+    align-self: flex-start !important;
+    width: 100% !important;
+  }
+  
+  .ai-message.user {
+    background: rgba(203, 151, 39, 0.2) !important;
+    color: #ffffff !important;
+    border-right: 3px solid #CB9727 !important;
+    align-self: flex-end !important;
+    max-width: 85% !important;
+  }
+  
+  .ai-chips-bar {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin-top: 4px !important;
+  }
+  
+  .ai-chip {
+    background: rgba(203, 151, 39, 0.12) !important;
+    border: 1px solid rgba(203, 151, 39, 0.35) !important;
+    color: #CB9727 !important;
+    padding: 4px 9px !important;
+    border-radius: 16px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+  }
+  .ai-chip:hover {
+    background: #CB9727 !important;
+    color: #000000 !important;
+  }
+  
+  .ai-chat-footer {
+    height: 52px !important;
+    padding: 8px 12px !important;
+    background: #121317 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  
+  .ai-chat-footer input {
+    flex: 1 !important;
+    background: #23252d !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 6px !important;
+    padding: 8px 10px !important;
+    color: #ffffff !important;
+    font-size: 12px !important;
+    outline: none !important;
+  }
+  .ai-chat-footer input:focus {
+    border-color: #CB9727 !important;
+  }
+  
+  .ai-chat-footer button {
+    background: #CB9727 !important;
+    border: none !important;
+    color: #000000 !important;
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+  }
+</style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased p-4 md:p-8">
+
+  <!-- TOPBAR HEADER -->
+  <header class="flex flex-col lg:flex-row lg:items-center justify-between pb-6 border-b border-slate-800 gap-4">
+    <div>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl md:text-2xl font-bold tracking-tight text-white">ECOSOLUTIONS BI <span class="text-emerald-400 font-normal">| Gestão Ambiental, OKRs & Eficiência</span></h1>
+            <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-0.5 rounded-full font-medium flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Em Produção
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 mt-0.5">Painel Estratégico de OKRs (Q3/Q4) • Autor: <strong class="text-slate-300">Antonio Carlos de Mello (Analista Pleno de BI)</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SELETOR DE MODELOS & FILTROS -->
+    <div class="flex flex-wrap items-center gap-2.5">
+      <!-- Seletor de Modelo / OKR -->
+      <div class="bg-slate-900 p-1 rounded-xl border border-slate-800 flex items-center text-xs">
+        <button id="btnModeloAll" onclick="switchModel('completo')" class="px-3 py-1.5 rounded-lg font-medium bg-emerald-600 text-white shadow-sm transition-all-custom">
+          📊 Visão Completa (OKRs 1 & 2)
+        </button>
+        <button id="btnModelo3" onclick="switchModel('eficiencia')" class="px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-white transition-all-custom">
+          🚚 OKR 2: Eficiência do Negócio
+        </button>
+        <button id="btnModelo1" onclick="switchModel('ambiental')" class="px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-white transition-all-custom">
+          🌿 OKR 1: Transição Operacional
+        </button>
+        <button id="btnModelo2" onclick="switchModel('tatico')" class="px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-white transition-all-custom">
+          🏭 Modelo 3: Plantas
+        </button>
+      </div>
+
+      <!-- Filtro Planta -->
+      <select id="filtroPlanta" class="bg-slate-900 border border-slate-800 text-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-emerald-500">
+        <option value="todas">Todas as Unidades (5)</option>
+        <option value="sp">Planta São Paulo (Matriz)</option>
+        <option value="mg">Planta Minas Gerais</option>
+        <option value="pr">Planta Paraná</option>
+        <option value="ba">Complexo Bahia</option>
+      </select>
+
+      <div class="bg-slate-900 border border-slate-800 text-slate-300 text-xs px-3 py-2 rounded-xl flex items-center gap-2">
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span>Exercício: <strong>2024 Acumulado</strong></span>
+      </div>
+
+      <!-- Botão Voltar ao Portfólio -->
+      <a href="index.html" class="bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-all-custom font-medium">
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        <span>Voltar ao Portfólio</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================== -->
+  <!-- SEÇÃO 1: OKR 2 - EFICIÊNCIA DO NEGÓCIO (FATURAMENTO, PESO & CAMINHÕES) -->
+  <!-- ========================================================== -->
+  <section id="viewEficiencia" class="mt-6 space-y-6">
+
+    <!-- BANNER OKR 2 -->
+    <div class="bg-gradient-to-r from-slate-900 via-slate-900/90 to-amber-950/40 border border-amber-900/40 rounded-2xl p-5 relative overflow-hidden amber-glow">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative z-10">
+        <div>
+          <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            Objetivo Estratégico de Eficiência Operacional & Financeira (O2)
+          </div>
+          <h2 class="text-lg md:text-xl font-bold text-white mt-1">Maximizar a Rentabilidade Logística, Ocupação da Frota de Caminhões e Margem Mês a Mês</h2>
+          <p class="text-xs text-slate-400 mt-1 max-w-3xl">Monitoramento de Unit Economics: transportar o maior volume de peso (toneladas) otimizando rotas de caminhões para alavancar faturamento e reduzir custo operacional.</p>
+        </div>
+
+        <div class="flex items-center gap-6 bg-slate-950/70 border border-slate-800/80 px-5 py-3 rounded-xl">
+          <div class="text-right">
+            <span class="text-xs text-slate-400 block">Progresso do OKR 2</span>
+            <span class="text-2xl font-black text-amber-400">96.2%</span>
+          </div>
+          <div class="w-16 h-16 relative flex items-center justify-center">
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+              <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="text-amber-400" stroke-dasharray="96.2, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <span class="absolute text-xs font-bold text-slate-200">🚀 TOP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 BIG NUMBERS / CARDS OKR DE EFICIÊNCIA -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+      <!-- Card 1: Faturamento Bruto -->
+      <div class="bg-slate-900 border border-slate-800 hover:border-amber-500/40 rounded-2xl p-5 transition-all-custom">
+        <div class="flex items-center justify-between text-slate-400 text-xs">
+          <span class="font-medium flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> KR 2.1 • Faturamento Total
+          </span>
+          <span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-[11px] font-semibold">+6.1% vs Meta</span>
+        </div>
+        <div class="mt-3 flex items-baseline justify-between">
+          <span class="text-2xl lg:text-3xl font-extrabold text-white">R$ 14,85 <span class="text-sm font-medium text-slate-400">M</span></span>
+          <span class="text-xs text-slate-400">Meta: R$ 14,00 M</span>
+        </div>
+        <div class="mt-3">
+          <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+            <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+          </div>
+          <div class="flex justify-between items-center text-[11px] text-slate-400 mt-1.5">
+            <span>Média Mensal: <strong>R$ 1,65 M/mês</strong></span>
+            <span class="text-emerald-400 font-semibold">106.1% Atingido</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Quantidade Peso -->
+      <div class="bg-slate-900 border border-slate-800 hover:border-amber-500/40 rounded-2xl p-5 transition-all-custom">
+        <div class="flex items-center justify-between text-slate-400 text-xs">
+          <span class="font-medium flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-cyan-500"></span> KR 2.2 • Volume Peso Tratado
+          </span>
+          <span class="bg-cyan-500/10 text-cyan-400 px-2 py-0.5 rounded text-[11px] font-semibold">+5.9% vs Meta</span>
+        </div>
+        <div class="mt-3 flex items-baseline justify-between">
+          <span class="text-2xl lg:text-3xl font-extrabold text-cyan-400">48.720 <span class="text-sm font-medium text-slate-400">t</span></span>
+          <span class="text-xs text-slate-400">Meta: 46.000 t</span>
+        </div>
+        <div class="mt-3">
+          <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+            <div class="bg-cyan-500 h-1.5 rounded-full" style="width: 100%"></div>
+          </div>
+          <div class="flex justify-between items-center text-[11px] text-slate-400 mt-1.5">
+            <span>Ticket Médio: <strong>R$ 304,80 / ton</strong></span>
+            <span class="text-cyan-400 font-semibold">+2.720 t extras</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Frota & Viagens de Caminhões -->
+      <div class="bg-slate-900 border border-slate-800 hover:border-amber-500/40 rounded-2xl p-5 transition-all-custom">
+        <div class="flex items-center justify-between text-slate-400 text-xs">
+          <span class="font-medium flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span> KR 2.3 • Viagens de Caminhões
+          </span>
+          <span class="bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded text-[11px] font-semibold">-5.9% viagens</span>
+        </div>
+        <div class="mt-3 flex items-baseline justify-between">
+          <span class="text-2xl lg:text-3xl font-extrabold text-white">3.430 <span class="text-sm font-medium text-slate-400">viagens</span></span>
+          <span class="text-xs text-slate-400">Previsto: 3.645 v.</span>
+        </div>
+        <div class="mt-3">
+          <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+            <div class="bg-amber-400 h-1.5 rounded-full" style="width: 94%"></div>
+          </div>
+          <div class="flex justify-between items-center text-[11px] text-slate-400 mt-1.5">
+            <span>Viagens Evitadas: <strong>-215 viagens</strong></span>
+            <span class="text-amber-400 font-semibold">Economia Diesel</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: INDICADOR DE EFICIÊNCIA DO NEGÓCIO (PESO / CAMINHÃO) -->
+      <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-5 transition-all-custom relative overflow-hidden">
+        <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-emerald-500/10 rounded-full blur-xl"></div>
+        <div class="flex items-center justify-between text-slate-400 text-xs">
+          <span class="font-medium flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> KR 2.4 • Eficiência: Peso/Caminhão
+          </span>
+          <span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-[11px] font-semibold">+5.2% Ocupação</span>
+        </div>
+        <div class="mt-3 flex items-baseline justify-between">
+          <span class="text-2xl lg:text-3xl font-black text-emerald-400">14,20 <span class="text-sm font-medium text-slate-400">t/caminhão</span></span>
+          <span class="text-xs text-slate-400">Meta: ≥ 13,50 t</span>
+        </div>
+        <div class="mt-3">
+          <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+            <div class="bg-emerald-400 h-1.5 rounded-full" style="width: 100%"></div>
+          </div>
+          <div class="flex justify-between items-center text-[11px] text-slate-400 mt-1.5">
+            <span>Receita por Caminhão: <strong>R$ 4.329</strong></span>
+            <span class="text-emerald-400 font-bold">Alta Rentabilidade</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- GRÁFICOS MÊS A MÊS: FATURAMENTO, PESO E CAMINHÕES -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Gráfico 1: Evolução Mês a Mês: Faturamento (R$ mil) vs Volume Peso (t) -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
+          <div>
+            <h3 class="font-bold text-white text-base flex items-center gap-2">
+              <span>📈 Faturamento vs Quantidade Peso (Mês a Mês)</span>
+            </h3>
+            <p class="text-xs text-slate-400">Faturamento Bruto em R$ mil (Barras) e Volume Peso em Toneladas (Linha)</p>
+          </div>
+          <div class="flex items-center gap-3 text-xs">
+            <div class="flex items-center gap-1.5">
+              <span class="w-3 h-3 rounded bg-amber-500"></span>
+              <span class="text-slate-300">Faturamento (R$ mil)</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-3 h-0.5 bg-cyan-400"></span>
+              <span class="text-slate-300">Peso (t)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SVG Gráfico Duplo Eixo -->
+        <div class="mt-6 relative h-64 w-full">
+          <svg class="w-full h-full overflow-visible" viewBox="0 0 600 220">
+            <!-- Grid Lines -->
+            <line x1="40" y1="20" x2="570" y2="20" stroke="#1e293b" stroke-dasharray="4" />
+            <text x="35" y="24" fill="#64748b" font-size="10" text-anchor="end">2.0M</text>
+
+            <line x1="40" y1="70" x2="570" y2="70" stroke="#1e293b" stroke-dasharray="4" />
+            <text x="35" y="74" fill="#64748b" font-size="10" text-anchor="end">1.6M</text>
+
+            <line x1="40" y1="120" x2="570" y2="120" stroke="#1e293b" stroke-dasharray="4" />
+            <text x="35" y="124" fill="#64748b" font-size="10" text-anchor="end">1.2M</text>
+
+            <line x1="40" y1="170" x2="570" y2="170" stroke="#1e293b" stroke-dasharray="4" />
+            <text x="35" y="174" fill="#64748b" font-size="10" text-anchor="end">0.8M</text>
+
+            <!-- Barras Faturamento (Jan a Set) -->
+            <!-- Jan: 1.48M (h=85) -->
+            <rect x="58" y="90" width="22" height="95" rx="3" fill="#f59e0b" opacity="0.85" />
+            <!-- Fev: 1.52M (h=88) -->
+            <rect x="114" y="85" width="22" height="100" rx="3" fill="#f59e0b" opacity="0.85" />
+            <!-- Mar: 1.68M (h=102) -->
+            <rect x="170" y="72" width="22" height="113" rx="3" fill="#f59e0b" opacity="0.85" />
+            <!-- Abr: 1.59M (h=94) -->
+            <rect x="226" y="80" width="22" height="105" rx="3" fill="#f59e0b" opacity="0.85" />
+            <!-- Mai: 1.65M (h=98) -->
+            <rect x="282" y="75" width="22" height="110" rx="3" fill="#f59e0b" opacity="0.85" />
+            <!-- Jun: 1.72M (h=108) -->
+            <rect x="338" y="65" width="22" height="120" rx="3" fill="#f59e0b" opacity="0.85" />
+            <!-- Jul: 1.69M (h=104) -->
+            <rect x="394" y="68" width="22" height="117" rx="3" fill="#f59e0b" opacity="0.85" />
+            <!-- Ago: 1.74M (h=110) -->
+            <rect x="450" y="62" width="22" height="123" rx="3" fill="#f59e0b" opacity="0.85" />
+            <!-- Set: 1.78M (h=116) -->
+            <rect x="506" y="55" width="22" height="130" rx="3" fill="#f59e0b" />
+
+            <!-- Linha Volume Peso (t) (Jan=4.9k, Fev=5.0k, Mar=5.5k, Abr=5.2k, Mai=5.4k, Jun=5.7k, Jul=5.6k, Ago=5.7k, Set=5.72k) -->
+            <path d="M 69,92 L 125,87 L 181,73 L 237,82 L 293,76 L 349,66 L 405,69 L 461,63 L 517,56" 
+                  fill="none" stroke="#22d3ee" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+
+            <!-- Pontos na Linha de Peso -->
+            <circle cx="69" cy="92" r="4" fill="#22d3ee" />
+            <text x="69" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Jan</text>
+
+            <circle cx="125" cy="87" r="4" fill="#22d3ee" />
+            <text x="125" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Fev</text>
+
+            <circle cx="181" cy="73" r="4" fill="#22d3ee" />
+            <text x="181" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Mar</text>
+
+            <circle cx="237" cy="82" r="4" fill="#22d3ee" />
+            <text x="237" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Abr</text>
+
+            <circle cx="293" cy="76" r="4" fill="#22d3ee" />
+            <text x="293" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Mai</text>
+
+            <circle cx="349" cy="66" r="4" fill="#22d3ee" />
+            <text x="349" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Jun</text>
+
+            <circle cx="405" cy="69" r="4" fill="#22d3ee" />
+            <text x="405" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Jul</text>
+
+            <circle cx="461" cy="63" r="4" fill="#22d3ee" />
+            <text x="461" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Ago</text>
+
+            <circle cx="517" cy="56" r="6" fill="#38bdf8" stroke="#082f49" stroke-width="2" />
+            <text x="517" y="202" fill="#38bdf8" font-weight="bold" font-size="10" text-anchor="middle">Set</text>
+          </svg>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+          <span>Recorde Setembro: <strong>R$ 1.780.000</strong> faturados em <strong>5.720 toneladas</strong> tratadas.</span>
+          <span class="text-amber-400 font-semibold">+20.2% vs Jan</span>
+        </div>
+      </div>
+
+      <!-- Gráfico 2: Eficiência Logística: Viagens de Caminhões vs Carga Média (t/caminhão) -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
+          <div>
+            <h3 class="font-bold text-white text-base flex items-center gap-2">
+              <span>🚚 Eficiência Logística: Viagens vs Carga por Caminhão</span>
+            </h3>
+            <p class="text-xs text-slate-400">Menos viagens para transportar mais peso = Maior lucro e menor custo de frete</p>
+          </div>
+          <div class="flex items-center gap-3 text-xs">
+            <div class="flex items-center gap-1.5">
+              <span class="w-3 h-3 rounded bg-slate-700"></span>
+              <span class="text-slate-300">Viagens</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-3 h-0.5 bg-emerald-400"></span>
+              <span class="text-slate-300">Carga Média (t/viagem)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SVG Gráfico Eficiência -->
+        <div class="mt-6 relative h-64 w-full">
+          <svg class="w-full h-full overflow-visible" viewBox="0 0 600 220">
+            <!-- Grid Lines -->
+            <line x1="40" y1="20" x2="570" y2="20" stroke="#1e293b" stroke-dasharray="4" />
+            <text x="35" y="24" fill="#64748b" font-size="10" text-anchor="end">16.0t</text>
+
+            <line x1="40" y1="70" x2="570" y2="70" stroke="#1e293b" stroke-dasharray="4" />
+            <text x="35" y="74" fill="#64748b" font-size="10" text-anchor="end">14.0t</text>
+
+            <line x1="40" y1="120" x2="570" y2="120" stroke="#1e293b" stroke-dasharray="4" />
+            <text x="35" y="124" fill="#64748b" font-size="10" text-anchor="end">12.0t</text>
+
+            <line x1="40" y1="170" x2="570" y2="170" stroke="#1e293b" stroke-dasharray="4" />
+            <text x="35" y="174" fill="#64748b" font-size="10" text-anchor="end">10.0t</text>
+
+            <!-- Linha de Meta de Carga (13.5 t/caminhão) -->
+            <line x1="40" y1="82" x2="570" y2="82" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="4,4" />
+            <text x="565" y="76" fill="#f43f5e" font-size="10" text-anchor="end">Meta: 13.5t</text>
+
+            <!-- Barras Viagens Caminhões -->
+            <rect x="58" y="95" width="22" height="90" rx="3" fill="#334155" />
+            <rect x="114" y="98" width="22" height="87" rx="3" fill="#334155" />
+            <rect x="170" y="90" width="22" height="95" rx="3" fill="#334155" />
+            <rect x="226" y="94" width="22" height="91" rx="3" fill="#334155" />
+            <rect x="282" y="92" width="22" height="93" rx="3" fill="#334155" />
+            <rect x="338" y="88" width="22" height="97" rx="3" fill="#334155" />
+            <rect x="394" y="91" width="22" height="94" rx="3" fill="#334155" />
+            <rect x="450" y="86" width="22" height="99" rx="3" fill="#334155" />
+            <rect x="506" y="83" width="22" height="102" rx="3" fill="#334155" />
+
+            <!-- Linha Carga Média t/caminhão (Evolução de 13.1t até 14.6t) -->
+            <path d="M 69,96 L 125,92 L 181,85 L 237,80 L 293,76 L 349,70 L 405,67 L 461,61 L 517,55" 
+                  fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+
+            <!-- Pontos Carga Média -->
+            <circle cx="69" cy="96" r="4" fill="#10b981" />
+            <text x="69" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Jan (13.1)</text>
+
+            <circle cx="125" cy="92" r="4" fill="#10b981" />
+            <text x="125" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Fev</text>
+
+            <circle cx="181" cy="85" r="4" fill="#10b981" />
+            <text x="181" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Mar</text>
+
+            <circle cx="237" cy="80" r="4" fill="#10b981" />
+            <text x="237" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Abr</text>
+
+            <circle cx="293" cy="76" r="4" fill="#10b981" />
+            <text x="293" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Mai</text>
+
+            <circle cx="349" cy="70" r="4" fill="#10b981" />
+            <text x="349" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Jun</text>
+
+            <circle cx="405" cy="67" r="4" fill="#10b981" />
+            <text x="405" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Jul</text>
+
+            <circle cx="461" cy="61" r="4" fill="#10b981" />
+            <text x="461" y="202" fill="#94a3b8" font-size="10" text-anchor="middle">Ago</text>
+
+            <circle cx="517" cy="55" r="6" fill="#34d399" stroke="#064e3b" stroke-width="2" />
+            <text x="517" y="202" fill="#34d399" font-weight="bold" font-size="10" text-anchor="middle">Set (14.6t)</text>
+          </svg>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+          <span>Ganho de Eficiência: <strong>+11.4% de peso útil</strong> por caminhão de Jan a Setembro.</span>
+          <span class="text-emerald-400 font-bold">14,6 t/viagem</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TABELA EXECUTIVA MÊS A MÊS: EFICIÊNCIA DO NEGÓCIO -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
+        <div>
+          <h3 class="font-bold text-white text-base">📊 Matriz de Eficiência do Negócio Mês a Mês (Demonstrativo Unit Economics)</h3>
+          <p class="text-xs text-slate-400">Consolidado temporal de Faturamento, Peso (t), Viagens de Caminhões, Preço Médio e Rentabilidade por Carga.</p>
+        </div>
+        <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-xl font-bold">
+          Meta Geral Atingida: 106.1%
+        </span>
+      </div>
+
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="text-slate-400 border-b border-slate-800 font-semibold uppercase tracking-wider">
+            <tr>
+              <th class="pb-3">Mês</th>
+              <th class="pb-3">Faturamento (R$)</th>
+              <th class="pb-3">Peso Tratado (t)</th>
+              <th class="pb-3">Viagens Caminhões</th>
+              <th class="pb-3">R$ / Tonelada</th>
+              <th class="pb-3">Carga Média (t/caminhão)</th>
+              <th class="pb-3">Receita / Caminhão</th>
+              <th class="pb-3 text-right">Índice de Eficiência</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800 text-slate-200">
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 font-bold text-white">Janeiro / 2024</td>
+              <td class="py-2.5">R$ 1.480.000</td>
+              <td class="py-2.5 font-medium">4.920 t</td>
+              <td class="py-2.5 text-slate-300">375 viagens</td>
+              <td class="py-2.5">R$ 300,81</td>
+              <td class="py-2.5 font-medium text-slate-300">13,12 t</td>
+              <td class="py-2.5">R$ 3.946</td>
+              <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-medium">Base</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 font-bold text-white">Fevereiro / 2024</td>
+              <td class="py-2.5">R$ 1.520.000</td>
+              <td class="py-2.5 font-medium">5.040 t</td>
+              <td class="py-2.5 text-slate-300">380 viagens</td>
+              <td class="py-2.5">R$ 301,58</td>
+              <td class="py-2.5 font-medium text-slate-300">13,26 t</td>
+              <td class="py-2.5">R$ 4.000</td>
+              <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-medium">+1.4%</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 font-bold text-white">Março / 2024</td>
+              <td class="py-2.5">R$ 1.680.000</td>
+              <td class="py-2.5 font-medium">5.520 t</td>
+              <td class="py-2.5 text-slate-300">405 viagens</td>
+              <td class="py-2.5">R$ 304,34</td>
+              <td class="py-2.5 font-medium text-emerald-400">13,63 t</td>
+              <td class="py-2.5">R$ 4.148</td>
+              <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-medium">+5.1%</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 font-bold text-white">Abril / 2024</td>
+              <td class="py-2.5">R$ 1.590.000</td>
+              <td class="py-2.5 font-medium">5.210 t</td>
+              <td class="py-2.5 text-slate-300">378 viagens</td>
+              <td class="py-2.5">R$ 305,18</td>
+              <td class="py-2.5 font-medium text-emerald-400">13,78 t</td>
+              <td class="py-2.5">R$ 4.206</td>
+              <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-medium">+6.6%</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 font-bold text-white">Maio / 2024</td>
+              <td class="py-2.5">R$ 1.650.000</td>
+              <td class="py-2.5 font-medium">5.390 t</td>
+              <td class="py-2.5 text-slate-300">385 viagens</td>
+              <td class="py-2.5">R$ 306,12</td>
+              <td class="py-2.5 font-medium text-emerald-400">14,00 t</td>
+              <td class="py-2.5">R$ 4.285</td>
+              <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-bold">+8.6%</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 font-bold text-white">Junho / 2024</td>
+              <td class="py-2.5">R$ 1.720.000</td>
+              <td class="py-2.5 font-medium">5.610 t</td>
+              <td class="py-2.5 text-slate-300">395 viagens</td>
+              <td class="py-2.5">R$ 306,59</td>
+              <td class="py-2.5 font-medium text-emerald-400">14,20 t</td>
+              <td class="py-2.5">R$ 4.354</td>
+              <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-bold">+10.3%</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 font-bold text-white">Julho / 2024</td>
+              <td class="py-2.5">R$ 1.690.000</td>
+              <td class="py-2.5 font-medium">5.500 t</td>
+              <td class="py-2.5 text-slate-300">382 viagens</td>
+              <td class="py-2.5">R$ 307,27</td>
+              <td class="py-2.5 font-medium text-emerald-400">14,39 t</td>
+              <td class="py-2.5">R$ 4.424</td>
+              <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-bold">+12.1%</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 font-bold text-white">Agosto / 2024</td>
+              <td class="py-2.5">R$ 1.740.000</td>
+              <td class="py-2.5 font-medium">5.650 t</td>
+              <td class="py-2.5 text-slate-300">390 viagens</td>
+              <td class="py-2.5">R$ 307,96</td>
+              <td class="py-2.5 font-medium text-emerald-400">14,48 t</td>
+              <td class="py-2.5">R$ 4.461</td>
+              <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-bold">+13.0%</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40 bg-emerald-950/20 border-l-2 border-emerald-500">
+              <td class="py-2.5 font-bold text-emerald-400">Setembro / 2024 (Recorde)</td>
+              <td class="py-2.5 font-black text-white">R$ 1.780.000</td>
+              <td class="py-2.5 font-bold text-cyan-400">5.720 t</td>
+              <td class="py-2.5 text-slate-300">392 viagens</td>
+              <td class="py-2.5 font-bold text-amber-400">R$ 311,18</td>
+              <td class="py-2.5 font-black text-emerald-400">14,59 t</td>
+              <td class="py-2.5 font-black text-emerald-400">R$ 4.540</td>
+              <td class="py-2.5 text-right"><span class="px-2.5 py-1 rounded-full bg-emerald-500 text-slate-950 font-black">114.2% Líder</span></td>
+            </tr>
+          </tbody>
+          <tfoot class="border-t-2 border-slate-700 font-bold text-white bg-slate-950/40">
+            <tr>
+              <td class="py-3 font-extrabold text-amber-400">TOTAL ACUMULADO</td>
+              <td class="py-3 text-emerald-400 font-extrabold text-sm">R$ 14.850.000</td>
+              <td class="py-3 text-cyan-400 font-extrabold text-sm">48.720 t</td>
+              <td class="py-3 font-extrabold text-sm">3.430 viagens</td>
+              <td class="py-3 text-amber-400 font-extrabold">R$ 304,80 méd.</td>
+              <td class="py-3 text-emerald-400 font-extrabold text-sm">14,20 t méd.</td>
+              <td class="py-3 text-emerald-400 font-extrabold">R$ 4.329 méd.</td>
+              <td class="py-3 text-right text-emerald-400 font-black text-sm">Eficiência: +11.4%</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- CARDS DE DIAGNÓSTICO DO ANALISTA PLENO (VISÃO DE NEGÓCIO) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+        <h4 class="font-bold text-white text-sm flex items-center gap-2 text-emerald-400">
+          <span>🎯 Otimização de Roteirização & Carga Útil</span>
+        </h4>
+        <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+          O indicador de <strong>Carga Média por Caminhão</strong> subiu de <strong>13,12 t (Janeiro) para 14,59 t (Setembro)</strong>. Essa melhoria de +11,4% foi conquistada através da consolidação de pontos de coleta industrial e compactação hidráulica roll-on.
+        </p>
+        <div class="mt-3 p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-400">
+          <strong>Impacto Financeiro Direto:</strong> 215 viagens a menos no acumulado = <strong>R$ 240.800 economizados em combustível</strong> e manutenção, além de 80 tCO₂e evitadas na atmosfera.
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+        <h4 class="font-bold text-white text-sm flex items-center gap-2 text-amber-400">
+          <span>💰 Alavancagem Operacional & Preço por Tonelada</span>
+        </h4>
+        <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+          A receita gerada por cada caminhão em trânsito passou de <strong>R$ 3.946 para R$ 4.540 (+15,0%)</strong>, impulsionada tanto pelo maior volume por viagem quanto pelo aumento da participação de resíduos nobres valorizados (reciclagem e coprocessamento).
+        </p>
+        <div class="mt-3 p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-400">
+          <strong>Conclusão para Diretoria:</strong> O negócio escalou o faturamento em +20.2% aumentando apenas 4.5% o número de viagens, comprovando <strong>alta eficiência e descolamento virtuoso de margem</strong>.
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- SEÇÃO 2: OKR 1 - AMBIENTAL & ESG (EMISSÕES, RESÍDUOS, ESCOPOS) -->
+  <!-- ========================================================== -->
+  <section id="viewAmbiental" class="mt-8 space-y-6">
+
+    <!-- BANNER OKR 1 -->
+    <div class="bg-gradient-to-r from-slate-900 via-slate-900/90 to-emerald-950/40 border border-emerald-900/40 rounded-2xl p-5 relative overflow-hidden emerald-glow">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative z-10">
+        <div>
+          <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Objetivo Estratégico Corporativo (O1)
+          </div>
+          <h2 class="text-lg md:text-xl font-bold text-white mt-1">Acelerar a Transição Operacional</h2>
+          <p class="text-xs text-slate-400 mt-1 max-w-3xl">Meta anual vinculada aos compromissos Net-Zero e mitigação de custos de descarte industrial.</p>
+        </div>
+
+        <div class="flex items-center gap-6 bg-slate-950/70 border border-slate-800/80 px-5 py-3 rounded-xl">
+          <div class="text-right">
+            <span class="text-xs text-slate-400 block">Progresso do OKR 1</span>
+            <span class="text-2xl font-black text-emerald-400">91.8%</span>
+          </div>
+          <div class="w-16 h-16 relative flex items-center justify-center">
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+              <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="text-emerald-500" stroke-dasharray="91.8, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <span class="absolute text-xs font-bold text-slate-200">🟢 OK</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 BIG NUMBERS OKR 1 -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-5 transition-all-custom">
+        <div class="flex items-center justify-between text-slate-400 text-xs">
+          <span class="font-medium flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> KR 1.1 • Emissões GEE (tCO₂e)</span>
+          <span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-[11px] font-semibold">-6.4% vs Meta</span>
+        </div>
+        <div class="mt-3 flex items-baseline justify-between">
+          <span class="text-2xl lg:text-3xl font-extrabold text-white">1.170 <span class="text-sm font-medium text-slate-400">t</span></span>
+          <span class="text-xs text-slate-400">Meta: ≤ 1.250 t</span>
+        </div>
+        <div class="mt-3">
+          <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden"><div class="bg-emerald-500 h-1.5 rounded-full" style="width: 93.6%"></div></div>
+          <div class="flex justify-between items-center text-[11px] text-slate-400 mt-1.5">
+            <span>Redução acumulada: <strong>80 tCO₂e</strong></span>
+            <span class="text-emerald-400 font-semibold">Dentro do Limite</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-5 transition-all-custom">
+        <div class="flex items-center justify-between text-slate-400 text-xs">
+          <span class="font-medium flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-teal-500"></span> KR 1.2 • Desvio de Aterro (Circular)</span>
+          <span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-[11px] font-semibold">+3.8 p.p.</span>
+        </div>
+        <div class="mt-3 flex items-baseline justify-between">
+          <span class="text-2xl lg:text-3xl font-extrabold text-emerald-400">88.8%</span>
+          <span class="text-xs text-slate-400">Meta: ≥ 85.0%</span>
+        </div>
+        <div class="mt-3">
+          <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden"><div class="bg-teal-500 h-1.5 rounded-full" style="width: 100%"></div></div>
+          <div class="flex justify-between items-center text-[11px] text-slate-400 mt-1.5">
+            <span>Aterro evitado: <strong>1.420 toneladas</strong></span>
+            <span class="text-teal-400 font-semibold">Superou Meta 🚀</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-5 transition-all-custom">
+        <div class="flex items-center justify-between text-slate-400 text-xs">
+          <span class="font-medium flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-cyan-500"></span> KR 1.3 • Eficiência Hídrica</span>
+          <span class="bg-cyan-500/10 text-cyan-400 px-2 py-0.5 rounded text-[11px] font-semibold">-11.2% consumo</span>
+        </div>
+        <div class="mt-3 flex items-baseline justify-between">
+          <span class="text-2xl lg:text-3xl font-extrabold text-white">0.38 <span class="text-sm font-medium text-slate-400">m³/t prod</span></span>
+          <span class="text-xs text-slate-400">Meta: ≤ 0.45</span>
+        </div>
+        <div class="mt-3">
+          <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden"><div class="bg-cyan-500 h-1.5 rounded-full" style="width: 84%"></div></div>
+          <div class="flex justify-between items-center text-[11px] text-slate-400 mt-1.5">
+            <span>Água de Reúso: <strong>62.4%</strong></span>
+            <span class="text-cyan-400 font-semibold">Excelente</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-5 transition-all-custom">
+        <div class="flex items-center justify-between text-slate-400 text-xs">
+          <span class="font-medium flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400"></span> KR 1.4 • Receita & Custo Evitado</span>
+          <span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-[11px] font-semibold">118% da Meta</span>
+        </div>
+        <div class="mt-3 flex items-baseline justify-between">
+          <span class="text-2xl lg:text-3xl font-extrabold text-white">R$ 415 <span class="text-sm font-medium text-slate-400">mil</span></span>
+          <span class="text-xs text-slate-400">Meta: R$ 350 mil</span>
+        </div>
+        <div class="mt-3">
+          <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden"><div class="bg-amber-400 h-1.5 rounded-full" style="width: 100%"></div></div>
+          <div class="flex justify-between items-center text-[11px] text-slate-400 mt-1.5">
+            <span>Economia em descarte: <strong>R$ 290k</strong></span>
+            <span class="text-amber-400 font-semibold">+ R$ 125k recicláveis</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRÁFICOS OKR 1 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
+          <div>
+            <h3 class="font-bold text-white text-sm md:text-base">📉 Curva de Descarbonização: Real vs Meta Mensal</h3>
+            <p class="text-xs text-slate-400">Evolução de Emissões GEE (tCO₂e) acumuladas ao longo de 2024</p>
+          </div>
+          <div class="flex items-center gap-4 text-xs">
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-500"></span> Real</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-0.5 bg-rose-400"></span> Meta OKR</span>
+          </div>
+        </div>
+        <div class="mt-6 relative h-64 w-full">
+          <svg class="w-full h-full overflow-visible" viewBox="0 0 700 220">
+            <line x1="40" y1="20" x2="680" y2="20" stroke="#1e293b" stroke-dasharray="4" /><text x="30" y="24" fill="#64748b" font-size="10" text-anchor="end">1.400</text>
+            <line x1="40" y1="70" x2="680" y2="70" stroke="#1e293b" stroke-dasharray="4" /><text x="30" y="74" fill="#64748b" font-size="10" text-anchor="end">1.250</text>
+            <line x1="40" y1="120" x2="680" y2="120" stroke="#1e293b" stroke-dasharray="4" /><text x="30" y="124" fill="#64748b" font-size="10" text-anchor="end">1.100</text>
+            <line x1="40" y1="170" x2="680" y2="170" stroke="#1e293b" stroke-dasharray="4" /><text x="30" y="174" fill="#64748b" font-size="10" text-anchor="end">950</text>
+            <path d="M 60,60 L 130,62 L 200,65 L 270,68 L 340,70 L 410,72 L 480,75 L 550,78 L 620,80" fill="none" stroke="#f43f5e" stroke-width="2" stroke-dasharray="6,4" />
+            <polygon points="60,190 60,85 130,95 200,75 270,105 340,90 410,115 480,125 550,135 620,140 620,190" fill="#064e3b" opacity="0.4" />
+            <path d="M 60,85 L 130,95 L 200,75 L 270,105 L 340,90 L 410,115 L 480,125 L 550,135 L 620,140" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="60" cy="85" r="4.5" fill="#10b981" /><text x="60" y="208" fill="#94a3b8" font-size="11" text-anchor="middle">Jan</text>
+            <circle cx="130" cy="95" r="4.5" fill="#10b981" /><text x="130" y="208" fill="#94a3b8" font-size="11" text-anchor="middle">Fev</text>
+            <circle cx="200" cy="75" r="4.5" fill="#10b981" /><text x="200" y="208" fill="#94a3b8" font-size="11" text-anchor="middle">Mar</text>
+            <circle cx="270" cy="105" r="4.5" fill="#10b981" /><text x="270" y="208" fill="#94a3b8" font-size="11" text-anchor="middle">Abr</text>
+            <circle cx="340" cy="90" r="4.5" fill="#10b981" /><text x="340" y="208" fill="#94a3b8" font-size="11" text-anchor="middle">Mai</text>
+            <circle cx="410" cy="115" r="4.5" fill="#10b981" /><text x="410" y="208" fill="#94a3b8" font-size="11" text-anchor="middle">Jun</text>
+            <circle cx="480" cy="125" r="4.5" fill="#10b981" /><text x="480" y="208" fill="#94a3b8" font-size="11" text-anchor="middle">Jul</text>
+            <circle cx="550" cy="135" r="4.5" fill="#10b981" /><text x="550" y="208" fill="#94a3b8" font-size="11" text-anchor="middle">Ago</text>
+            <circle cx="620" cy="140" r="6" fill="#34d399" stroke="#064e3b" stroke-width="2" /><text x="620" y="208" fill="#34d399" font-weight="bold" font-size="11" text-anchor="middle">Set</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+            <h3 class="font-bold text-white text-sm md:text-base">♻️ Matriz de Destinação</h3>
+            <span class="text-xs text-emerald-400 font-semibold">Total: 1.600 t</span>
+          </div>
+          <div class="mt-6 space-y-4">
+            <div>
+              <div class="flex justify-between text-xs mb-1"><span class="text-slate-300">Reciclagem Mecânica</span><span class="text-emerald-400 font-bold">54.0%</span></div>
+              <div class="w-full bg-slate-800 rounded-full h-2"><div class="bg-emerald-500 h-2 rounded-full" style="width: 54%"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs mb-1"><span class="text-slate-300">Compostagem Orgânica</span><span class="text-teal-400 font-bold">21.5%</span></div>
+              <div class="w-full bg-slate-800 rounded-full h-2"><div class="bg-teal-500 h-2 rounded-full" style="width: 21.5%"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs mb-1"><span class="text-slate-300">Coprocessamento (Energia)</span><span class="text-cyan-400 font-bold">13.3%</span></div>
+              <div class="w-full bg-slate-800 rounded-full h-2"><div class="bg-cyan-500 h-2 rounded-full" style="width: 13.3%"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs mb-1"><span class="text-slate-300">Aterro Industrial (Rejeito)</span><span class="text-rose-400 font-bold">11.2%</span></div>
+              <div class="w-full bg-slate-800 rounded-full h-2"><div class="bg-rose-500/80 h-2 rounded-full" style="width: 11.2%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 p-3 rounded-xl bg-slate-950/60 border border-slate-800">
+          <div class="flex items-center justify-between text-xs"><span class="text-slate-400">Taxa de Desvio de Aterro:</span><span class="text-emerald-400 font-bold text-sm">88.8%</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- SEÇÃO 3: MODELO 3 - TÁTICO POR PLANTA -->
+  <!-- ========================================================== -->
+  <section id="viewTatico" class="mt-6 space-y-6 hidden">
+    <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl flex items-center justify-between">
+      <div>
+        <h3 class="font-bold text-white text-base">🏭 Visão Tática Operacional: Desempenho Comparativo por Planta</h3>
+        <p class="text-xs text-slate-400">Benchmarking interno para identificar as unidades com melhor índice de eficiência e oportunidades de melhoria contínua.</p>
+      </div>
+      <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-xl border border-slate-700">Classificação por Eco-Score</span>
+    </div>
+
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="text-slate-400 border-b border-slate-800 font-semibold uppercase tracking-wider">
+            <tr>
+              <th class="pb-3">Ranking</th>
+              <th class="pb-3">Planta Industrial</th>
+              <th class="pb-3">Volume Produção</th>
+              <th class="pb-3">Emissões (tCO₂e)</th>
+              <th class="pb-3">Intensidade (kg/unid)</th>
+              <th class="pb-3">Desvio de Aterro</th>
+              <th class="pb-3">Eco-Score Geral</th>
+              <th class="pb-3 text-right">Status OKR</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800 text-slate-200">
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-3 font-bold text-emerald-400">#1 🥇</td>
+              <td class="py-3 font-semibold text-white">Planta São Paulo (Matriz)</td>
+              <td class="py-3">420.000 un</td>
+              <td class="py-3">380 t</td>
+              <td class="py-3 font-medium text-emerald-400">0.90 kg</td>
+              <td class="py-3 font-semibold text-emerald-400">94.2%</td>
+              <td class="py-3 font-bold text-white">95/100</td>
+              <td class="py-3 text-right"><span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 font-bold">Líder ESG</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-3 font-bold text-teal-400">#2 🥈</td>
+              <td class="py-3 font-semibold text-white">Complexo Bahia</td>
+              <td class="py-3">310.000 un</td>
+              <td class="py-3">295 t</td>
+              <td class="py-3 font-medium text-teal-400">0.95 kg</td>
+              <td class="py-3 font-semibold text-teal-400">91.0%</td>
+              <td class="py-3 font-bold text-white">90/100</td>
+              <td class="py-3 text-right"><span class="px-2.5 py-1 rounded-full bg-teal-500/10 text-teal-400 font-bold">Meta Atingida</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-3 font-bold text-cyan-400">#3 🥉</td>
+              <td class="py-3 font-semibold text-white">Planta Paraná</td>
+              <td class="py-3">185.000 un</td>
+              <td class="py-3">210 t</td>
+              <td class="py-3 font-medium text-slate-300">1.13 kg</td>
+              <td class="py-3 font-semibold text-emerald-400">86.4%</td>
+              <td class="py-3 font-bold text-white">84/100</td>
+              <td class="py-3 text-right"><span class="px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 font-bold">Meta Atingida</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-3 font-bold text-amber-400">#4 ⚠️</td>
+              <td class="py-3 font-semibold text-white">Planta Minas Gerais</td>
+              <td class="py-3">240.000 un</td>
+              <td class="py-3">285 t</td>
+              <td class="py-3 font-medium text-rose-400">1.19 kg</td>
+              <td class="py-3 font-semibold text-amber-400">81.5%</td>
+              <td class="py-3 font-bold text-white">78/100</td>
+              <td class="py-3 text-right"><span class="px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 font-bold">Gargalo Mapeado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="mt-8 pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+    <span>ECOSOLUTIONS BI • Gestão de Soluções Ambientais, OKRs & Eficiência Operacional</span>
+    <span>Modelagem Dimensional Star Schema • Unit Economics • Apresentação Técnica BI Pleno</span>
+  </footer>
+
+  <!-- SCRIPT ALTERNÂNCIA DE ABAS / MODELOS -->
+  <script>
+    function switchModel(mode) {
+      const viewEficiencia = document.getElementById('viewEficiencia');
+      const viewAmbiental = document.getElementById('viewAmbiental');
+      const viewTatico = document.getElementById('viewTatico');
+
+      const btnAll = document.getElementById('btnModeloAll');
+      const btn1 = document.getElementById('btnModelo1');
+      const btn2 = document.getElementById('btnModelo2');
+      const btn3 = document.getElementById('btnModelo3');
+
+      // Reset botões
+      [btnAll, btn1, btn2, btn3].forEach(b => {
+        if (b) b.className = 'px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-white transition-all-custom';
+      });
+
+      // Esconder todas inicialmente
+      viewEficiencia.classList.add('hidden');
+      viewAmbiental.classList.add('hidden');
+      viewTatico.classList.add('hidden');
+
+      if (mode === 'completo') {
+        viewEficiencia.classList.remove('hidden');
+        viewAmbiental.classList.remove('hidden');
+        if (btnAll) btnAll.className = 'px-3 py-1.5 rounded-lg font-medium bg-emerald-600 text-white shadow-sm transition-all-custom';
+      } else if (mode === 'eficiencia') {
+        viewEficiencia.classList.remove('hidden');
+        if (btn3) btn3.className = 'px-3 py-1.5 rounded-lg font-medium bg-amber-600 text-white shadow-sm transition-all-custom';
+      } else if (mode === 'ambiental') {
+        viewAmbiental.classList.remove('hidden');
+        if (btn1) btn1.className = 'px-3 py-1.5 rounded-lg font-medium bg-emerald-600 text-white shadow-sm transition-all-custom';
+      } else if (mode === 'tatico') {
+        viewTatico.classList.remove('hidden');
+        if (btn2) btn2.className = 'px-3 py-1.5 rounded-lg font-medium bg-cyan-600 text-white shadow-sm transition-all-custom';
+      }
+    }
+  </script>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       🤖 AGENTE DE IA FLUTUANTE — ASSISTENTE PESSOAL (BASE ECOSOLUTIONS BI)
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <div id="ai-chat-widget" class="ai-chat-collapsed" onclick="if(this.classList.contains('ai-chat-collapsed')) toggleChat(true)" title="Abrir Assistente Pessoal">
+    <div class="ai-chat-header" id="ai-chat-header">
+      <div class="ai-chat-title">
+        <span class="ai-icon">
+          <img src="eco_ai_avatar.png" alt="Assistente Pessoal" class="ai-avatar-img">
+        </span>
+        <span>Assistente Pessoal</span>
+      </div>
+      <div class="ai-chat-controls">
+        <button id="ai-chat-toggle" title="Minimizar" onclick="event.stopPropagation(); toggleChat(false);">_</button>
+      </div>
+    </div>
+    <div class="ai-chat-body" id="ai-chat-body">
+      <div class="ai-message ai">
+        <p style="margin: 0 0 8px 0; font-size: 14px; font-weight: 800; color: #fff;" id="mqiaGreetingMsg">Boa tarde, Antônio!</p>
+        <p style="margin: 0 0 8px 0; color: #cbd5e1;">Sou seu <strong>Assistente Pessoal</strong>.</p>
+        <p style="margin: 0 0 8px 0; color: #cbd5e1; line-height: 1.45;">Minha análise cruza dados e objetivos para trazer clareza às suas decisões.</p>
+        <p style="margin: 0; color: #cbd5e1; line-height: 1.45;">Estou pronta e à disposição para o diagnóstico da base <strong>ECOSOLUTIONS BI</strong>. Por qual indicador começamos?</p>
+      </div>
+
+      <div class="ai-chips-bar">
+        <button class="ai-chip" onclick="handleChipMQIA('💡 Resumo dos OKRs')">💡 Resumo dos OKRs</button>
+        <button class="ai-chip" onclick="handleChipMQIA('🚚 Eficiência de Carga')">🚚 Eficiência de Carga</button>
+        <button class="ai-chip" onclick="handleChipMQIA('♻️ Desvio de Aterro')">♻️ Desvio de Aterro</button>
+        <button class="ai-chip" onclick="handleChipMQIA('🌿 Emissões GEE')">🌿 Emissões GEE</button>
+        <button class="ai-chip" onclick="handleChipMQIA('📈 Faturamento vs Meta')">📈 Faturamento vs Meta</button>
+      </div>
+    </div>
+    <div class="ai-chat-footer">
+      <input type="text" id="ai-chat-input" placeholder="Faça uma pergunta sobre a operação ou OKRs..." onkeypress="if(event.key==='Enter') sendMQIA()" />
+      <button id="ai-chat-send" onclick="sendMQIA()" title="Enviar">➤</button>
+    </div>
+  </div>
+
+
+  <!-- ════ JAVASCRIPT DO ASSISTENTE PESSOAL DE IA (BASE ECOSOLUTIONS) ════ -->
+  <script>
+    function toggleChat(forceOpen) {
+      var widget = document.getElementById('ai-chat-widget');
+      var btnToggle = document.getElementById('ai-chat-toggle');
+      var input = document.getElementById('ai-chat-input');
+      if (!widget) return;
+
+      if (forceOpen === true) {
+        widget.classList.remove('ai-chat-collapsed');
+      } else if (forceOpen === false) {
+        widget.classList.add('ai-chat-collapsed');
+      } else {
+        widget.classList.toggle('ai-chat-collapsed');
+      }
+
+      var isCollapsed = widget.classList.contains('ai-chat-collapsed');
+      if (btnToggle) btnToggle.textContent = isCollapsed ? '↑' : '_';
+      if (!isCollapsed && input) {
+        setTimeout(function() { input.focus(); }, 150);
+      }
+    }
+    window.toggleChat = toggleChat;
+
+    function handleChipMQIA(txt) {
+      var input = document.getElementById('ai-chat-input');
+      if (input) input.value = txt;
+      sendMQIA();
+    }
+    window.handleChipMQIA = handleChipMQIA;
+
+    function gerarRespostaEcoSolutions(promptText) {
+      var q = (promptText || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+      // Saudação
+      if (
+        q === 'ola' || q === 'oi' || q === 'opa' || q === 'ola!' || q === 'oi!' ||
+        q.startsWith('ola ') || q.startsWith('oi ') || q.startsWith('bom dia') ||
+        q.startsWith('boa tarde') || q.startsWith('boa noite') ||
+        q.includes('tudo bem') || q.includes('como vai') || q.includes('e ai')
+      ) {
+        var hora = new Date().getHours();
+        var saud = 'Boa noite';
+        if (hora >= 5 && hora < 12) saud = 'Bom dia';
+        else if (hora >= 12 && hora < 18) saud = 'Boa tarde';
+
+        return saud + ', Antônio! Tudo bem?\n' +
+               'Sou seu **Assistente Pessoal** da base **ECOSOLUTIONS BI | Gestão Ambiental & OKRs**.\n\n' +
+               'Estou conectada a todos os dados consolidados de Jan a Set/2024. O que deseja consultar?\n' +
+               '• 💡 **Resumo dos OKRs** (Ambiental & Eficiência do Negócio)\n' +
+               '• 🚚 **Carga por Caminhão & Viagens** (14,20 t/cam | 3.430 viagens)\n' +
+               '• ♻️ **Desvio de Aterro** (88,8% circularidade)\n' +
+               '• 🌿 **Emissões GEE & Descarbonização** (1.170 tCO₂e)\n' +
+               '• 📈 **Faturamento & Receita** (R$ 14,85M vs R$ 14,20M meta)';
+      }
+
+      // Resumo Geral / OKRs
+      if (q.includes('resumo') || q.includes('geral') || q.includes('visao') || q.includes('status') || q.includes('okr')) {
+        return '📊 **Diagnóstico Consolidado dos OKRs (ECOSOLUTIONS BI):**\n\n' +
+               '**1. OKR 01 - Acelerar a Transição Operacional (ESG):**\n' +
+               '• **Progresso:** 91,8% (Status: No Caminho / OK)\n' +
+               '• **Emissões GEE:** 1.170 tCO₂e (Teto Meta: ≤1.250 tCO₂e | -6,4% de folga)\n' +
+               '• **Desvio de Aterro:** 88,8% (Meta: ≥85,0% | +3,8 p.p. superada)\n' +
+               '• **Eficiência Hídrica:** 0,38 m³/t prod (Meta: ≤0,45 | -11,2% economia)\n' +
+               '• **Receita & Custo Evitado:** R$ 415k (118% da meta atingida)\n\n' +
+               '**2. OKR 02 - Eficiência do Negócio & Logística:**\n' +
+               '• **Progresso:** 94,2% (Status: Superando Metas)\n' +
+               '• **Faturamento Acumulado:** R$ 14.850.000 (+4,6% vs Meta R$ 14,20M)\n' +
+               '• **Volume Peso Processado:** 48.720 toneladas (+4,8% vs Meta)\n' +
+               '• **Viagens de Caminhões:** 3.430 viagens (otimização de -6,2% na frota)\n' +
+               '• **Carga Útil Média:** 14,20 t/caminhão (Meta: 13,50 t/cam | +5,2% ganho)';
+      }
+
+      // Caminhões, Viagens, Ocupação, Logística, Frota, Peso, Carga Útil
+      if (q.includes('caminh') || q.includes('viagem') || q.includes('viagens') || q.includes('carga') || q.includes('frota') || q.includes('logistica') || q.includes('peso') || q.includes('tonelada')) {
+        return '🚚 **Eficiência de Transporte & Carga por Caminhão:**\n\n' +
+               '• **Total de Viagens Realizadas:** 3.430 viagens de caminhões\n' +
+               '• **Volume Total Transportado:** 48.720 toneladas (Jan a Set/2024)\n' +
+               '• **Carga Útil Média:** 14,20 toneladas/caminhão (Meta: 13,50 t/cam)\n' +
+               '• **Ganho de Eficiência:** +5,2% na ocupação útil dos caminhões\n' +
+               '• **Receita Média por Viagem:** R$ 4.329 / caminhão\n' +
+               '• **Evolução de Carga:** Saltou de 13,48 t/cam em Janeiro para **14,76 t/cam em Setembro** (+9,5% de ganho contínuo)\n\n' +
+               '*Impacto: A consolidação de cargas evitou 215 viagens no período, gerando economia líquida de R$ 240,8 mil em óleo diesel e fretes.*';
+      }
+
+      // Faturamento, Receita, Meta Financeira, Vendas
+      if (q.includes('faturam') || q.includes('receita') || q.includes('financeir') || q.includes('meta') || q.includes('r$') || q.includes('valor')) {
+        return '📈 **Performance Financeira & Faturamento:**\n\n' +
+               '• **Faturamento Realizado (Jan-Set):** R$ 14.850.000\n' +
+               '• **Meta Orçada:** R$ 14.200.000\n' +
+               '• **Superávit Acumulado:** +R$ 650.000 (+4,6% acima do planejado)\n' +
+               '• **Evolução Mês a Mês:**\n' +
+               '  - Jan: R$ 1,42M | Fev: R$ 1,48M | Mar: R$ 1,59M\n' +
+               '  - Abr: R$ 1,62M | Mai: R$ 1,68M | Jun: R$ 1,71M\n' +
+               '  - Jul: R$ 1,76M | Ago: R$ 1,78M | Set: R$ 1,81M (recorde)\n' +
+               '• **Receita Unitária:** R$ 304,80 por tonelada processada e R$ 4.329 por caminhão.';
+      }
+
+      // Desvio de Aterro, Resíduos, Circularidade, Destinação, Reciclagem
+      if (q.includes('desvio') || q.includes('aterro') || q.includes('residuo') || q.includes('recicla') || q.includes('circular') || q.includes('destina')) {
+        return '♻️ **Circularidade & Matriz de Destinação de Resíduos:**\n\n' +
+               '• **Taxa de Desvio de Aterro:** 88,8% (Meta: ≥85,0% | +3,8 p.p. superada)\n' +
+               '• **Volume Total Desviado de Aterro:** 1.420 toneladas\n' +
+               '• **Distribuição da Matriz (1.600 t avaliadas):**\n' +
+               '  - ♻️ **Reciclagem Mecânica:** 54,0% (864 t)\n' +
+               '  - 🌱 **Compostagem Orgânica:** 21,5% (344 t)\n' +
+               '  - ⚡ **Coprocessamento Energético:** 13,3% (212 t)\n' +
+               '  - ⛔ **Aterro Industrial (Rejeito restrito):** Apenas 11,2% (180 t)\n\n' +
+               '*Economia gerada: R$ 290k em custos de aterro evitados + R$ 125k de receita direta de recicláveis comercializados.*';
+      }
+
+      // Emissões, GEE, Carbono, CO2, Descarbonização
+      if (q.includes('emiss') || q.includes('gee') || q.includes('carbon') || q.includes('co2') || q.includes('descarboniz')) {
+        return '🌿 **Gestão de Emissões GEE & Descarbonização:**\n\n' +
+               '• **Emissões Realizadas:** 1.170 tCO₂e acumuladas\n' +
+               '• **Teto Máximo da Meta OKR:** ≤ 1.250 tCO₂e\n' +
+               '• **Desempenho:** -6,4% abaixo do limite máximo (dentro da faixa verde)\n' +
+               '• **Redução Efetiva:** 80 tCO₂e reduzidas ativamente\n' +
+               '• **Ações Chave:** Redução contínua de -14,3% nas emissões desde Março via eletrificação de empilhadeiras fabris e otimização da rota logística reversa.';
+      }
+
+      // Plantas, Unidades, Fábricas, São Paulo, Paulínia, Camaçari, Betim, Araucária
+      if (q.includes('planta') || q.includes('unidade') || q.includes('paulinia') || q.includes('camacari') || q.includes('araucaria') || q.includes('betim') || q.includes('caxias')) {
+        return '🏭 **Performance por Unidade Operacional:**\n\n' +
+               '• 🥇 **Planta SP (Paulínia):** 92,4% Desvio | Eco-Score 94,2 (Ouro) | Eficiência 0,32 m³/t\n' +
+               '• 🥇 **Planta BA (Camaçari):** 89,1% Desvio | Eco-Score 90,5 (Ouro) | Eficiência 0,35 m³/t\n' +
+               '• 🥈 **Planta PR (Araucária):** 87,5% Desvio | Eco-Score 88,0 (Prata) | Eficiência 0,39 m³/t\n' +
+               '• 🥈 **Planta MG (Betim):** 85,2% Desvio | Eco-Score 86,4 (Prata) | Eficiência 0,41 m³/t\n' +
+               '• 🥉 **Planta RJ (Caxias):** 82,0% Desvio | Eco-Score 81,2 (Bronze) | Plano de ação em curso.';
+      }
+
+      // Eficiência Hídrica / Água
+      if (q.includes('agua') || q.includes('hidric') || q.includes('reuso')) {
+        return '💧 **Eficiência Hídrica & Reúso:**\n\n' +
+               '• **Consumo Específico:** 0,38 m³ por tonelada produzida\n' +
+               '• **Meta Corporativa:** ≤ 0,45 m³/t\n' +
+               '• **Economia:** -11,2% em relação ao consumo projetado\n' +
+               '• **Índice de Água de Reúso:** 62,4% de toda a água utilizada no processo fabril é recirculada em circuito fechado.';
+      }
+
+      // Resposta genérica
+      return '💡 **Assistente Pessoal (ECOSOLUTIONS BI):**\n\n' +
+             'Analisei sua consulta sobre "' + promptText + '" na base de dados operacionais e de sustentabilidade.\n\n' +
+             '• **Faturamento Acumulado:** R$ 14,85 Milhões (+4,6% vs meta)\n' +
+             '• **Volume Peso & Frota:** 48.720 t em 3.430 viagens (14,20 t/caminhão)\n' +
+             '• **Desvio de Aterro:** 88,8% (+3,8 p.p. vs meta de 85%)\n' +
+             '• **Emissões GEE:** 1.170 tCO₂e (-6,4% abaixo do teto de 1.250 tCO₂e)\n\n' +
+             'Clique nos botões rápidos acima ou pergunte sobre *Carga por Caminhão*, *Faturamento*, *Desvio de Aterro*, *Emissões* ou *Plantas*.';
+    }
+
+    async function sendMQIA() {
+      var input = document.getElementById('ai-chat-input');
+      var body = document.getElementById('ai-chat-body');
+      if (!input || !body) return;
+      var q = input.value.trim();
+      if (!q) return;
+
+      // Mensagem do usuário
+      var userMsg = document.createElement('div');
+      userMsg.className = 'ai-message user';
+      userMsg.textContent = q;
+      body.appendChild(userMsg);
+      input.value = '';
+      body.scrollTop = body.scrollHeight;
+
+      // Indicador de digitação
+      var typingIndicator = document.createElement('div');
+      typingIndicator.className = 'ai-message ai';
+      typingIndicator.id = 'ai-typing-indicator';
+      typingIndicator.style.opacity = '0.7';
+      typingIndicator.style.fontStyle = 'italic';
+      typingIndicator.textContent = 'Assistente Pessoal consultando base EcoSolutions...';
+      body.appendChild(typingIndicator);
+      body.scrollTop = body.scrollHeight;
+
+      setTimeout(function() {
+        if (typingIndicator && typingIndicator.parentNode) {
+          typingIndicator.parentNode.removeChild(typingIndicator);
+        }
+
+        var resposta = gerarRespostaEcoSolutions(q);
+        var botMsg = document.createElement('div');
+        botMsg.className = 'ai-message ai';
+        botMsg.style.whiteSpace = 'pre-line';
+        botMsg.innerHTML = resposta.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        body.appendChild(botMsg);
+        body.scrollTop = body.scrollHeight;
+      }, 350);
+    }
+    window.sendMQIA = sendMQIA;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var hora = new Date().getHours();
+      var saudacao = 'Boa noite';
+      if (hora >= 5 && hora < 12) saudacao = 'Bom dia';
+      else if (hora >= 12 && hora < 18) saudacao = 'Boa tarde';
+      
+      var el = document.getElementById('mqiaGreetingMsg');
+      if (el) el.textContent = saudacao + ', Antônio!';
+
+      var widget = document.getElementById('ai-chat-widget');
+      if (widget) {
+        widget.addEventListener('click', function(e) {
+          if (widget.classList.contains('ai-chat-collapsed')) {
+            toggleChat(true);
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
