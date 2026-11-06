@@ -2,7 +2,7 @@
   {
     "id": 43,
     "title": "DIR. ASSISTEC. DASHBOARD FORECAST SPARE_PARTS",
-    "department": "Assistência Técnica & SAC",
+    "department": "Assistência",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiOWYyMzRkNDktYzhmMC00N2Y3LThjYzQtOTBmOTFiODdhN2Y0IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Previsão de demanda futura de peças sobressalentes e reposição (Spare Parts).",
@@ -13,7 +13,7 @@
   {
     "id": 24,
     "title": "DRE Assistencia Tecnica & SAC - Gestão de Resultados",
-    "department": "Assistência Técnica & SAC",
+    "department": "Assistência",
     "powerbi_url": "",
     "web_url": "http://localhost:5100/assistencia",
     "description": "Demonstrativo de Resultados. Acompanhamento de custos operacionais e garantias.",
@@ -23,19 +23,20 @@
   },
   {
     "id": 42,
-    "title": "Dashboard R.A",
-    "department": "Assistência Técnica & SAC",
+    "title": "Status dos Processos",
+    "department": "Assistência",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiNTU5NGM5NjYtN2ZkZi00MDAyLTg2MDMtZWJkNGVlNDgyYWRjIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Acompanhamento de reclamações, tempo de resposta e reputação no Reclame Aqui.",
     "tech": "Power BI (Demonstração Estática)",
     "github_repo": "",
-    "live_portfolio_url": ""
+    "live_portfolio_url": "",
+    "image": "?v=20261030_status_processos"
   },
   {
     "id": 40,
-    "title": "Dashboard SAC & Assistencia Técnica",
-    "department": "Assistência Técnica & SAC",
+    "title": "Dashboard Entrada de Pedidos",
+    "department": "Assistência",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiNjI1YjU4NmItZDUzNC00NjM2LThmMzYtNDBhYjIzYzBiODRhIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Visão geral de atendimentos, chamados SAC e produtividade da assistência técnica.",
@@ -46,7 +47,7 @@
   {
     "id": 58,
     "title": "Dashboard SAC & Assistência Técnica 2",
-    "department": "Assistência Técnica & SAC",
+    "department": "Assistência",
     "powerbi_url": "",
     "web_url": "http://localhost:5300/",
     "description": "Dashboard Executivo de Atendimento SAC e Assistência Técnica MQ Professional",
@@ -57,7 +58,7 @@
   {
     "id": 41,
     "title": "Demanda de Reabastecimento",
-    "department": "Assistência Técnica & SAC",
+    "department": "Assistência",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiMDQ4NmFjZGYtZWMzNC00ZjE4LTk3MTEtNTM1NzQ5NDdmNDk0IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Planejamento de reposição e demanda de peças e componentes em estoque.",
@@ -67,8 +68,8 @@
   },
   {
     "id": 39,
-    "title": "Retorno de Peças",
-    "department": "Assistência Técnica & SAC",
+    "title": "Acompanhamento Diário",
+    "department": "Assistência",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiYzA5M2ZjNTEtMjI0Yi00N2Q5LThhNzEtNGJmNDNmYTM1ZjNmIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Controle e rastreamento de devolução e retorno de peças para assistência técnica.",
@@ -255,7 +256,7 @@
   {
     "id": 60,
     "title": "DIR DASH DISTRIBUIÇÃO VISAO GERAL- GESTOR - COMEX",
-    "department": "Comex",
+    "department": "Países",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiOTQwYWRkZWMtYTVlNC00N2Y5LWIwY2YtYzYzYTgxNmExOTY0IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Distribuição e visão geral estratégica para gestores COMEX.",
@@ -266,7 +267,7 @@
   {
     "id": 61,
     "title": "DIR DASH VISÃO COMEX",
-    "department": "Comex",
+    "department": "Países",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiZDllYjM5ZjctZGE4MC00YWM4LWI4NTItMTAyNGM4NzA4OGMzIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Visão consolidada de comércio exterior, importações e exportações.",
@@ -277,7 +278,7 @@
   {
     "id": 62,
     "title": "DIR. CML. ACOMP. PERF. PRODUTO E CANAL COMEX",
-    "department": "Comex",
+    "department": "Países",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiNTZmODQyZGYtZjI5NS00ZjIwLTkxNDktNTUxY2I2ODIxYzg5IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Acompanhamento comercial de performance por produto e canal COMEX.",
@@ -288,7 +289,7 @@
   {
     "id": 63,
     "title": "DIR. DASH. PERFORMANCE EQUIPES COMEX",
-    "department": "Comex",
+    "department": "Países",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiMmNkMTM3OTQtZTE1Zi00ZDY3LTg3YmQtZTNkYzJmNjRhYzE1IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Indicadores de produtividade e performance operacional das equipes COMEX.",
@@ -299,7 +300,7 @@
   {
     "id": 64,
     "title": "DIR.CML. PROBABILIDADE DE COMPRAS - COMEX",
-    "department": "Comex",
+    "department": "Países",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiZTliZThkMzQtYThiNy00Y2NjLTk0N2UtNjc5YjhlZTBlZjhjIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Modelos preditivos e análise de probabilidade de compras COMEX.",
@@ -310,7 +311,7 @@
   {
     "id": 22,
     "title": "DRE Comex - Gestão de Resultados",
-    "department": "Comex",
+    "department": "Países",
     "powerbi_url": "",
     "web_url": "http://localhost:5100/comex",
     "description": "Demonstrativo de Resultados do Comércio Exterior (Comex). Acompanhamento de faturamento líquido, margens e custos operacionais.",
@@ -321,7 +322,7 @@
   {
     "id": 89,
     "title": "DASH. DESENV. PRODUTOS INDICADORES DE IMPORTACAO",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiM2QyOGQyMWQtM2EyYy00MzQ1LTg4MTEtNzI3NjVkYWFkY2I5IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Indicadores de importação, lead time, custos e desembaraço de produtos.",
@@ -332,7 +333,7 @@
   {
     "id": 81,
     "title": "DASH. DIR. DESNV. PRODUTOS - NUBMETRICS 10",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiNmRjODc4ZDctNDczNS00OGM0LWE3NWEtZTg2ZTViMWUzZGYwIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Dashboard executivo da Diretoria de Desenvolvimento de Produtos - Nubmetrics (versão 10).",
@@ -343,7 +344,7 @@
   {
     "id": 73,
     "title": "DASHBOARD RA",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "",
     "web_url": "#",
     "description": "Gestão de chamados, reputação e índices de atendimento no Reclame Aqui da Assistência Técnica.",
@@ -354,7 +355,7 @@
   {
     "id": 82,
     "title": "DIR. ASSISTEC. DASHBOARD FORECAST SPARE_PARTS vs05",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiNGI3YTM1MjctMzIyOC00OTU5LWFhOWItNmY3OGYxNmYxMDdjIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Forecast e projeção de demanda de peças de reposição (Spare Parts) da Assistência Técnica.",
@@ -365,7 +366,7 @@
   {
     "id": 83,
     "title": "DIR. ASSISTEC. DASHBOARD RA",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiMjkyNTg3NjAtYjUwMi00YTk0LWIyZmMtNmEyMjI2MGRhYWExIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Gestão de chamados, reputação e índices de atendimento no Reclame Aqui da Assistência Técnica.",
@@ -376,7 +377,7 @@
   {
     "id": 84,
     "title": "DIR.CML ESTOQUE ATUAL CUSTO FINANCEIRO",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiNmRjMjFjYzctMjAzZS00NmU3LWI3ODAtODQxYmJhODI1MTk2IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Estoque atual e custo financeiro consolidado - Diretoria Comercial e Desenvolvimento.",
@@ -387,7 +388,7 @@
   {
     "id": 74,
     "title": "DIR.CML ESTOQUE ATUAL CUSTO FINANCEIRO",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "",
     "web_url": "#",
     "description": "Estoque atual e custo financeiro consolidado - Diretoria Comercial e Desenvolvimento.",
@@ -398,7 +399,7 @@
   {
     "id": 85,
     "title": "DIR.DASH. ANALISE MARGEM CUSTO GER vs5",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiZDhhODA0ODAtMDI5Ny00NDA1LWExMmMtNDAzOTQxMzBjMWRlIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Análise gerencial de margens, composição de custos e rentabilidade de produtos.",
@@ -409,7 +410,7 @@
   {
     "id": 75,
     "title": "DIR.DASH. ANALISE MARGEM CUSTO GER vs5",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "",
     "web_url": "#",
     "description": "Análise gerencial de margens, composição de custos e rentabilidade de produtos.",
@@ -420,7 +421,7 @@
   {
     "id": 79,
     "title": "DRE Desenvolvimento de Produtos",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "",
     "web_url": "http://localhost:5100/produto",
     "description": "Demonstrativo de Resultados do Exercício (DRE) da linha de desenvolvimento de produtos e projetos.",
@@ -431,7 +432,7 @@
   {
     "id": 80,
     "title": "Dashboard Nubmetrics",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiMzgxOTBiZGQtYzM1Ni00ZjJkLThhN2EtZGNlMTVlODk5NjNjIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Inteligência de mercado, vendas e posicionamento competitivo via Nubmetrics.",
@@ -442,7 +443,7 @@
   {
     "id": 86,
     "title": "RETORNO DE PEÇAS.",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiMWY0NGM2NzEtZWNjOS00YmEwLTliZDUtMjNmZjZiYThiYzVlIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Controle, índices de retorno e conformidade de peças em garantia.",
@@ -453,7 +454,7 @@
   {
     "id": 76,
     "title": "RETORNO DE PEÇAS.",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "",
     "web_url": "#",
     "description": "Controle, índices de retorno e conformidade de peças em garantia.",
@@ -464,7 +465,7 @@
   {
     "id": 88,
     "title": "TESTE PREDITIVOS.",
-    "department": "Desenvolvimento de Produtos & Projetos",
+    "department": "Projetos",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiYTgyNDhiMTAtODdiNC00YzcxLWE5MTAtNGYyOTVkMjhkMzdhIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Painel de modelos preditivos e testes estatísticos para desenvolvimento de produtos.",
@@ -684,7 +685,7 @@
   {
     "id": 19,
     "title": "DASH. DIR. DESNV. PRODUTOS - NUBMETRICS",
-    "department": "E-commerce",
+    "department": "Marketplace",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiNDk3YTU3YTAtYjhlZC00OGVlLWI3OTYtMzMxMGNkYTQ5OWI0IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Inteligência competitiva, tendências de mercado e análise de produtos Nubmetrics.",
@@ -695,7 +696,7 @@
   {
     "id": 44,
     "title": "DIR. CML. MKT. PLANO DE MIDIA 2026 -VS02",
-    "department": "E-commerce",
+    "department": "Marketplace",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiNzA3YTEwZjktN2ZjOS00YjNlLWFhYjktZTUwZTUxYzIyYmNhIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Planejamento e acompanhamento estratégico do plano de mídia de marketing e comercial 2026.",
@@ -706,7 +707,7 @@
   {
     "id": 45,
     "title": "DIR. DASH. PERFORMANCE EQUIPES 2.0 ECOMMERCE",
-    "department": "E-commerce",
+    "department": "Marketplace",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiNjJjODJhMDMtYmNmYi00NTk1LTgwOGItNzM1MzhkZTIzZDk2IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Acompanhamento de metas, produtividade e performance da equipe de E-commerce 2.0.",
@@ -717,7 +718,7 @@
   {
     "id": 46,
     "title": "DIR.CML ECOMMERCE.VS 7.1",
-    "department": "E-commerce",
+    "department": "Marketplace",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiMjJjYTFkN2UtODAxZi00NTI4LTlhZWItNmU0Y2I5MzEwMDk0IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Painel da diretoria comercial e acompanhamento estratégico de vendas E-commerce VS 7.1.",
@@ -728,7 +729,7 @@
   {
     "id": 18,
     "title": "DRE E-commerce",
-    "department": "E-commerce",
+    "department": "Marketplace",
     "powerbi_url": "",
     "web_url": "http://localhost:5100/ecommerce",
     "description": "Demonstrativo de Resultados - E-commerce",
@@ -739,7 +740,7 @@
   {
     "id": 59,
     "title": "Portal Corporativo • E-Commerce",
-    "department": "E-commerce",
+    "department": "Marketplace",
     "powerbi_url": "",
     "web_url": "http://localhost:5200/",
     "description": "Cockpit executivo e acompanhamento diário de vendas, projeções e metas por canal: Mercado Livre, VTEX, Shopee, Magalu e Parlux.",
@@ -827,7 +828,7 @@
   {
     "id": 38,
     "title": "ACOMPANHAMENTO DIARIO DO CANAL - FORA SP",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiMThkNjM3NzMtM2YxYi00NjhjLWFlYWItYjhiNDE1MGJlZWUyIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Acompanhamento Diário de Vendas, Marcas e YTD Fora SP",
@@ -838,7 +839,7 @@
   {
     "id": 37,
     "title": "DASH. EVOLUÇÃO REDE E PROD. VISÃO GER. FORA SP",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiY2RhZWM3YjMtNDY5Ni00M2VlLTk0M2UtNWZkYWY3ZDJkOTY3IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Evolução de Redes, Parceiros e Produtos Visão Geral Fora SP",
@@ -849,7 +850,7 @@
   {
     "id": 36,
     "title": "DIR CML DASH. PROFUNDIDADE - MIX - CARTEIRA FORA SP",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiYzkzOWQ4NDctZGYyYS00N2ZmLWFlNTgtZTFhMmM5MzY4NDg4IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Profundidade de Carteira e Mix de Produtos Fora SP",
@@ -860,7 +861,7 @@
   {
     "id": 34,
     "title": "DIR. CML DASH. NEGOCIOS E ESTRATEGIAS FORA SP",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiZGYxYzViYmUtZjZhNC00OWE3LWI2MGYtMzIwN2FhY2JmN2EyIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Painel Comercial de Negócios e Estratégias Regionais Fora SP",
@@ -871,7 +872,7 @@
   {
     "id": 35,
     "title": "DIR. CML VAREJO ESPECIALIZADO GESTOR FORA SP v2",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiZDY5M2Q3YWQtNTVkMy00ZmQ2LWI0OTItNTY0OTQzZTVhYTU0IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Gestão de Varejo Especializado, Parceiros e Curva ABC Fora SP",
@@ -882,7 +883,7 @@
   {
     "id": 33,
     "title": "DIR. CML. ACOMP. PERF. PRODUTO E CANAL - REG. FSP",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiMGM0NzRjMjYtMjkzMC00NGJmLTliMzAtODAxZWJmMDgwZjc4IiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Acompanhamento de Performance por Produto e Canal Regional FSP",
@@ -893,7 +894,7 @@
   {
     "id": 32,
     "title": "DIR. DASH. PERFORMANCE EQUIPE GER. REGIONAL FORA SP v2",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiNGIzMjdjYTktZjMyZC00MjBlLTkzMTUtNjMxYTkxZjAxMzJhIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Performance de Equipe, Metas e Faturamento Projetado Fora SP",
@@ -904,7 +905,7 @@
   {
     "id": 31,
     "title": "DRE MQ.2.1 - VAREJO_FORASP_DISTRIBUICAO",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiMzFjNWM4NzgtM2IzYS00MjVlLThjMWEtNTc0ZGE1NDE3ZDgyIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Demonstrativo de Resultados DRE Varejo Fora SP & Distribuição",
@@ -915,7 +916,7 @@
   {
     "id": 12,
     "title": "DRE Regional FSP — Gestão de Resultados",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "powerbi_url": "",
     "web_url": "http://localhost:5100/regional.fsp",
     "description": "Demonstrativo de Resultados da Regional FSP (Distribuição 1020000, Varejo RJ 1010200, Varejo ND 1010300 e Varejo SUL 1010400). Acompanhamento de faturamento líquido, margens e custos operacionais.",
@@ -926,7 +927,7 @@
   {
     "id": 15,
     "title": "Dashboard Nubmetrics",
-    "department": "Regional FSP",
+    "department": "Latim America",
     "powerbi_url": "https://app.powerbi.com/view?r=eyJrIjoiNmRjODc4ZDctNDczNS00OGM0LWE3NWEtZTg2ZTViMWUzZGYwIiwidCI6IjcwM2ZiM2ZjLTI3ZTAtNDEyYS1hZjAxLWZkNWMzY2Q5OWU1MyJ9",
     "web_url": "",
     "description": "Inteligência de mercado, análise de vendas e indicadores competitivos Nubmetrics da Regional FSP.",
@@ -937,7 +938,7 @@
   {
     "id": 65,
     "title": "DASH. EVOLUÇÃO REDE E PROD. VISÃO  GER. REGIONAL SP",
-    "department": "Regional SP",
+    "department": "Brasil",
     "powerbi_url": "https://app.powerbi.com/reportEmbed?reportId=4931fe22-c166-4658-a0b0-778be3644d6d&autoAuth=true&ctid=703fb3fc-27e0-412a-af01-fd5c3cd99e53&actionBarEnabled=true",
     "web_url": "",
     "description": "Evolução de vendas da rede e de produtos com visão gerencial da Regional SP.",
@@ -948,7 +949,7 @@
   {
     "id": 68,
     "title": "DIR. CML. ACOMP. PERF. PRODUTO E CANAL REG.SP",
-    "department": "Regional SP",
+    "department": "Brasil",
     "powerbi_url": "https://app.powerbi.com/reportEmbed?reportId=60954639-0a84-4e5f-85c2-f99b9c6857b3&autoAuth=true&ctid=703fb3fc-27e0-412a-af01-fd5c3cd99e53&actionBarEnabled=true",
     "web_url": "",
     "description": "Acompanhamento detalhado de performance por linha de produto e canal comercial.",
@@ -959,7 +960,7 @@
   {
     "id": 23,
     "title": "DRE Regional SP – Gestão de Resultados",
-    "department": "Regional SP",
+    "department": "Brasil",
     "powerbi_url": "",
     "web_url": "http://localhost:5100/regional.sp",
     "description": "Demonstrativo de Resultados do Exercício (DRE) consolidado da Regional SP.",
@@ -970,7 +971,7 @@
   {
     "id": 71,
     "title": "Dashboard Guelta (Ação Promocional AP)",
-    "department": "Regional SP",
+    "department": "Brasil",
     "powerbi_url": "",
     "web_url": "http://10.11.1.100:5250/",
     "description": "Inteligência executiva da campanha promocional Guelta (AP), vendas por loja, revendedora e produtos.",
@@ -988,5 +989,16 @@
     "tech": "Power BI (Demonstração Estática)",
     "github_repo": "",
     "live_portfolio_url": ""
+  },
+  {
+    "id": 91,
+    "title": "Automação de Processos & Workflows com n8n & IA",
+    "department": "Automação & Processos",
+    "powerbi_url": "",
+    "web_url": "https://sracm.github.io/portfolio-bi/16_automacao_processos_n8n/index.html",
+    "description": "Cockpit operacional e analítico de orquestração de esteiras de dados corporativos com n8n e LLMs: monitoramento de saúde de cluster (99.85%), redução de 384h de trabalho/mês (2.4 FTEs) e simulador em tempo real.",
+    "tech": "n8n / Python / LLM (Aplicação Web Interativa)",
+    "github_repo": "https://github.com/Sracm/portfolio-bi",
+    "live_portfolio_url": "https://sracm.github.io/portfolio-bi/16_automacao_processos_n8n/index.html"
   }
 ]
