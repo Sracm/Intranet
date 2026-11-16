@@ -693,6 +693,43 @@ def serve_portfolio_pdf_direct():
 
 
 
+@app.route('/rotas-onibus')
+@app.route('/onibus')
+@app.route('/dashboard_viacao_rotas_onibus.html')
+def serve_dashboard_viacao():
+    path = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'dashboard_viacao_rotas_onibus.html')
+    return send_file(path, mimetype='text/html')
+
+@app.route('/rotas-onibus-antigo')
+def serve_dashboard_viacao_antigo():
+    path = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'step183_backup.html')
+    return send_file(path, mimetype='text/html')
+
+@app.route('/dashboard_analise_plantas.html')
+@app.route('/plantas')
+def serve_analise_plantas():
+    path = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'dashboard_analise_plantas.html')
+    return send_file(path, mimetype='text/html')
+
+@app.route('/dashboard_solucoes_ambientais.html')
+@app.route('/descarte')
+def serve_solucoes_ambientais():
+    path = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'dashboard_solucoes_ambientais.html')
+    return send_file(path, mimetype='text/html')
+
+@app.route('/portfolio_standalone/<path:filename>')
+def serve_portfolio_standalone_any(filename):
+    file_path = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', filename)
+    if os.path.exists(file_path):
+        return send_file(file_path)
+    return "Arquivo não encontrado", 404
+
+@app.route('/brazil_geo.js')
+def serve_brazil_geo_js():
+    path = os.path.join(os.path.dirname(__file__), 'portfolio_standalone', 'brazil_geo.js')
+    return send_file(path, mimetype='application/javascript')
+
+
 @app.route('/modelos')
 @app.route('/modelos_dashboards.html')
 def serve_modelos_hub():

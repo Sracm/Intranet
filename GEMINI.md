@@ -2,8 +2,8 @@
 
 ## 📌 Identificação do Especialista
 - **Especialista em BI & Analytics:** Antonio Carlos de Mello
-- **Portfólio Online Oficial:** https://sracm.github.io/portfolio-bi/
-- **Central de Links de Dashboards:** https://sracm.github.io/portfolio-bi/DASHBOARDS_LINKS/LINKS_DASHBOARDS.html
+- **Portfólio Online Oficial:** https://sracm.github.io/portfolio-antonio-mello-bi/
+- **Central de Links de Dashboards:** https://sracm.github.io/portfolio-antonio-mello-bi/DASHBOARDS_LINKS/LINKS_DASHBOARDS.html
 
 ---
 
@@ -23,6 +23,6 @@ O assistente DEVE consultar imediatamente a pasta `DASHBOARDS_LINKS/` na raiz do
 4. **Repositório GitHub correspondente**
 
 Além disso, forneça sempre os links diretos para a planilha consolidada:
-- **Portal Online com Busca:** `https://sracm.github.io/portfolio-bi/DASHBOARDS_LINKS/LINKS_DASHBOARDS.html`
-- **Planilha CSV:** `https://sracm.github.io/portfolio-bi/DASHBOARDS_LINKS/dashboards_master.csv`
-- **Catálogo Markdown:** `https://github.com/Sracm/portfolio-bi/blob/main/DASHBOARDS_LINKS/README.md`
+- **Portal Online com Busca:** `https://sracm.github.io/portfolio-antonio-mello-bi/DASHBOARDS_LINKS/LINKS_DASHBOARDS.html`
+- **Planilha CSV:** `https://sracm.github.io/portfolio-antonio-mello-bi/DASHBOARDS_LINKS/dashboards_master.csv`
+- **Catálogo Markdown:** `https://github.com/Sracm/portfolio-antonio-mello-bi/blob/main/DASHBOARDS_LINKS/README.md`
