@@ -1000,5 +1000,16 @@
     "tech": "n8n / Python / LLM (Aplicação Web Interativa)",
     "github_repo": "https://github.com/Sracm/portfolio-bi",
     "live_portfolio_url": "https://sracm.github.io/portfolio-bi/16_automacao_processos_n8n/index.html"
+  },
+  {
+    "id": 283,
+    "title": "Central de Operações | CCO Transporte Urbano",
+    "department": "Mobilidade & Infraestrutura",
+    "powerbi_url": "",
+    "web_url": "http://10.11.1.100:5600/",
+    "description": "Central de Controle Operacional (CCO) em tempo real para gestão de linhas urbanas, cumprimento de viagens (98.4%), pontualidade/headway, telemetria AVL/GPS, despacho de socorro mecânico e controle de passageiros/IPK.",
+    "tech": "Fullstack Python / CCO Live / AVL GPS",
+    "github_repo": "https://github.com/Sracm/portfolio-bi",
+    "live_portfolio_url": "http://10.11.1.100:5600/"
   }
 ]
